@@ -7,6 +7,7 @@ def resize(file_path):
 	try:
 		img = Image.open(file_path).convert('L')
 	except IOError:
+		print(file_path)
 		print('File not found')
 		quit()
 

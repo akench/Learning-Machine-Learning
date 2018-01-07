@@ -55,6 +55,7 @@ correct = tf.equal(tf.argmax(prediction, 1), label_placeholder)
 accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
 train_step = optimizer.minimize(total_loss)
 init = tf.global_variables_initializer()
+
 with tf.Session() as sess:
 	init.run()
 	for c in range(100):
