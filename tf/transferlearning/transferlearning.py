@@ -1,7 +1,7 @@
 import tensorflow.contrib.slim as slim
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
-import numpy as np 
+import numpy as np
 from random import *
 
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
@@ -14,7 +14,7 @@ label_placeholder = tf.placeholder(shape=[None],dtype=tf.int64)
 
 
 
-def CNN_model(net):	
+def CNN_model(net):
 
 	#None doesnt work for some reason, use -1
 	net = tf.reshape(net,[-1, 28, 28, 1])
@@ -22,8 +22,8 @@ def CNN_model(net):
 	#defines a scope for each set of weights and biases, so they can be accessed later
 	with tf.variable_scope('transfer_model'):
 		with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
-			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):	
-				net = slim.conv2d(net, 20, [5,5], scope='conv1')	
+			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
+				net = slim.conv2d(net, 20, [5,5], scope='conv1')
 				net = slim.max_pool2d(net, [2,2], scope='pool1')
 				net = slim.conv2d(net, 50, [5,5], scope='conv2')
 				net = slim.max_pool2d(net, [2,2], scope='pool2')
@@ -104,9 +104,9 @@ def train1to4():
 
 		init = tf.global_variables_initializer()
 		init.run()
-		
+
 		i = 0
-		
+
 		saver = tf.train.Saver()
 		images, labels = remove5to9(images, labels)
 
@@ -115,16 +115,16 @@ def train1to4():
 		conv1_w = sess.run(conv1_w)
 		print('conv1 original weight = ', conv1_w[0][0][0][0])
 
-		
+
 		for c in range(100):
 
-		
+
 			if i >= len(images) or i >= len(labels):
 				print('starting new epoch')
 				i = 0
 				images, labels = shuffle_img_and_labels(images, labels)
 
-			
+
 			batch_xs = []
 			batch_ys = []
 
@@ -144,13 +144,13 @@ def train1to4():
 			print('current Accuracy:',accuracy.eval({data_placeholder:batch_xs, label_placeholder:batch_ys}))
 
 
-		
+
 		images_test, labels_test = remove5to9(images_test, labels_test)
 		labels_test = [np.argmax(l) for l in labels_test]
 
 		print('final Accuracy:',accuracy.eval({data_placeholder:images_test, label_placeholder:labels_test}))
 
-		
+
 		save_path = saver.save(sess, "transfer_model/transfer_model.ckpt")
 
 		print("path saved in ", save_path)
@@ -197,10 +197,11 @@ def train5to9():
 
 		init = tf.global_variables_initializer()
 		init.run()
-		
+
 		i = 0
-		
+
 		#we will only restore the weights from everything except the last layer
+		#and we have already told the optimizer to train the last layer
 		saver = tf.train.Saver(vars_to_freeze)
 		saver.restore(sess, 'transfer_model/transfer_model.ckpt')
 
@@ -211,16 +212,16 @@ def train5to9():
 		conv1_w = sess.run(conv1_w)
 		print('conv1 original weight = ', conv1_w[0][0][0][0])
 
-		
+
 		for c in range(100):
 
-		
+
 			if i >= len(images) or i >= len(labels):
 				print('starting new epoch')
 				i = 0
 				images, labels = shuffle_img_and_labels(images, labels)
 
-			
+
 			batch_xs = []
 			batch_ys = []
 
@@ -245,7 +246,7 @@ def train5to9():
 
 		print('final Accuracy:',accuracy.eval({data_placeholder:images_test, label_placeholder:labels_test}))
 
-		
+
 		# save_path = saver.save(sess, "transfer_model/transfer_model.ckpt")
 		# print("path saved in ", save_path)
 

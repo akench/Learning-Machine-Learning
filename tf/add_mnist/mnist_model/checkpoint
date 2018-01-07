@@ -1,3 +1,2 @@
 model_checkpoint_path: "mnistmodel.ckpt"
-all_model_checkpoint_paths: "mnistmodel/ckpt"
 all_model_checkpoint_paths: "mnistmodel.ckpt"

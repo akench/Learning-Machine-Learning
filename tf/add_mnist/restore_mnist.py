@@ -5,11 +5,11 @@ import numpy as np
 from PIL import Image
 from cv_stuff.parseImg import resize
 
-tf.reset_default_graph()
-data_placeholder = tf.placeholder(shape=[None, 784], dtype=tf.float32, name = 'data_placeholder')
+# tf.reset_default_graph()
+data_placeholder = tf.placeholder(shape=[1, 784], dtype=tf.float32, name = 'data_placeholder')
 
 
-def CNN_model(data):	
+def CNN_model(data):
 
 	#None doesnt work for some reason, use -1
 	data = tf.reshape(data,[-1, 28, 28, 1])
@@ -17,8 +17,8 @@ def CNN_model(data):
 	#defines a scope for each set of weights and biases, so they can be accessed later
 	with tf.variable_scope('mnist_model'):
 		with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
-			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):	
-				net = slim.conv2d(data, 20, [5,5], scope='conv1')	
+			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
+				net = slim.conv2d(data, 20, [5,5], scope='conv1')
 				net = slim.max_pool2d(net, [2,2], scope='pool1')
 				net = slim.conv2d(net, 50, [5,5], scope='conv2')
 				net = slim.max_pool2d(net, [2,2], scope='pool2')
@@ -30,7 +30,7 @@ def CNN_model(data):
 
 
 
-def predictNum(file_path):
+def predict_num(file_path):
 
 	prediction = CNN_model(data_placeholder)
 	print('INSIDE METHOD')
@@ -38,9 +38,10 @@ def predictNum(file_path):
 	with tf.Session() as sess:
 		# saver = tf.train.import_meta_graph('model.ckpt.meta')
 		var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='mnist_model')
+		print('var_list', var_list)
 
 		saver = tf.train.Saver(var_list)
-		saver.restore(sess, 'mnist_model/mnistmodel.ckpt')
+		saver.restore(sess, 'mnist_model/model.ckpt')
 		# print('RESTORED MODEL')
 		img = resize(file_path)
 		arr = np.array(img).reshape(1, 784)
@@ -48,7 +49,7 @@ def predictNum(file_path):
 		# inverts image
 		for i in range(len(arr)):
 			arr[i] = 255 - arr[i]
-			
+
 		logits = sess.run(prediction, feed_dict = {data_placeholder : arr})
 
 		#squeeze it to get rid of useless dimensions (ranks)
@@ -64,4 +65,4 @@ def predictNum(file_path):
 		return num
 
 
-# print(predictNum('test_imgs/0_test_resized.jpg'))
+# print(predictNum('../../test_imgs/0_test.jpg'))

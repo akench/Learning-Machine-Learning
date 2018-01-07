@@ -120,7 +120,7 @@ with tf.Session() as sess:
 				i = 0
 				curr_epoch += 1
 				images, labels = shuffle_img_and_labels(images, labels)
-				save_path = saver.save(sess, "mnist_model/mnistmodel/ckpt")
+				save_path = saver.save(sess, "mnist_model/model.ckpt")
 				print('path saved in', save_path)
 
 
@@ -146,11 +146,11 @@ with tf.Session() as sess:
 		print('final Accuracy:',accuracy.eval({data_placeholder:images_test, label_placeholder:labels_test}))
 		print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - start_time)))
 
-		save_path = saver.save(sess, "mnist_model/mnistmodel.ckpt")
-		print("path saved in 'mnist_model/mnistmodel.ckpt'")
+		save_path = saver.save(sess, "mnist_model/model.ckpt")
+		print("path saved in", save_path)
 
 
 	except KeyboardInterrupt:
 		print('TRAINING STOPPED')
-		# save_path = saver.save(sess, "mnist_model/mnistmodel.ckpt")
-		# print("path saved in 'mnist_model/mnistmodel.ckpt'")
+		save_path = saver.save(sess, "mnist_model/model.ckpt")
+		print("path saved in", save_path)
