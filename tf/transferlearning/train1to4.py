@@ -1,13 +1,10 @@
 import tensorflow.contrib.slim as slim
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
-import numpy as np 
+import numpy as np
 from random import *
 
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
-
-# #stores checkpts??
-train_log_dir = 'log_dir_test'
 
 
 data_placeholder = tf.placeholder(shape=[None, 784],dtype=tf.float32, name = 'data_placeholder')
@@ -15,11 +12,8 @@ label_placeholder = tf.placeholder(shape=[None],dtype=tf.int64)
 
 
 
-if not tf.gfile.Exists(train_log_dir):
-	tf.gfile.MakeDirs(train_log_dir)
 
-
-def CNN_model(net):	
+def CNN_model(net):
 
 	#None doesnt work for some reason, use -1
 	net = tf.reshape(net,[-1, 28, 28, 1])
@@ -27,8 +21,8 @@ def CNN_model(net):
 	#defines a scope for each set of weights and biases, so they can be accessed later
 	with tf.variable_scope('transfer_model'):
 		with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
-			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):	
-				net = slim.conv2d(net, 20, [5,5], scope='conv1')	
+			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
+				net = slim.conv2d(net, 20, [5,5], scope='conv1')
 				net = slim.max_pool2d(net, [2,2], scope='pool1')
 				net = slim.conv2d(net, 50, [5,5], scope='conv2')
 				net = slim.max_pool2d(net, [2,2], scope='pool2')
@@ -107,27 +101,27 @@ with tf.Session() as sess:
 
 	init = tf.global_variables_initializer()
 	init.run()
-	
+
 	i = 0
-	
+
 	saver = tf.train.Saver()
 	images, labels = remove5to9(images, labels)
 
+	# print(tf.trainable_variables())
+	# conv1_w = [v for v in tf.trainable_variables() if v.name == "train1to4_model/conv1/weights:0"][0]
+	# conv1_w = sess.run(conv1_w)
+	# print('conv1 original weight = ', conv1_w[0][0][0][0])
 
-	conv1_w = [v for v in tf.trainable_variables() if v.name == "train1to4_model/conv1/weights:0"][0]
-	conv1_w = sess.run(conv1_w)
-	print('conv1 original weight = ', conv1_w[0][0][0][0])
 
-	
 	for c in range(100):
 
-	
+
 		if i >= len(images) or i >= len(labels):
 			print('starting new epoch')
 			i = 0
 			images, labels = shuffle_img_and_labels(images, labels)
 
-		
+
 		batch_xs = []
 		batch_ys = []
 
@@ -149,12 +143,12 @@ with tf.Session() as sess:
 
 	print('final Accuracy:',accuracy.eval({data_placeholder:images_test, label_placeholder:labels_test}))
 
-	
-	save_path = saver.save(sess, "1to4_model/1to4_model.ckpt")
+
+	save_path = saver.save(sess, "1to4_model/model.ckpt")
 
 	print("path saved in ", save_path)
 
 
-	temp = [v for v in tf.trainable_variables() if v.name == "train1to4_model/conv1/weights:0"][0]
-	temp = sess.run(temp)
-	print('conv1 weight after training 1 to 4 is ', temp[0][0][0][0])
+	# temp = [v for v in tf.trainable_variables() if v.name == "train1to4_model/conv1/weights:0"][0]
+	# temp = sess.run(temp)
+	# print('conv1 weight after training 1 to 4 is ', temp[0][0][0][0])

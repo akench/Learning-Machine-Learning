@@ -111,9 +111,9 @@ def train1to4():
 		images, labels = remove5to9(images, labels)
 
 
-		conv1_w = [v for v in tf.trainable_variables() if v.name == "transfer_model/conv1/weights:0"][0]
-		conv1_w = sess.run(conv1_w)
-		print('conv1 original weight = ', conv1_w[0][0][0][0])
+		# conv1_w = [v for v in tf.trainable_variables() if v.name == "transfer_model/conv1/weights:0"][0]
+		# conv1_w = sess.run(conv1_w)
+		# print('conv1 original weight = ', conv1_w[0][0][0][0])
 
 
 		for c in range(100):
@@ -151,14 +151,14 @@ def train1to4():
 		print('final Accuracy:',accuracy.eval({data_placeholder:images_test, label_placeholder:labels_test}))
 
 
-		save_path = saver.save(sess, "transfer_model/transfer_model.ckpt")
+		save_path = saver.save(sess, "transfer_model/model.ckpt")
 
 		print("path saved in ", save_path)
 
 
-		temp = [v for v in tf.trainable_variables() if v.name == "transfer_model/conv1/weights:0"][0]
-		temp = sess.run(temp)
-		print('conv1 weight after training 1 to 4 is ', temp[0][0][0][0])
+		# temp = [v for v in tf.trainable_variables() if v.name == "transfer_model/conv1/weights:0"][0]
+		# temp = sess.run(temp)
+		# print('conv1 weight after training 1 to 4 is ', temp[0][0][0][0])
 
 
 def train5to9():
@@ -203,14 +203,14 @@ def train5to9():
 		#we will only restore the weights from everything except the last layer
 		#and we have already told the optimizer to train the last layer
 		saver = tf.train.Saver(vars_to_freeze)
-		saver.restore(sess, 'transfer_model/transfer_model.ckpt')
+		saver.restore(sess, 'transfer_model/model.ckpt')
 
 		images, labels = remove0to4(images, labels)
 
 
-		conv1_w = [v for v in tf.trainable_variables() if v.name == "transfer_model/conv1/weights:0"][0]
-		conv1_w = sess.run(conv1_w)
-		print('conv1 original weight = ', conv1_w[0][0][0][0])
+		# conv1_w = [v for v in tf.trainable_variables() if v.name == "transfer_model/conv1/weights:0"][0]
+		# conv1_w = sess.run(conv1_w)
+		# print('conv1 original weight = ', conv1_w[0][0][0][0])
 
 
 		for c in range(100):
@@ -251,9 +251,9 @@ def train5to9():
 		# print("path saved in ", save_path)
 
 
-		temp = [v for v in tf.trainable_variables() if v.name == "transfer_model/conv1/weights:0"][0]
-		temp = sess.run(temp)
-		print('conv1 weight is ', temp[0][0][0][0])
+		# temp = [v for v in tf.trainable_variables() if v.name == "transfer_model/conv1/weights:0"][0]
+		# temp = sess.run(temp)
+		# print('conv1 weight is ', temp[0][0][0][0])
 
 
 # train1to4()

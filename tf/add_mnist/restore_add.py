@@ -6,7 +6,7 @@ from PIL import Image
 # from parseImg import resize
 from cv_stuff.parseImg import resize
 
-tf.reset_default_graph()
+# tf.reset_default_graph()
 data_placeholder = tf.placeholder(shape=[1, 2], dtype=tf.float32, name = 'data_placeholder')
 
 
