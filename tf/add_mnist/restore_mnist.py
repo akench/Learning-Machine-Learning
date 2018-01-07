@@ -3,7 +3,6 @@ import tensorflow.contrib.slim as slim
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 from PIL import Image
-# from parseImg import resize
 from cv_stuff.parseImg import resize
 
 tf.reset_default_graph()
@@ -25,6 +24,7 @@ def CNN_model(data):
 				net = slim.max_pool2d(net, [2,2], scope='pool2')
 				net = slim.flatten(net, scope='flatten3')
 				net = slim.fully_connected(net, 500, scope='fc4')
+				net = slim.dropout(net, 0.5, scope='dropout4')
 				net = slim.fully_connected(net, 10, activation_fn=None, scope='fc5')
 	return net
 

@@ -1,8 +1,9 @@
 import tensorflow.contrib.slim as slim
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
-import numpy as np 
+import numpy as np
 from random import *
+import time
 
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
@@ -14,7 +15,7 @@ data_placeholder = tf.placeholder(shape=[None, 784],dtype=tf.float32, name = 'da
 label_placeholder = tf.placeholder(shape=[None],dtype=tf.int64)
 
 
-def CNN_model(net):	
+def CNN_model(net):
 
 	#None doesnt work for some reason, use -1
 	net = tf.reshape(net,[-1, 28, 28, 1])
@@ -22,8 +23,8 @@ def CNN_model(net):
 	#defines a scope for each set of weights and biases, so they can be accessed later
 	with tf.variable_scope('mnist_model'):
 		with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
-			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):	
-				net = slim.conv2d(net, 20, [5,5], scope='conv1')	
+			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
+				net = slim.conv2d(net, 20, [5,5], scope='conv1')
 				net = slim.max_pool2d(net, [2,2], scope='pool1')
 				net = slim.conv2d(net, 50, [5,5], scope='conv2')
 				net = slim.max_pool2d(net, [2,2], scope='pool2')
@@ -95,49 +96,61 @@ accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
 train_step = optimizer.minimize(total_loss)
 
 
-
 with tf.Session() as sess:
-	
-	# init = tf.global_variables_initializer()
-	# init.run()
-	# init = tf.local_variables_initializer()
-	# init.run()
+
+	start_time = time.time()
+
+	init = tf.global_variables_initializer()
+	init.run()
+	init = tf.local_variables_initializer()
+	init.run()
 	saver = tf.train.Saver()
 
-	init = tf.initialize_all_variables()
-	init.run()
-	
+
 	i = 0
-	
-	for c in range(100):
+	num_epochs = 5
+	curr_epoch = 1
 
-	
-		if i >= len(images) or i >= len(labels):
-			print('starting new epoch')
-			i = 0
-			images, labels = shuffle_img_and_labels(images, labels)
-
-		
-		batch_xs = []
-		batch_ys = []
-
-		for _ in range(500):
-
-			if(i >= len(images) or i >= len(labels)):
-				break
-
-			batch_xs.append(images[i])
-			batch_ys.append(labels[i])
-			i+= 1
-
-		batch_ys = [np.argmax(v) for v in batch_ys]
-
-		sess.run(train_step, feed_dict={data_placeholder: batch_xs, label_placeholder: batch_ys})
-
-		print('current Accuracy:',accuracy.eval({data_placeholder:batch_xs, label_placeholder:batch_ys}))
+	try:
+		while curr_epoch <= num_epochs:
 
 
-	print('final Accuracy:',accuracy.eval({data_placeholder:images_test, label_placeholder:labels_test}))
+			if i >= len(images) or i >= len(labels):
+				print('=============================' + str(curr_epoch).upper() + '=============================')
+				i = 0
+				curr_epoch += 1
+				images, labels = shuffle_img_and_labels(images, labels)
+				save_path = saver.save(sess, "mnist_model/mnistmodel/ckpt")
+				print('path saved in', save_path)
 
-	save_path = saver.save(sess, "mnist_model/mnistmodel.ckpt")
-	print("path saved in 'mnist_model/mnistmodel.ckpt'")
+
+			batch_xs = []
+			batch_ys = []
+
+			for _ in range(500):
+
+				if(i >= len(images) or i >= len(labels)):
+					break
+
+				batch_xs.append(images[i])
+				batch_ys.append(labels[i])
+				i+= 1
+
+			batch_ys = [np.argmax(v) for v in batch_ys]
+
+			sess.run(train_step, feed_dict={data_placeholder: batch_xs, label_placeholder: batch_ys})
+
+			print('current Accuracy:',accuracy.eval({data_placeholder:batch_xs, label_placeholder:batch_ys}))
+
+
+		print('final Accuracy:',accuracy.eval({data_placeholder:images_test, label_placeholder:labels_test}))
+		print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - start_time)))
+
+		save_path = saver.save(sess, "mnist_model/mnistmodel.ckpt")
+		print("path saved in 'mnist_model/mnistmodel.ckpt'")
+
+
+	except KeyboardInterrupt:
+		print('TRAINING STOPPED')
+		# save_path = saver.save(sess, "mnist_model/mnistmodel.ckpt")
+		# print("path saved in 'mnist_model/mnistmodel.ckpt'")
