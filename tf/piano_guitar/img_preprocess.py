@@ -1,4 +1,4 @@
-from cv_stuff.parse_img import resize_crop, images_to_arrays
+from cv_stuff.parse_img import resize_crop, images_to_arrays, normalize_data
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
@@ -8,17 +8,12 @@ import pickle
 
 
 
-# >>> X -= np.mean(X, axis = 0) # zero-center
-# >>> X /= np.std(X, axis = 0) # normalize
-
-
-
-
-
 def preprocess(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
 
     step = 0
-    for path in files:
+    processed_images = []
+
+    for path in file_paths_list:
         img = Image.open(path)
 
         for _ in range(rots_per_img):
@@ -32,13 +27,32 @@ def preprocess(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
 
             for _ in range(crops_per_rot):
                 i = resize_crop(img = rotated, crop_type='random')
+                processed_images.append(i)
                 step += 1
 
+    return processed_images
 
 
-piano_paths = glob.glob('org_data/p*.jpg')
-print(piano_paths)
+def make_data():
+    piano_paths = glob.glob('org_data/guitar/*.jpg')
+    guitar_paths = glob.glob('org_data/piano/*.jpg')
 
+    piano_imgs = preprocess(piano_paths)
+    guitar_imgs = preprocess(guitar_paths)
+
+    piano_data = images_to_arrays(piano_imgs)
+    guitar_data = images_to_arrays(guitar_imgs)
+
+    piano_norm, mean, sd = normalize_data(piano_data)
+    guitar_norm, mean, sd = normalize_data(guitar_data)
+
+    pickle.dump(piano_norm, open('processed_data/piano_data.p', 'wb'))
+    pickle.dump(guitar_norm, open('processed_data/guitar_data.p', 'wb'))
+
+    print('Success! :)')
+
+
+make_data()
 
 
 
@@ -52,14 +66,3 @@ print(piano_paths)
 # plt.gray()
 # plt.imshow(arr)
 # plt.show()
-
-# im = Image.open('org_data/pianopic.jpg')
-#
-#
-# im = im.rotate(45)
-# print(im)
-#
-# im = resize_crop(img = im, save_path = 'processed_data/test.jpg')
-
-# im.save('processed_data/piano_test.jpg')
-# im = resize_crop(img = 'processed_data/piano_test.jpg', save_path = 'processed_data/piano_crop.jpg')

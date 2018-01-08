@@ -90,6 +90,13 @@ def images_to_arrays(image_arr):
 def normalize_data(data):
 
 	'''
-
-
+	@param 2D array with arr storing each image, and arr[i] storing pixels of image i
+	@return normalized data, mean of data, standard deviation of data
 	'''
+	m = np.mean(data, axis = 0)
+	sd = np.std(data, axis = 0)
+
+	data -= m
+	data /= sd
+
+	return data, m, sd
