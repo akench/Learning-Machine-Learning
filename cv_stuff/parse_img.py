@@ -61,7 +61,7 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 
 	img = img.resize((size, size), PIL.Image.ANTIALIAS)
 
-	print('resized img to %d by %d' % (img.size[0], img.size[1]))
+	# print('resized img to %d by %d' % (img.size[0], img.size[1]))
 
 	if save_path is not None:
 		img.save(save_path)
