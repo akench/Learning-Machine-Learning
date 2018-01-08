@@ -35,10 +35,6 @@ for path in files:
     gausses.sort()
     print(gausses)
 
-'''
-BUG WITH HORIZONTAL PICS
-
-'''
 
 # quit()
 # print(arr)

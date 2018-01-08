@@ -15,7 +15,8 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 			print('File not found')
 			return None
 
-
+	else:
+		img = img.convert('L')
 	#makes it a square, crops out extra parts
 	# shorter_side = min(img.size[0], img.size[1])
 	# horizontal_padding = (shorter_side-img.size[0]) // 2
@@ -56,6 +57,10 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 				h
 			)
 		)
+	elif crop_type is None:
+		pass
+	else:
+		raise ValueError("Invalid crop type")
 
 
 
