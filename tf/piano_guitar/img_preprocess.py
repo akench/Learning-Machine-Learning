@@ -6,20 +6,39 @@ import glob
 from random import *
 
 
+
 # >>> X -= np.mean(X, axis = 0) # zero-center
 # >>> X /= np.std(X, axis = 0) # normalize
 
-img = Image.open('org_data/pianopic.jpg')
+
+files = glob.glob('org_data/*.jpg')
 step = 0
-for _ in range(10):
 
-    rot = int(gauss(0, 1.4) * 13)
-    rotated = img.rotate(rot)
+for path in files:
+    img = Image.open(path)
 
-    for _ in range(5):
-        i = resize_crop(img = rotated, save_path = 'processed_data/test_' + str(step) + '.jpg', crop_type='random')
-        step += 1
-        
+    gausses = []
+    for _ in range(10):
+
+        rot = int(gauss(0, 1.4) * 13)
+        gausses.append(rot)
+        rotated = img.rotate(rot)
+
+        f = randint(0, 1)
+        if f == 1:
+            rotated = rotated.transpose(Image.FLIP_LEFT_RIGHT)
+
+        for _ in range(5):
+            i = resize_crop(img = rotated, save_path = 'processed_data/test_' + str(step) + '.jpg', crop_type='random')
+            step += 1
+
+    gausses.sort()
+    print(gausses)
+
+'''
+BUG WITH HORIZONTAL PICS
+
+'''
 
 # quit()
 # print(arr)

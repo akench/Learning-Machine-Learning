@@ -30,7 +30,7 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 	h  = img.size[1]
 	#img is now horizontal, width is longer than height
 	if w < h:
-		img = img.rotate(-90)
+		img = img.rotate(-90, expand = True)
 		w, h = h, w
 
 	if crop_type == 'center':
@@ -65,7 +65,5 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 
 	if save_path is not None:
 		img.save(save_path)
-
-
 
 	return img
