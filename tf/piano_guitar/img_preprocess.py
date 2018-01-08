@@ -93,12 +93,9 @@ def make_data_per_class():
     pickle.dump(piano_norm, open('processed_data/piano_data.p', 'wb'))
     pickle.dump(guitar_norm, open('processed_data/guitar_data.p', 'wb'))
 
-def view_data_by_type(type = 'p', start = 50, end = 55):
+def view_data(start = 50, end = 60):
 
-    if type == 'p':
-        data = pickle.load(open('processed_data/piano_data.p', 'rb'))
-    else:
-        data = pickle.load(open('processed_data/guitar_data.p', 'rb'))
+    data = pickle.load(open('processed_data/test_data.p', 'rb'))
 
     print(len(data))
 
@@ -108,6 +105,6 @@ def view_data_by_type(type = 'p', start = 50, end = 55):
         plt.imshow(arr)
         plt.show()
 
-data, labels = make_full_data()
-split_data(data, labels)
-# view_data_by_type()
+# data, labels = make_full_data()
+# split_data(data, labels)
+view_data()
