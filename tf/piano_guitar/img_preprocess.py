@@ -1,9 +1,10 @@
-from cv_stuff.parse_img import resize_crop
+from cv_stuff.parse_img import resize_crop, images_to_arrays
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
 import glob
 from random import *
+import pickle
 
 
 
@@ -11,29 +12,37 @@ from random import *
 # >>> X /= np.std(X, axis = 0) # normalize
 
 
-files = glob.glob('org_data/*.jpg')
-step = 0
 
-for path in files:
-    img = Image.open(path)
 
-    gausses = []
-    for _ in range(10):
 
-        rot = int(gauss(0, 1.4) * 13)
-        gausses.append(rot)
-        rotated = img.rotate(rot)
+def preprocess(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
 
-        f = randint(0, 1)
-        if f == 1:
-            rotated = rotated.transpose(Image.FLIP_LEFT_RIGHT)
+    step = 0
+    for path in files:
+        img = Image.open(path)
 
-        for _ in range(5):
-            i = resize_crop(img = rotated, save_path = 'processed_data/test_' + str(step) + '.jpg', crop_type='random')
-            step += 1
+        for _ in range(rots_per_img):
 
-    gausses.sort()
-    print(gausses)
+            rot = int(gauss(0, 1.4) * 13)
+            rotated = img.rotate(rot)
+
+            f = randint(0, 1)
+            if f == 1:
+                rotated = rotated.transpose(Image.FLIP_LEFT_RIGHT)
+
+            for _ in range(crops_per_rot):
+                i = resize_crop(img = rotated, crop_type='random')
+                step += 1
+
+
+
+piano_paths = glob.glob('org_data/p*.jpg')
+print(piano_paths)
+
+
+
+
+
 
 
 # quit()

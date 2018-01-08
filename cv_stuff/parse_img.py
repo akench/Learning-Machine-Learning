@@ -72,3 +72,24 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 		img.save(save_path)
 
 	return img
+
+
+def images_to_arrays(image_arr):
+	'''
+	@param list of image objects
+	@return list of list of pixels for each image
+			each image is in each row
+	'''
+
+	ret = [np.array(img).reshape((1, 784)).squeeze() for img in image_arr]
+	return ret
+
+
+
+
+def normalize_data(data):
+
+	'''
+
+
+	'''
