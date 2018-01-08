@@ -4,7 +4,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 from random import *
 import time
-from cv_stuff.parseImg import resize
+from cv_stuff.parse_img import resize
 
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 

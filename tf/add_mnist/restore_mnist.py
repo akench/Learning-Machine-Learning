@@ -3,7 +3,7 @@ import tensorflow.contrib.slim as slim
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 from PIL import Image
-from cv_stuff.parseImg import resize
+from cv_stuff.parse_img import resize
 
 # tf.reset_default_graph()
 data_placeholder = tf.placeholder(shape=[1, 784], dtype=tf.float32, name = 'data_placeholder')
@@ -43,7 +43,17 @@ def predict_num(file_path):
 		saver = tf.train.Saver(var_list)
 		saver.restore(sess, 'mnist_model/model.ckpt')
 		# print('RESTORED MODEL')
-		img = resize(file_path)
+
+		try:
+			img = Image.open(file_path).convert('L')
+		except IOError:
+			print(file_path)
+			print('File not found')
+			quit()
+
+		img = img.resize((28, 28), PIL.Image.ANTIALIAS)
+		img.save(file_path)
+
 		arr = np.array(img).reshape(1, 784)
 
 		# inverts image
