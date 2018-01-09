@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow.contrib.slim as slim
 import numpy as np
 from cv_stuff.parse_img import resize_crop, images_to_arrays
+import pickle
 
 data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32)
 
@@ -18,36 +19,54 @@ def model(net):
 				net = slim.conv2d(net, 50, [5,5], scope='conv3')
 				net = slim.max_pool2d(net, [2,2], scope='pool3')
 				net = slim.flatten(net, scope='flatten4')
-				net = slim.fully_connected(net, 500, scope='fc5')
+				net = slim.fully_connected(net, 500, activation_fn = tf.nn.relu, scope='fc5')
 				net = slim.dropout(net, 0.5, scope='dropout5')
 				net = slim.fully_connected(net, 2, activation_fn=None, scope='fc6')
 	return net
 
 
-def make_prediction(file_path):
+def make_prediction(data, is_file_path):
 
-    img = resize_crop(img = file_path, crop_type = 'center', size = 28)
-    data = images_to_arrays([img])
+    if is_file_path:
+        data = resize_crop(img = data, crop_type = 'center', size = 28)
+        data = images_to_arrays([data])
 
     prediction = model(data_placeholder)
 
     with tf.Session() as sess:
+
+        init = tf.initialize_all_variables()
+        init.run()
+
         var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope = 'pvg_model')
-        saver = tf.train.Saver(var_list)
+        # print(var_list)
+
+        var = [v for v in tf.trainable_variables() if v.name == "pvg_model/conv1/weights:0"]
+        print(sess.run(var))
+
+
+        saver = tf.train.Saver()
         saver.restore(sess, 'model/model.ckpt')
 
         logits = sess.run(prediction, feed_dict={data_placeholder: data})
         logits = tf.squeeze(logits)
-        print('logits', sess.run(logits))
+        logits_arr = sess.run(logits)
+
+        print('LOGITS =', logits_arr)
+        if abs(logits_arr[0] - logits_arr[1]) < 100:
+            return 'neither'
 
         softmax_output = tf.nn.softmax(logits = logits)
-        print(sess.run(softmax_output))
 
         n = sess.run(tf.argmax(softmax_output))
 
         if n == 0:
-            return 'piano'
+            return 'piano keyboard'
         else:
-            return 'guitar'
+            return 'acoustic guitar'
 
-print(make_prediction('org_data/guitar/g1.jpg'))
+    def accuracy_on_test_data():
+        test_data = pickle.load(open('processed_data/test_data.p', 'rb'))
+
+
+print(make_prediction('org_data/trump.jpg', is_file_path = True))

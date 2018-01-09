@@ -21,7 +21,7 @@ def model(net):
 				net = slim.conv2d(net, 50, [5,5], scope='conv3')
 				net = slim.max_pool2d(net, [2,2], scope='pool3')
 				net = slim.flatten(net, scope='flatten4')
-				net = slim.fully_connected(net, 500, scope='fc5')
+				net = slim.fully_connected(net, 500, activation_fn = tf.nn.relu, scope='fc5')
 				net = slim.dropout(net, 0.5, scope='dropout5')
 				net = slim.fully_connected(net, 2, activation_fn=None, scope='fc6')
 	return net

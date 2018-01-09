@@ -11,8 +11,7 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 			img = Image.open(img).convert('L')
 		except IOError:
 			print('file_path', img)
-			print('File not found')
-			return None
+			raise ValueError('file not found')
 
 	else:
 		img = img.convert('L')
