@@ -13,7 +13,7 @@ def Model(data):
 
 	data = tf.reshape(data, [-1, 2])
 	with tf.variable_scope('add_nums_model'):
-		with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):	
+		with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
 			data = slim.fully_connected(data, 5, activation_fn=tf.nn.sigmoid, scope='firsthidden')
 			data = slim.fully_connected(data, 19, activation_fn=None, scope='output')
 			# data = slim.fully_connected(data, 1, activation_fn = None, scope = 'output')
@@ -77,7 +77,7 @@ def train_NN():
 				batch_l.append(labels[i])
 
 			_, c = sess.run([optimizer, cost], feed_dict = {data_placeholder: batch_d, label_placeholder: batch_l})
-			
+
 			acc = accuracy.eval({data_placeholder: batch_d, label_placeholder: batch_l})
 
 			if i % 100 == 0:
@@ -88,7 +88,7 @@ def train_NN():
 
 			if time.time() - time_of_last_save >= 300:
 				save_path = saver.save(sess, "add_nums_model/model.ckpt")
-				print("--------------------------------path saved--------------------------------")
+				print("path saved")
 				time_of_last_save = time.time()
 
 
@@ -96,49 +96,45 @@ def train_NN():
 		test_data, test_labels = prepare_data(100)
 		print('final accuracy = ', accuracy.eval({data_placeholder: test_data, label_placeholder: test_labels}))
 		save_path = saver.save(sess, "add_nums_model/model.ckpt")
-		print("path saved in 'add_nums_model/model.ckpt'")
+		print("path saved in '/add_nums_model/model.ckpt'")
 		print('Time to train: ', time.time() - start_time)
 
-# def make_prediction(a, b):
-# 	# print('INSIDE MAKE PREDICTION')
-# 	prediction = Model(data_placeholder)
+def predict_sum(a, b):
+	# print('INSIDE MAKE PREDICTION')
+	prediction = Model(data_placeholder)
 
-# 	with tf.Session() as sess:
+	with tf.Session() as sess:
 
-# 		var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope = 'add_nums_model')
-# 		saver = tf.train.Saver(var_list)
-# 		saver.restore(sess, 'add_nums_model/model.ckpt')
+		var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope = 'add_nums_model')
+		saver = tf.train.Saver(var_list)
+		saver.restore(sess, 'add_nums_model/model.ckpt')
 
-# 		data = [a, b]
-# 		data = np.reshape(data, (1, 2))
-# 		logits = sess.run(prediction, feed_dict = {data_placeholder: data})
-# 		# print('logits ', logits)
-# 		sftmx = tf.nn.softmax(logits = tf.squeeze(logits))
-# 		# print(sess.run(sftmx))
-
-
-# 		var = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)
-# 		var = [v for v in tf.trainable_variables() if v.name == "add_nums_model/firsthidden/weights:0"][0]
-# 		print(sess.run(var))
-
-# 		return sess.run(tf.argmax(sftmx))
+		data = [a, b]
+		data = np.reshape(data, (1, 2))
+		logits = sess.run(prediction, feed_dict = {data_placeholder: data})
+		# print('logits ', logits)
+		sftmx = tf.nn.softmax(logits = tf.squeeze(logits))
+		# print(sess.run(sftmx))
 
 
-train_NN()
+		var = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)
+		var = [v for v in tf.trainable_variables() if v.name == "add_nums_model/firsthidden/weights:0"][0]
+		# print(sess.run(var))
 
+		return sess.run(tf.argmax(sftmx))
 
 # with tf.variable_scope('') as scope:
 # 	while True:
 # 		choice = input('Enter "t" to train network, or enter "a" to add numbers, or "q" to quit \n')
 # 		if choice == 't':
 # 			train_NN()
-
+#
 # 		elif choice == 'a':
 # 			a = input('Enter first num: ')
 # 			b = input('Enter second num: ')
 # 			print('sum = ', make_prediction(a,b))
 # 			scope.reuse_variables()
-
+#
 # 		elif choice == 'q':
 # 			quit()
 # 		else:
