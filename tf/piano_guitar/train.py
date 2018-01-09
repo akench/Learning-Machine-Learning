@@ -48,12 +48,12 @@ accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
 with tf.Session() as sess:
 	start_time = time.time()
 	saver = tf.train.Saver()
-	init = tf.initialize_all_variables()
+	init = tf.global_variables_initializer()
 	init.run()
 
 	curr_epoch = 1
 	num_epochs = 5
-	batch_size = 64
+	batch_size = 128
 	num_examples = len(images_train)
 	img_num = 0
 
@@ -80,10 +80,9 @@ with tf.Session() as sess:
 				images_train, labels_train = shuffle(images_train, labels_train)
 
 		sess.run(train_step, feed_dict = {data_placeholder: img_batch, labels_placeholder: labels_batch})
-		# print('Current Accuracy:', accuracy.eval({data_placeholder: img_batch, labels_placeholder: labels_batch}))
+		print('Current Accuracy:', accuracy.eval({data_placeholder: img_batch, labels_placeholder: labels_batch}))
 
-
-	print('final Accuracy:',accuracy.eval({data_placeholder:images_val, labels_placeholder:labels_val}))
+	print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder:images_val, labels_placeholder:labels_val}))
 	print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - start_time)))
 
 	save_path = saver.save(sess, "model/model.ckpt")

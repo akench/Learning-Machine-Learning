@@ -27,46 +27,56 @@ def model(net):
 
 def make_prediction(data, is_file_path):
 
-    if is_file_path:
-        data = resize_crop(img = data, crop_type = 'center', size = 28)
-        data = images_to_arrays([data])
+	if is_file_path:
+		data = resize_crop(img = data, crop_type = 'center', size = 28, save_path = 'org_data/testtest.jpg')
+		data = images_to_arrays([data])
 
-    prediction = model(data_placeholder)
+	prediction = model(data_placeholder)
 
-    with tf.Session() as sess:
+	with tf.Session() as sess:
 
-        init = tf.initialize_all_variables()
-        init.run()
+		# init = tf.global_variables_initializer()
+		# init.run()
+		# var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope = 'pvg_model')
+		# # print(var_list)
+		# saver = tf.train.Saver(var_list)
 
-        var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope = 'pvg_model')
-        # print(var_list)
+		saver = tf.train.Saver()
+		saver.restore(sess, 'model/model.ckpt')
 
-        var = [v for v in tf.trainable_variables() if v.name == "pvg_model/conv1/weights:0"]
-        print(sess.run(var))
-
-
-        saver = tf.train.Saver()
-        saver.restore(sess, 'model/model.ckpt')
-
-        logits = sess.run(prediction, feed_dict={data_placeholder: data})
-        logits = tf.squeeze(logits)
-        logits_arr = sess.run(logits)
-
-        print('LOGITS =', logits_arr)
-        if abs(logits_arr[0] - logits_arr[1]) < 100:
-            return 'neither'
-
-        softmax_output = tf.nn.softmax(logits = logits)
-
-        n = sess.run(tf.argmax(softmax_output))
-
-        if n == 0:
-            return 'piano keyboard'
-        else:
-            return 'acoustic guitar'
-
-    def accuracy_on_test_data():
-        test_data = pickle.load(open('processed_data/test_data.p', 'rb'))
+		var = [v for v in tf.trainable_variables() if v.name == "pvg_model/conv1/weights:0"]
+		print(sess.run(var)[0][0][0][0][0])
 
 
-print(make_prediction('org_data/trump.jpg', is_file_path = True))
+		logits = sess.run(prediction, feed_dict={data_placeholder: data})
+		# logits = tf.squeeze(logits)
+		# logits_arr = sess.run(logits)
+
+		print('LOGITS =', logits)
+		# if abs(logits_arr[0] - logits_arr[1]) < 100:
+		# 	return 'neither'
+
+		softmax_output = tf.nn.softmax(logits = logits)
+
+		n = sess.run(tf.argmax(softmax_output))
+
+        #
+		# if n == 0:
+		# 	return 'piano keyboard'
+		# else:
+		# 	return 'acoustic guitar'
+		return 'hi'
+
+
+
+def accuracy_on_test_data():
+	test_data = pickle.load(open('processed_data/test_data.p', 'rb'))
+
+
+
+# print(make_prediction('org_data/g1.jpg', is_file_path = True))
+# quit()
+
+for _ in range(5):
+	with tf.variable_scope('', reuse = tf.AUTO_REUSE):
+			print(make_prediction('org_data/g1.jpg', is_file_path = True))

@@ -3,8 +3,6 @@ import tensorflow.contrib.slim as slim
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 from PIL import Image
-# from parse_img import resize
-from cv_stuff.parse_img import resize
 
 # tf.reset_default_graph()
 data_placeholder = tf.placeholder(shape=[1, 2], dtype=tf.float32, name = 'data_placeholder')
@@ -29,14 +27,14 @@ def predict_sum(a, b):
 	with tf.Session() as sess:
 
 		var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope = 'add_nums_model')
-		print('varlist', var_list)
+		# print('varlist', var_list)
 		saver = tf.train.Saver(var_list)
 		saver.restore(sess, 'add_nums_model/model.ckpt')
 
 		data = [a, b]
 		data = np.reshape(data, (1, 2))
 		logits = sess.run(prediction, feed_dict = {data_placeholder: data})
-		# print('logits ', logits)
+		print('logits ', logits)
 		sftmx = tf.nn.softmax(logits = tf.squeeze(logits))
 		# print(sess.run(sftmx))
 
@@ -48,4 +46,4 @@ def predict_sum(a, b):
 		return sess.run(tf.argmax(sftmx))
 
 
-# print(make_prediction(4,5))
+print(predict_sum(4,5))
