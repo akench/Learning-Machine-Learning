@@ -4,29 +4,27 @@ import numpy as np
 from random import *
 
 def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
-
+	'''
+	@param img : image to crop and resize
+	@param save_path : where to save image, if not None
+	@param crop_type : 'center' or 'random'
+	@param size : width of resized img
+	@return cropped and resized image
+	'''
 
 	if not isinstance(img, Image.Image):
 		try:
 			img = Image.open(img).convert('L')
 		except IOError:
-			print('file_path', img)
-			raise ValueError('file not found')
+			raise ValueError('file %s not found' % (img))
 
 	else:
 		img = img.convert('L')
-	#makes it a square, crops out extra parts
-	# shorter_side = min(img.size[0], img.size[1])
-	# horizontal_padding = (shorter_side-img.size[0]) // 2
-	# vertical_padding = (shorter_side-img.size[1]) // 2
-	# img = img.crop((-horizontal_padding,
-	# -vertical_padding,
-	# img.size[0] + horizontal_padding,
-	# img.size[1] + vertical_padding))
 
 
 	w = img.size[0]
 	h  = img.size[1]
+
 	#img is now horizontal, width is longer than height
 	if w < h:
 		img = img.rotate(-90, expand = True)
@@ -64,22 +62,20 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 
 	img = img.resize((size, size), PIL.Image.ANTIALIAS)
 
-	# print('resized img to %d by %d' % (img.size[0], img.size[1]))
-
 	if save_path is not None:
 		img.save(save_path)
 
 	return img
 
 
-def images_to_arrays(image_arr):
+def images_to_arrays(image_list):
 	'''
 	@param list of image objects
 	@return list of list of pixels for each image
 			each image is in each row
 	'''
 
-	ret = [np.array(img).reshape((1, 784)).squeeze() for img in image_arr]
+	ret = [np.array(img).reshape((1, img.size[0] * img.size[1])).squeeze() for img in image_list]
 	return ret
 
 
@@ -98,3 +94,39 @@ def normalize_data(data):
 	data /= sd
 
 	return data, m, sd
+
+def rand_rotate_and_crop(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
+
+	'''
+	@param list of file paths with images to process
+	@param number of random rotations per image
+	@param number of random crops per rotation
+	@return list of Pillow image objects
+		number of processed images = 2 * len(file_paths_list) * rots_per_img * crops_per_rot
+	'''
+
+	step = 0
+	processed_images = []
+
+	for path in file_paths_list:
+		img = Image.open(path)
+
+		for _ in range(rots_per_img):
+
+			rot = int(gauss(0, 1.4) * 13)
+			rotated = img.rotate(rot)
+
+			for _ in range(crops_per_rot):
+				i = resize_crop(img = rotated, crop_type='random')
+				processed_images.append(i)
+				step += 1
+
+			rotated = rotated.transpose(Image.FLIP_LEFT_RIGHT)
+			for _ in range(crops_per_rot):
+				i = resize_crop(img = rotated, crop_type='random')
+				processed_images.append(i)
+				step += 1
+
+
+		print('.',)
+	return processed_images

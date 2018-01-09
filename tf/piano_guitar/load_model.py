@@ -60,7 +60,7 @@ def make_prediction(data, is_file_path):
 
 		n = sess.run(tf.argmax(softmax_output))
 
-        #
+		#
 		# if n == 0:
 		# 	return 'piano keyboard'
 		# else:
