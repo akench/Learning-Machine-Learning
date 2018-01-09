@@ -132,8 +132,6 @@ with tf.Session() as sess:
 			save_path = saver.save(sess, "mnist_model/model.ckpt")
 			print('path saved in', save_path)
 
-			#breaking
-			break;
 
 
 		batch_xs = []

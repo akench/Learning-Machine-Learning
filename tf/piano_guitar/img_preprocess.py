@@ -30,7 +30,7 @@ def preprocess(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
                 processed_images.append(i)
                 step += 1
 
-        print('.')
+        print('.',)
     return processed_images
 
 def split_data(all_data, all_labels, perc_train = 0.72, perc_val = 0.18, perc_test = 0.1):
@@ -46,8 +46,8 @@ def split_data(all_data, all_labels, perc_train = 0.72, perc_val = 0.18, perc_te
     pickle.dump(train_labels, open('processed_data/train_labels.p', 'wb'))
 
     curr += num_train
-    val_data = all_data[curr : num_val]
-    val_labels = labels[curr : num_val]
+    val_data = all_data[curr : curr + num_val]
+    val_labels = labels[curr : curr + num_val]
     pickle.dump(val_data, open('processed_data/val_data.p', 'wb'))
     pickle.dump(val_labels, open('processed_data/val_labels.p', 'wb'))
 
@@ -61,10 +61,9 @@ def make_full_data():
 
     piano_norm = pickle.load(open('processed_data/piano_data.p', 'rb'))
     guitar_norm = pickle.load(open('processed_data/guitar_data.p', 'rb'))
-    print('piano', len(piano_norm))
-    print('guitar', len(guitar_norm))
 
     all_data = list(piano_norm) + list(guitar_norm)
+    print(len(all_data))
 
     all_labels = list(np.full(len(piano_norm), 0)) + list(np.full(len(guitar_norm), 1))
 
@@ -72,7 +71,6 @@ def make_full_data():
     all_data, all_labels = shuffle(all_data, all_labels)
 
     return all_data, all_labels
-
 
     print('Success! :)')
 
@@ -87,24 +85,24 @@ def make_data_per_class():
     piano_data = images_to_arrays(piano_imgs)
     guitar_data = images_to_arrays(guitar_imgs)
 
-    piano_norm, mean, sd = normalize_data(piano_data)
-    guitar_norm, mean, sd = normalize_data(guitar_data)
+    piano_norm, _, _ = normalize_data(piano_data)
+    guitar_norm, _, _  = normalize_data(guitar_data)
 
     pickle.dump(piano_norm, open('processed_data/piano_data.p', 'wb'))
     pickle.dump(guitar_norm, open('processed_data/guitar_data.p', 'wb'))
 
-def view_data(start = 50, end = 60):
+def view_data(start, end):
 
     data = pickle.load(open('processed_data/test_data.p', 'rb'))
-
-    print(len(data))
+    labels = pickle.load(open('processed_data/test_labels.p', 'rb'))
 
     for i in range(start, end):
         arr = np.reshape(data[i], (28, 28))
+        print('label', labels[i])
         plt.gray()
         plt.imshow(arr)
         plt.show()
 
-# data, labels = make_full_data()
-# split_data(data, labels)
-view_data()
+data, labels = make_full_data()
+split_data(data, labels)
+# view_data(start = 80, end = 85)

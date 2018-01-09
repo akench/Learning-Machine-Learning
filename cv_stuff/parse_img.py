@@ -6,12 +6,11 @@ from random import *
 def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 
 
-
 	if not isinstance(img, Image.Image):
 		try:
 			img = Image.open(img).convert('L')
 		except IOError:
-			print('file_path', file_path)
+			print('file_path', img)
 			print('File not found')
 			return None
 

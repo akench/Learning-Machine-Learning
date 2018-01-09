@@ -25,7 +25,7 @@ def CNN_model(data):
 				net = slim.flatten(net, scope='flatten3')
 				net = slim.fully_connected(net, 500, scope='fc4')
 				# net = slim.dropout(net, 0.5, scope='dropout4')
-				net = slim.fully_connected(net, 10, activation_fn=None, scope='fc5')
+				net = slim.fully_connected(net, 2, activation_fn=None, scope='fc5')
 	return net
 
 
