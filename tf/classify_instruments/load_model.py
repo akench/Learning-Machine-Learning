@@ -7,6 +7,7 @@ import PIL.ImageOps
 from PIL import Image
 
 data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32)
+label_placeholder = tf.placeholder(shape=[None], dtype = tf.int64)
 
 def model(net):
 	net = tf.reshape(net, [-1, 28, 28, 1])
@@ -78,11 +79,26 @@ def make_prediction(data, is_file_path):
 
 def accuracy_on_test_data():
 	test_data = pickle.load(open('processed_data/test_data.p', 'rb'))
+	test_labels = pickle.load(open('processed_data/test_labels.p', 'rb'))
 
+	prediction = model(data_placeholder)
+
+	correct = tf.equal(tf.argmax(prediction, 1), label_placeholder)
+	accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
+
+	with tf.Session() as sess:
+
+		saver = tf.train.Saver()
+		saver.restore(sess, 'model/model.ckpt')
+
+		acc = accuracy.eval({data_placeholder: test_data, label_placeholder: test_labels})
+
+		return acc
 
 
 # print(make_prediction('org_data/g1.jpg', is_file_path = True))
 # quit()
 
 
-print(make_prediction('org_data/guitar/fullguitar.jpg', is_file_path = True))
+# print(make_prediction('org_data/guitar/fullguitar.jpg', is_file_path = True))
+print(accuracy_on_test_data())
