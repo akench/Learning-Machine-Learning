@@ -5,6 +5,7 @@ from cv_stuff.parse_img import resize_crop, images_to_arrays
 import pickle
 import PIL.ImageOps
 from PIL import Image
+import glob
 
 data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32)
 label_placeholder = tf.placeholder(shape=[None], dtype = tf.int64)
@@ -31,11 +32,11 @@ def model(net):
 def make_prediction(data, is_file_path):
 
 	if is_file_path:
-		data = Image.open(data)
-		data = data.resize((28, 28))
-		data = data.convert('L')
+		# data = Image.open(data)
+		# data = data.resize((28, 28))
+		# data = data.convert('L')
 
-		# data = resize_crop(img = data, crop_type = 'center', size = 28)
+		data = resize_crop(img = data, crop_type = 'center', size = 28)
 		data.save('org_data/test.jpg')
 		data = images_to_arrays([data])
 
@@ -77,9 +78,9 @@ def make_prediction(data, is_file_path):
 
 
 
-def accuracy_on_test_data():
-	test_data = pickle.load(open('processed_data/test_data.p', 'rb'))
-	test_labels = pickle.load(open('processed_data/test_labels.p', 'rb'))
+def accuracy_on_test_data(test_data, test_labels):
+	# test_data = pickle.load(open('processed_data/test_data.p', 'rb'))
+	# test_labels = pickle.load(open('processed_data/test_labels.p', 'rb'))
 
 	prediction = model(data_placeholder)
 
@@ -95,10 +96,16 @@ def accuracy_on_test_data():
 
 		return acc
 
+def create_test_images(folder_name):
+	paths = glob.glob('org_data/' + folder_name + '/*.jpg')
+	imgs = []
+	for path in paths:
+		imgs.append(resize_crop(path))
+
+
 
 # print(make_prediction('org_data/g1.jpg', is_file_path = True))
 # quit()
 
 
 # print(make_prediction('org_data/guitar/fullguitar.jpg', is_file_path = True))
-print(accuracy_on_test_data())

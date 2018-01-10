@@ -73,9 +73,9 @@ def view_data(start, end):
 		plt.imshow(arr)
 		plt.show()
 
-start_time = time.time()
+# start_time = time.time()
 # make_data_per_class(class_list=['piano', 'guitar'])
-data, labels = make_full_data()
-split_data(data, labels)
+# data, labels = make_full_data()
+# split_data(data, labels)
 # view_data(start = 280, end = 290)
-print('time to make data:', time.time() - start_time)
+# print('time to make data:', time.time() - start_time)
