@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 import glob
 from random import *
 import pickle
-
+import time
 
 
 def split_data(all_data, all_labels, perc_train = 0.72, perc_val = 0.18, perc_test = 0.1):
@@ -78,6 +78,9 @@ def view_data(start, end):
 		plt.imshow(arr)
 		plt.show()
 
+# start_time = time.time()
+# make_data_per_class()
 # data, labels = make_full_data()
 # split_data(data, labels)
-view_data(start = 280, end = 290)
+# view_data(start = 280, end = 290)
+# print('time to make data:', time.time() - start_time)
