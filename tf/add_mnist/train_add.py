@@ -7,7 +7,7 @@ import time
 
 data_placeholder = tf.placeholder(shape=[None, 2], dtype = tf.float32)
 label_placeholder = tf.placeholder(shape=[None], dtype = tf.int64)
-batch_size = 10000
+batch_size = 200
 
 def Model(data):
 

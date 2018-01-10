@@ -32,22 +32,20 @@ def split_data(all_data, all_labels, perc_train = 0.72, perc_val = 0.18, perc_te
 	pickle.dump(test_data, open('processed_data/test_data.p', 'wb'))
 	pickle.dump(test_labels, open('processed_data/test_labels.p', 'wb'))
 
-def make_full_data(class_list):
+def make_full_data():
 
-	all_data = []
-	all_labels = []
+	piano_norm = pickle.load(open('processed_data/piano_data.p', 'rb'))
+	guitar_norm = pickle.load(open('processed_data/guitar_data.p', 'rb'))
+	print('piano', len(piano_norm))
+	print('guitar', len(guitar_norm))
 
-	i = 0
-	while i < len(class_list):
-		curr_class = class_list[i]
-		data = pickle.load(open('processed_data/' + curr_class + '_data.p', 'rb'))
-		all_data += list(data)
-		all_labels += list(np.full(len(data), i))
+	all_data = list(piano_norm) + list(guitar_norm)
+
+	all_labels = list(np.full(len(piano_norm), 0)) + list(np.full(len(guitar_norm), 1))
 
 	from sklearn.utils import shuffle
 	all_data, all_labels = shuffle(all_data, all_labels)
 
-	print('combined data')
 	return all_data, all_labels
 
 
@@ -77,7 +75,7 @@ def view_data(start, end):
 
 start_time = time.time()
 # make_data_per_class(class_list=['piano', 'guitar'])
-data, labels = make_full_data(class_list=['piano', 'guitar'])
+data, labels = make_full_data()
 split_data(data, labels)
-view_data(start = 280, end = 290)
+# view_data(start = 280, end = 290)
 print('time to make data:', time.time() - start_time)

@@ -85,4 +85,4 @@ def accuracy_on_test_data():
 # quit()
 
 
-print(make_prediction('org_data/guitar/IMG_20180108_142953164.jpg', is_file_path = True))
+print(make_prediction('org_data/guitar/fullguitar.jpg', is_file_path = True))
