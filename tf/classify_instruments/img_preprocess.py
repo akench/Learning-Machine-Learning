@@ -32,39 +32,34 @@ def split_data(all_data, all_labels, perc_train = 0.72, perc_val = 0.18, perc_te
 	pickle.dump(test_data, open('processed_data/test_data.p', 'wb'))
 	pickle.dump(test_labels, open('processed_data/test_labels.p', 'wb'))
 
-def make_full_data():
+def make_full_data(class_list):
 
-	piano_norm = pickle.load(open('processed_data/piano_data.p', 'rb'))
-	guitar_norm = pickle.load(open('processed_data/guitar_data.p', 'rb'))
+	all_data = []
+	all_labels = []
 
-	all_data = list(piano_norm) + list(guitar_norm)
-	print(len(all_data))
-
-	all_labels = list(np.full(len(piano_norm), 0)) + list(np.full(len(guitar_norm), 1))
+	i = 0
+	while i < len(class_list):
+		curr_class = class_list[i]
+		data = pickle.load(open('processed_data/' + curr_class + '_data.p', 'rb'))
+		all_data += list(data)
+		all_labels += list(np.full(len(data), i))
 
 	from sklearn.utils import shuffle
 	all_data, all_labels = shuffle(all_data, all_labels)
 
 	return all_data, all_labels
 
-	print('Success! :)')
 
+def make_data_per_class(class_list):
 
-def make_data_per_class():
-	piano_paths = glob.glob('org_data/piano/*.jpg')
-	guitar_paths = glob.glob('org_data/guitar/*.jpg')
+	for c in class_list:
+		paths = glob.glob('org_data/' + c + '/*.jpg')
+		imgs = rand_rotate_and_crop(paths)
+		data = images_to_arrays(imgs)
+		norm, _, _ = normalize_data(data)
 
-	piano_imgs = rand_rotate_and_crop(piano_paths)
-	guitar_imgs = rand_rotate_and_crop(guitar_paths)
+		pickle.dump(norm, open('processed_data/' + c + '_data.p', 'wb'))
 
-	piano_data = images_to_arrays(piano_imgs)
-	guitar_data = images_to_arrays(guitar_imgs)
-
-	piano_norm, _, _ = normalize_data(piano_data)
-	guitar_norm, _, _  = normalize_data(guitar_data)
-
-	pickle.dump(piano_norm, open('processed_data/piano_data.p', 'wb'))
-	pickle.dump(guitar_norm, open('processed_data/guitar_data.p', 'wb'))
 
 def view_data(start, end):
 
@@ -79,7 +74,7 @@ def view_data(start, end):
 		plt.show()
 
 # start_time = time.time()
-# make_data_per_class()
+# make_data_per_class(class_list=['piano', 'guitar'])
 # data, labels = make_full_data()
 # split_data(data, labels)
 # view_data(start = 280, end = 290)

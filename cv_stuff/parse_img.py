@@ -116,17 +116,13 @@ def rand_rotate_and_crop(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
 			rot = int(gauss(0, 1.4) * 13)
 			rotated = img.rotate(rot)
 
+			f = randint(0,1)
+			if f == 0:
+				rotated = rotated.transpose(Image.FLIP_LEFT_RIGHT)
+
 			for _ in range(crops_per_rot):
 				i = resize_crop(img = rotated, crop_type='random')
 				processed_images.append(i)
 				step += 1
 
-			rotated = rotated.transpose(Image.FLIP_LEFT_RIGHT)
-			for _ in range(crops_per_rot):
-				i = resize_crop(img = rotated, crop_type='random')
-				processed_images.append(i)
-				step += 1
-
-
-		print('.',)
 	return processed_images

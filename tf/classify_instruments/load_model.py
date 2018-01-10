@@ -3,6 +3,8 @@ import tensorflow.contrib.slim as slim
 import numpy as np
 from cv_stuff.parse_img import resize_crop, images_to_arrays
 import pickle
+import PIL.ImageOps
+from PIL import Image
 
 data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32)
 
@@ -28,7 +30,12 @@ def model(net):
 def make_prediction(data, is_file_path):
 
 	if is_file_path:
-		data = resize_crop(img = data, crop_type = 'center', size = 28, save_path = 'org_data/testtest.jpg')
+		data = Image.open(data)
+		data = data.resize((28, 28))
+		data = data.convert('L')
+
+		# data = resize_crop(img = data, crop_type = 'center', size = 28)
+		data.save('org_data/test.jpg')
 		data = images_to_arrays([data])
 
 	prediction = model(data_placeholder)
@@ -49,22 +56,22 @@ def make_prediction(data, is_file_path):
 
 
 		logits = sess.run(prediction, feed_dict={data_placeholder: data})
-		# logits = tf.squeeze(logits)
-		# logits_arr = sess.run(logits)
+		logits = tf.squeeze(logits)
+		logits_arr = sess.run(logits)
 
-		print('LOGITS =', logits)
+		print('LOGITS =', logits_arr)
 		# if abs(logits_arr[0] - logits_arr[1]) < 100:
 		# 	return 'neither'
 
-		softmax_output = tf.nn.softmax(logits = logits)
+		softmax_output = tf.nn.softmax(logits = logits_arr)
 
 		n = sess.run(tf.argmax(softmax_output))
 
 		#
-		# if n == 0:
-		# 	return 'piano keyboard'
-		# else:
-		# 	return 'acoustic guitar'
+		if n == 0:
+			return 'piano keyboard'
+		else:
+			return 'acoustic guitar'
 		return 'hi'
 
 
@@ -77,6 +84,5 @@ def accuracy_on_test_data():
 # print(make_prediction('org_data/g1.jpg', is_file_path = True))
 # quit()
 
-for _ in range(5):
-	with tf.variable_scope('', reuse = tf.AUTO_REUSE):
-			print(make_prediction('org_data/g1.jpg', is_file_path = True))
+
+print(make_prediction('org_data/guitar/IMG_20180108_142953164.jpg', is_file_path = True))
