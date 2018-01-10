@@ -96,16 +96,15 @@ def accuracy_on_test_data(test_data, test_labels):
 
 		return acc
 
-def create_test_images(folder_name):
+def create_test_data_and_labels(folder_name, label):
 	paths = glob.glob('org_data/' + folder_name + '/*.jpg')
 	imgs = []
 	for path in paths:
 		imgs.append(resize_crop(path))
 
+	data = images_to_arrays(imgs)
 
+	pickle.dump(data, open('processed_data/' + folder_name + '_data.p', 'wb'))
 
-# print(make_prediction('org_data/g1.jpg', is_file_path = True))
-# quit()
-
-
-# print(make_prediction('org_data/guitar/fullguitar.jpg', is_file_path = True))
+	labels = np.full(len(data), label)
+	pickle.dump(labels, open('processed_data/' + folder_name + '_labels.p', 'wb'))
