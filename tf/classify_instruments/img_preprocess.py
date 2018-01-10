@@ -47,6 +47,7 @@ def make_full_data(class_list):
 	from sklearn.utils import shuffle
 	all_data, all_labels = shuffle(all_data, all_labels)
 
+	print('combined data')
 	return all_data, all_labels
 
 
@@ -59,6 +60,7 @@ def make_data_per_class(class_list):
 		norm, _, _ = normalize_data(data)
 
 		pickle.dump(norm, open('processed_data/' + c + '_data.p', 'wb'))
+		print('made data for class', c)
 
 
 def view_data(start, end):
@@ -73,9 +75,9 @@ def view_data(start, end):
 		plt.imshow(arr)
 		plt.show()
 
-# start_time = time.time()
+start_time = time.time()
 # make_data_per_class(class_list=['piano', 'guitar'])
-# data, labels = make_full_data()
-# split_data(data, labels)
-# view_data(start = 280, end = 290)
-# print('time to make data:', time.time() - start_time)
+data, labels = make_full_data(class_list=['piano', 'guitar'])
+split_data(data, labels)
+view_data(start = 280, end = 290)
+print('time to make data:', time.time() - start_time)
