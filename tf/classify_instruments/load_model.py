@@ -6,6 +6,7 @@ import pickle
 import PIL.ImageOps
 from PIL import Image
 import glob
+from matplotlib import pyplot as plt
 
 data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32)
 label_placeholder = tf.placeholder(shape=[None], dtype = tf.int64)
@@ -108,3 +109,14 @@ def create_test_data_and_labels(folder_name, label):
 
 	labels = np.full(len(data), label)
 	pickle.dump(labels, open('processed_data/' + folder_name + '_labels.p', 'wb'))
+
+
+
+p = pickle.load(open('processed_data/test_data.p', 'rb'))
+
+x = p[60]
+
+arr = np.reshape(x, (28, 28))
+plt.gray()
+plt.imshow(arr)
+plt.show()
