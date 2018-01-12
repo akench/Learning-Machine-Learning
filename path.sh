@@ -1,1 +1,1 @@
-export PYTHONPATH=$PYTHONPATH:$(find $HOME -name myML 2>/dev/null)
+export PYTHONPATH=$PYTHONPATH:$(find $HOME -name Learning-Machine-Learning 2>/dev/null)

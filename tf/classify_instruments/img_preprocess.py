@@ -77,5 +77,5 @@ def view_data(start, end):
 # make_data_per_class(class_list=['piano', 'guitar'])
 # data, labels = make_full_data()
 # split_data(data, labels)
-# view_data(start = 280, end = 290)
+view_data(start = 123, end = 133)
 # print('time to make data:', time.time() - start_time)

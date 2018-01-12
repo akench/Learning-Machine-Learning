@@ -10,7 +10,6 @@
         android:id="@+id/tfRes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -37,12 +36,21 @@
 
     <ImageView
         android:id="@+id/image_view"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
         android:src="@android:color/background_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/reset_btn"
+        android:layout_width="76dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="152dp"
+        android:src="@android:drawable/ic_notification_clear_all"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_class" />
 
 </android.support.constraint.ConstraintLayout>
