@@ -9,31 +9,27 @@ from sklearn.utils import shuffle
 import os
 import os.path as path
 
+
+MODEL_NAME = 'pvg_model'
 data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32, name='input')
 labels_placeholder = tf.placeholder(shape = [None], dtype = tf.int64)
-keep_prob_placeholder = tf.placeholder(dtype = tf.float32, name='keep_prob')
+keep_prob_placeholder = tf.placeholder(shape = (), dtype = tf.float32, name='keep_prob')
 
 def model(net, keep_prob):
 	net = tf.reshape(net, [-1, 28, 28, 1])
 
-	if keep_prob == 1.0:
-		is_training = False
-	else:
-		is_training = True
-
-
-	with tf.variable_scope('pvg_model'):
+	with tf.variable_scope(MODEL_NAME):
 		with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
 			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
-				net = slim.conv2d(net, 20, [5,5], scope='conv1')
+				net = slim.conv2d(net, 20, [5,5], activation_fn = tf.nn.leaky_relu, scope='conv1')
 				net = slim.max_pool2d(net, [2,2], scope='pool1')
-				net = slim.conv2d(net, 50, [5,5], scope='conv2')
+				net = slim.conv2d(net, 50, [5,5], activation_fn = tf.nn.leaky_relu, scope='conv2')
 				net = slim.max_pool2d(net, [2,2], scope='pool2')
-				net = slim.conv2d(net, 50, [5,5], scope='conv3')
+				net = slim.conv2d(net, 50, [5,5], activation_fn = tf.nn.leaky_relu, scope='conv3')
 				net = slim.max_pool2d(net, [2,2], scope='pool3')
 				net = slim.flatten(net, scope='flatten4')
-				net = slim.fully_connected(net, 500, activation_fn = tf.nn.relu, scope='fc5')
-				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout5', is_training = is_training)
+				net = slim.fully_connected(net, 500, activation_fn = tf.nn.leaky_relu, scope='fc5')
+				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout6')
 				net = slim.fully_connected(net, 2, activation_fn=None, scope='fc6')
 	outputs = tf.nn.softmax(net, name='output')
 	return net
@@ -63,7 +59,7 @@ def train():
 		init = tf.global_variables_initializer()
 		init.run()
 
-		tf.train.write_graph(sess.graph_def, 'out', 'pvg_model.pbtxt', True)
+		tf.train.write_graph(sess.graph_def, 'out', MODEL_NAME + '.pbtxt', True)
 
 		curr_epoch = 1
 		num_epochs = 5
@@ -90,42 +86,44 @@ def train():
 					img_num = 0
 					images_train, labels_train = shuffle(images_train, labels_train)
 
-			sess.run(train_step, feed_dict = {data_placeholder: img_batch, 
+			sess.run(train_step, feed_dict = {data_placeholder: img_batch,
 												labels_placeholder: labels_batch,
 												keep_prob_placeholder: 0.5})
-			
-			print('Current Accuracy:', accuracy.eval({data_placeholder: img_batch, 
+
+			print('Current Accuracy:', accuracy.eval({data_placeholder: img_batch,
 										labels_placeholder: labels_batch,
 										keep_prob_placeholder: 1.0}))
 
 
 
 
-		print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: images_val, 
+		print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: images_val,
 													labels_placeholder: labels_val,
 													keep_prob_placeholder: 1.0}))
 		print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - start_time)))
 
-		save_path = saver.save(sess, "out/pvg_model.chkp")
+		save_path = saver.save(sess, 'out/' + MODEL_NAME + '.chkp')
 		print("path saved in", save_path)
 
 
 
 def export_model(input_node_names, output_node_name):
-	freeze_graph.freeze_graph('out/pvg_model.pbtxt', None, False,
-		'out/pvg_model.chkp', output_node_name, "save/restore_all",
-		"save/Const:0", 'out/frozen_pvg_model.pb', True, "")
+    freeze_graph.freeze_graph('out/' + MODEL_NAME + '.pbtxt', None, False,
+        'out/' + MODEL_NAME + '.chkp', output_node_name, "save/restore_all",
+        "save/Const:0", 'out/frozen_' + MODEL_NAME + '.pb', True, "")
 
-	input_graph_def = tf.GraphDef()
-	with tf.gfile.Open('out/frozen_pvg_model.pb', "rb") as f:
-		input_graph_def.ParseFromString(f.read())
+    input_graph_def = tf.GraphDef()
+    with tf.gfile.Open('out/frozen_' + MODEL_NAME + '.pb', "rb") as f:
+        input_graph_def.ParseFromString(f.read())
 
-	output_graph_def = optimize_for_inference_lib.optimize_for_inference(
-			input_graph_def, input_node_names, [output_node_name],
-			tf.float32.as_datatype_enum)
+    output_graph_def = optimize_for_inference_lib.optimize_for_inference(
+            input_graph_def, input_node_names, [output_node_name],
+            tf.float32.as_datatype_enum)
 
-	with tf.gfile.FastGFile('out/opt_pvg_model.pb', "wb") as f:
-		f.write(output_graph_def.SerializeToString())
+    with tf.gfile.FastGFile('out/opt_' + MODEL_NAME + '.pb', "wb") as f:
+        f.write(output_graph_def.SerializeToString())
+
+    print("graph saved!")
 
 
 

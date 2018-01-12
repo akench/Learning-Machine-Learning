@@ -25,38 +25,66 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 	w = img.size[0]
 	h  = img.size[1]
 
-	#img is now horizontal, width is longer than height
-	if w < h:
-		img = img.rotate(-90, expand = True)
-		w, h = h, w
+	center_w = w // 2
+	center_h = h // 2
 
-	if crop_type == 'center':
-		center_w = w // 2
-		center_h = h // 2
+	#if pix is horizontal
+	if w > h:
 
-		img = img.crop(
-			(
-				center_w - h // 2,
-				0,
-				center_w + h // 2,
-				h
+		if crop_type == 'center':
+
+			img = img.crop(
+				(
+					center_w - h // 2,
+					0,
+					center_w + h // 2,
+					h
+				)
 			)
-		)
-	elif crop_type == 'random':
+		elif crop_type == 'random':
 
-		start_width  = randint(0, w - h)
-		img = img.crop(
-			(
-				start_width,
-				0,
-				start_width + h,
-				h
+			start_width  = randint(w//8, w - h)
+			img = img.crop(
+				(
+					start_width,
+					0,
+					start_width + h,
+					h
+				)
 			)
-		)
-	elif crop_type is None:
-		pass
-	else:
-		raise ValueError("Invalid crop type")
+		elif crop_type is None:
+			pass
+		else:
+			raise ValueError("Invalid crop type")
+
+
+	#img is vertical
+	elif w < h:
+		if crop_type == 'center':
+
+			img = img.crop(
+				(
+					0,
+					center_h - w / 2,
+					w,
+					center_h + w / 2
+				)
+			)
+		elif crop_type == 'random':
+
+			start_height  = randint(h // 8, h - w)
+			img = img.crop(
+				(
+					0,
+					start_height,
+					w,
+					start_height + w
+				)
+			)
+		elif crop_type is None:
+			pass
+		else:
+			raise ValueError("Invalid crop type")
 
 
 
@@ -66,6 +94,7 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 		img.save(save_path)
 
 	return img
+
 
 
 def images_to_arrays(image_list):

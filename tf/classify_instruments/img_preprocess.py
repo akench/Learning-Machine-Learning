@@ -52,7 +52,7 @@ def make_full_data():
 def make_data_per_class(class_list):
 
 	for c in class_list:
-		paths = glob.glob('org_data/' + c + '/*.jpg')
+		paths = glob.glob('org_data/' + c + '/*')
 		imgs = rand_rotate_and_crop(paths)
 		data = images_to_arrays(imgs)
 		norm, _, _ = normalize_data(data)
@@ -73,9 +73,9 @@ def view_data(start, end):
 		plt.imshow(arr)
 		plt.show()
 
-# start_time = time.time()
-# make_data_per_class(class_list=['piano', 'guitar'])
-# data, labels = make_full_data()
-# split_data(data, labels)
+start_time = time.time()
+make_data_per_class(class_list=['piano', 'guitar'])
+data, labels = make_full_data()
+split_data(data, labels)
 view_data(start = 123, end = 133)
-# print('time to make data:', time.time() - start_time)
+print('time to make data:', time.time() - start_time)
