@@ -65,9 +65,9 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 			img = img.crop(
 				(
 					0,
-					center_h - w / 2,
+					center_h - w // 2,
 					w,
-					center_h + w / 2
+					center_h + w // 2
 				)
 			)
 		elif crop_type == 'random':
@@ -85,7 +85,6 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 			pass
 		else:
 			raise ValueError("Invalid crop type")
-
 
 
 	img = img.resize((size, size), PIL.Image.ANTIALIAS)

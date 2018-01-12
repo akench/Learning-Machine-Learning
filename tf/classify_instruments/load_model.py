@@ -1,12 +1,13 @@
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
 import numpy as np
-from cv_stuff.parse_img import resize_crop, images_to_arrays
+from cv_stuff.parse_img import resize_crop, images_to_arrays, normalize_data
 import pickle
 import PIL.ImageOps
 from PIL import Image
 import glob
 from matplotlib import pyplot as plt
+from random import *
 
 data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32)
 label_placeholder = tf.placeholder(shape=[None], dtype = tf.int64)
@@ -80,8 +81,6 @@ def make_prediction(data, is_file_path):
 
 
 def accuracy_on_test_data(test_data, test_labels):
-	# test_data = pickle.load(open('processed_data/test_data.p', 'rb'))
-	# test_labels = pickle.load(open('processed_data/test_labels.p', 'rb'))
 
 	prediction = model(data_placeholder)
 
@@ -91,14 +90,14 @@ def accuracy_on_test_data(test_data, test_labels):
 	with tf.Session() as sess:
 
 		saver = tf.train.Saver()
-		saver.restore(sess, 'model/model.ckpt')
+		saver.restore(sess, 'out/pvg_model.chkp')
 
 		acc = accuracy.eval({data_placeholder: test_data, label_placeholder: test_labels})
 
 		return acc
 
 def create_test_data_and_labels(folder_name, label):
-	paths = glob.glob('org_data/' + folder_name + '/*.jpg')
+	paths = glob.glob('org_data/' + folder_name + '/*')
 	imgs = []
 	for path in paths:
 		imgs.append(resize_crop(path))
@@ -111,12 +110,16 @@ def create_test_data_and_labels(folder_name, label):
 	pickle.dump(labels, open('processed_data/' + folder_name + '_labels.p', 'wb'))
 
 
-
-p = pickle.load(open('processed_data/test_data.p', 'rb'))
-
-x = p[60]
-
-arr = np.reshape(x, (28, 28))
-plt.gray()
-plt.imshow(arr)
-plt.show()
+# create_test_data_and_labels('my_test', 0)
+# p = pickle.load(open('processed_data/my_test_data.p', 'rb'))
+# l = pickle.load(open('processed_data/my_test_labels.p', 'rb'))
+# arr = np.reshape(p[1], (28, 28))
+# plt.gray()
+# plt.imshow(arr)
+# plt.show()
+# p,_,_ = normalize_data(p)
+# print(accuracy_on_test_data(p, l))
+# arr = np.reshape(p[1], (28, 28))
+# plt.gray()
+# plt.imshow(arr)
+# plt.show()

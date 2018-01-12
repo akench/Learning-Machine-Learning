@@ -1,4 +1,4 @@
-from cv_stuff.parse_img import resize_crop, images_to_arrays, normalize_data, rand_rotate_and_crop
+from cv_stuff.parse_img import resize_crop, images_to_arrays, rand_rotate_and_crop
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
@@ -55,16 +55,15 @@ def make_data_per_class(class_list):
 		paths = glob.glob('org_data/' + c + '/*')
 		imgs = rand_rotate_and_crop(paths)
 		data = images_to_arrays(imgs)
-		norm, _, _ = normalize_data(data)
 
-		pickle.dump(norm, open('processed_data/' + c + '_data.p', 'wb'))
+		pickle.dump(data, open('processed_data/' + c + '_data.p', 'wb'))
 		print('made data for class', c)
 
 
 def view_data(start, end):
 
-	data = pickle.load(open('processed_data/test_data.p', 'rb'))
-	labels = pickle.load(open('processed_data/test_labels.p', 'rb'))
+	data = pickle.load(open('processed_data/train_data.p', 'rb'))
+	labels = pickle.load(open('processed_data/train_labels.p', 'rb'))
 	print(len(data))
 	for i in range(start, end):
 		arr = np.reshape(data[i], (28, 28))
