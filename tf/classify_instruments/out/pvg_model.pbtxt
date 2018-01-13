@@ -2588,9 +2588,246 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc5/Relu"
-  op: "Relu"
+  name: "pvg_model/fc5/Sigmoid"
+  op: "Sigmoid"
   input: "pvg_model/fc5/BiasAdd"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/sub/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/sub"
+  op: "Sub"
+  input: "pvg_model/dropout6/sub/x"
+  input: "keep_prob"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/sub_1/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/sub_1"
+  op: "Sub"
+  input: "pvg_model/dropout6/sub_1/x"
+  input: "pvg_model/dropout6/sub"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/Shape"
+  op: "Shape"
+  input: "pvg_model/fc5/Sigmoid"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/random_uniform/min"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/random_uniform/max"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/random_uniform/RandomUniform"
+  op: "RandomUniform"
+  input: "pvg_model/dropout6/dropout/Shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "seed"
+    value {
+      i: 0
+    }
+  }
+  attr {
+    key: "seed2"
+    value {
+      i: 0
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/random_uniform/sub"
+  op: "Sub"
+  input: "pvg_model/dropout6/dropout/random_uniform/max"
+  input: "pvg_model/dropout6/dropout/random_uniform/min"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/random_uniform/mul"
+  op: "Mul"
+  input: "pvg_model/dropout6/dropout/random_uniform/RandomUniform"
+  input: "pvg_model/dropout6/dropout/random_uniform/sub"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/random_uniform"
+  op: "Add"
+  input: "pvg_model/dropout6/dropout/random_uniform/mul"
+  input: "pvg_model/dropout6/dropout/random_uniform/min"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/add"
+  op: "Add"
+  input: "pvg_model/dropout6/sub_1"
+  input: "pvg_model/dropout6/dropout/random_uniform"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/Floor"
+  op: "Floor"
+  input: "pvg_model/dropout6/dropout/add"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/div"
+  op: "RealDiv"
+  input: "pvg_model/fc5/Sigmoid"
+  input: "pvg_model/dropout6/sub_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/dropout6/dropout/mul"
+  op: "Mul"
+  input: "pvg_model/dropout6/dropout/div"
+  input: "pvg_model/dropout6/dropout/Floor"
   attr {
     key: "T"
     value {
@@ -3053,7 +3290,7 @@ node {
 node {
   name: "pvg_model/fc6/MatMul"
   op: "MatMul"
-  input: "pvg_model/fc5/Relu"
+  input: "pvg_model/dropout6/dropout/mul"
   input: "pvg_model/fc6/weights/read"
   attr {
     key: "T"
@@ -3752,7 +3989,7 @@ node {
 node {
   name: "gradients/pvg_model/fc6/MatMul_grad/MatMul_1"
   op: "MatMul"
-  input: "pvg_model/fc5/Relu"
+  input: "pvg_model/dropout6/dropout/mul"
   input: "gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -3820,10 +4057,450 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/fc5/Relu_grad/ReluGrad"
-  op: "ReluGrad"
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape"
+  op: "Shape"
+  input: "pvg_model/dropout6/dropout/div"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape_1"
+  op: "Shape"
+  input: "pvg_model/dropout6/dropout/Floor"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs"
+  op: "BroadcastGradientArgs"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/mul"
+  op: "Mul"
   input: "gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
-  input: "pvg_model/fc5/Relu"
+  input: "pvg_model/dropout6/dropout/Floor"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Sum"
+  op: "Sum"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/mul"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
+  op: "Reshape"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Sum"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/mul_1"
+  op: "Mul"
+  input: "pvg_model/dropout6/dropout/div"
+  input: "gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Sum_1"
+  op: "Sum"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/mul_1"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
+  op: "Reshape"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Sum_1"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
+  input: "^gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
+  input: "^gradients/pvg_model/dropout6/dropout/mul_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
+  input: "^gradients/pvg_model/dropout6/dropout/mul_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/Shape"
+  op: "Shape"
+  input: "pvg_model/fc5/Sigmoid"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/Shape_1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/BroadcastGradientArgs"
+  op: "BroadcastGradientArgs"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/Shape"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv"
+  op: "RealDiv"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency"
+  input: "pvg_model/dropout6/sub_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/Sum"
+  op: "Sum"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/BroadcastGradientArgs"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
+  op: "Reshape"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/Sum"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/Shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/Neg"
+  op: "Neg"
+  input: "pvg_model/fc5/Sigmoid"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_1"
+  op: "RealDiv"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/Neg"
+  input: "pvg_model/dropout6/sub_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_2"
+  op: "RealDiv"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_1"
+  input: "pvg_model/dropout6/sub_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/mul"
+  op: "Mul"
+  input: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/Sum_1"
+  op: "Sum"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/mul"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/BroadcastGradientArgs:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
+  op: "Reshape"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/Sum_1"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
+  input: "^gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
+  input: "^gradients/pvg_model/dropout6/dropout/div_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/dropout6/dropout/div_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
+  input: "^gradients/pvg_model/dropout6/dropout/div_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
+      }
+    }
+  }
+}
+node {
+  name: "gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
+  op: "SigmoidGrad"
+  input: "pvg_model/fc5/Sigmoid"
+  input: "gradients/pvg_model/dropout6/dropout/div_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -3834,7 +4511,7 @@ node {
 node {
   name: "gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/pvg_model/fc5/Relu_grad/ReluGrad"
+  input: "gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
   attr {
     key: "T"
     value {
@@ -3851,13 +4528,13 @@ node {
 node {
   name: "gradients/pvg_model/fc5/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/fc5/Relu_grad/ReluGrad"
+  input: "^gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
   input: "^gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
 }
 node {
   name: "gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/fc5/Relu_grad/ReluGrad"
+  input: "gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
   input: "^gradients/pvg_model/fc5/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
@@ -3869,7 +4546,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/fc5/Relu_grad/ReluGrad"
+        s: "loc:@gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
       }
     }
   }

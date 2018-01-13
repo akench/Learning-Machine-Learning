@@ -204,7 +204,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			try {
                 mean = getPopMean(getAssets(), "popMean.txt");
                 std = getPopStd(getAssets(), "popSTD.txt");
-                pixels = normalizeImage(pixels, mean, std);
+//                pixels = normalizeImage(pixels, mean, std);
             } catch(Exception e){
 			    e.printStackTrace();
             }

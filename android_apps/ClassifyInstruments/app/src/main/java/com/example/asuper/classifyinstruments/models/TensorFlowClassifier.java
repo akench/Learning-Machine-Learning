@@ -92,7 +92,7 @@ public class TensorFlowClassifier implements Classifier {
 
         tfHelper.feed(inputName, pixels, 1, inputSize, inputSize, 1);
 
-//        tfHelper.feed("keep_prob", new float[] { 1 });
+        tfHelper.feed("keep_prob", new float[] { 1 });
 
         tfHelper.run(outputNames);
 

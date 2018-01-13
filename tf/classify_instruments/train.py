@@ -18,9 +18,7 @@ keep_prob_placeholder = tf.placeholder(shape = (), dtype = tf.float32, name='kee
 
 
 
-
-
-def model(net):
+def model(net, keep_prob):
 	net = tf.reshape(net, [-1, 28, 28, 1])
 
 	with tf.variable_scope(MODEL_NAME):
@@ -33,8 +31,8 @@ def model(net):
 				net = slim.conv2d(net, 50, [5,5], scope='conv3')
 				net = slim.max_pool2d(net, [2,2], scope='pool3')
 				net = slim.flatten(net, scope='flatten4')
-				net = slim.fully_connected(net, 500, activation_fn = tf.nn.relu, scope='fc5')
-				# net = slim.dropout(net, keep_prob = keep_prob, scope='dropout6')
+				net = slim.fully_connected(net, 500, activation_fn = tf.nn.sigmoid, scope='fc5')
+				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout6')
 				net = slim.fully_connected(net, 2, activation_fn=None, scope='fc6')
 	outputs = tf.nn.softmax(net, name='output')
 	return net
@@ -50,8 +48,11 @@ def train():
 	images_val = list(pickle.load(open('processed_data/val_data.p', 'rb')))
 	labels_val = list(pickle.load(open('processed_data/val_labels.p', 'rb')))
 
-	# prediction = model(data_placeholder, keep_prob_placeholder)
-	prediction =model(data_placeholder)
+
+	# images_train,_, _ = normalize_data(images_train)
+
+
+	prediction = model(data_placeholder, keep_prob_placeholder)
 
 	total_loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
 			logits = prediction, labels = labels_placeholder))
@@ -101,16 +102,22 @@ def train():
 			img_batch, _, _ = normalize_data(img_batch)
 
 			sess.run(train_step, feed_dict = {data_placeholder: img_batch,
-												labels_placeholder: labels_batch})
-
-			print('Current Accuracy:', accuracy.eval({data_placeholder: img_batch,
-										labels_placeholder: labels_batch}))
-
+												labels_placeholder: labels_batch,
+												keep_prob_placeholder: 0.5})
 
 
 		images_val, _, _ = normalize_data(images_val)
 		print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: images_val,
-													labels_placeholder: labels_val}))
+													labels_placeholder: labels_val,
+													keep_prob_placeholder: 1.0}))
+
+		a=pickle.load(open('processed_data/train_data.p', 'rb'))
+		a,_,_ = normalize_data(a)
+		b = pickle.load(open('processed_data/train_labels.p', 'rb'))
+		print('\n\ntrain Accuracy:',accuracy.eval({data_placeholder: a,
+													labels_placeholder: b,
+													keep_prob_placeholder: 1.0}))
+
 		print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - start_time)))
 
 		save_path = saver.save(sess, 'out/' + MODEL_NAME + '.chkp')
@@ -158,8 +165,7 @@ def main():
 
 	train()
 
-	export_model([input_node_name], output_node_name)
-	# export_model([input_node_name, keep_prob_name], output_node_name)
+	export_model([input_node_name, keep_prob_name], output_node_name)
 
 if __name__ == '__main__':
 	main()

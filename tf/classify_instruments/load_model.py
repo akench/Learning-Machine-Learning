@@ -11,8 +11,9 @@ from random import *
 
 data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32)
 label_placeholder = tf.placeholder(shape=[None], dtype = tf.int64)
+keep_prob_placeholder = tf.placeholder(shape = (), dtype = tf.float32, name='keep_prob')
 
-def model(net):
+def model(net, keep_prob):
 	net = tf.reshape(net, [-1, 28, 28, 1])
 
 	with tf.variable_scope('pvg_model'):
@@ -26,7 +27,7 @@ def model(net):
 				net = slim.max_pool2d(net, [2,2], scope='pool3')
 				net = slim.flatten(net, scope='flatten4')
 				net = slim.fully_connected(net, 500, activation_fn = tf.nn.relu, scope='fc5')
-				net = slim.dropout(net, 0.5, scope='dropout5')
+				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout5')
 				net = slim.fully_connected(net, 2, activation_fn=None, scope='fc6')
 	return net
 
@@ -42,24 +43,24 @@ def make_prediction(data, is_file_path):
 		data.save('org_data/test.jpg')
 		data = images_to_arrays([data])
 
-	prediction = model(data_placeholder)
+		d = pickle.load(open('processed_data/train_data.p', 'rb'))
+		_, m, std = normalize_data(d)
+
+		data -= m
+		data /= std
+
+	prediction = model(data_placeholder, keep_prob_placeholder)
 
 	with tf.Session() as sess:
 
-		# init = tf.global_variables_initializer()
-		# init.run()
-		# var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope = 'pvg_model')
-		# # print(var_list)
-		# saver = tf.train.Saver(var_list)
-
 		saver = tf.train.Saver()
-		saver.restore(sess, 'model/model.ckpt')
+		saver.restore(sess, 'out/pvg_model.chkp')
 
-		var = [v for v in tf.trainable_variables() if v.name == "pvg_model/conv1/weights:0"]
-		print(sess.run(var)[0][0][0][0][0])
+		# var = [v for v in tf.trainable_variables() if v.name == "pvg_model/conv1/weights:0"]
+		# print(sess.run(var)[0][0][0][0][0])
 
 
-		logits = sess.run(prediction, feed_dict={data_placeholder: data})
+		logits = sess.run(prediction, feed_dict={data_placeholder: data, keep_prob_placeholder: 1.0})
 		logits = tf.squeeze(logits)
 		logits_arr = sess.run(logits)
 
@@ -82,7 +83,7 @@ def make_prediction(data, is_file_path):
 
 def accuracy_on_test_data(test_data, test_labels):
 
-	prediction = model(data_placeholder)
+	prediction = model(data_placeholder, keep_prob_placeholder)
 
 	correct = tf.equal(tf.argmax(prediction, 1), label_placeholder)
 	accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
@@ -92,7 +93,8 @@ def accuracy_on_test_data(test_data, test_labels):
 		saver = tf.train.Saver()
 		saver.restore(sess, 'out/pvg_model.chkp')
 
-		acc = accuracy.eval({data_placeholder: test_data, label_placeholder: test_labels})
+		acc = accuracy.eval({data_placeholder: test_data, label_placeholder: test_labels,
+							keep_prob_placeholder: 1.0})
 
 		return acc
 
@@ -109,17 +111,8 @@ def create_test_data_and_labels(folder_name, label):
 	labels = np.full(len(data), label)
 	pickle.dump(labels, open('processed_data/' + folder_name + '_labels.p', 'wb'))
 
-
-# create_test_data_and_labels('my_test', 0)
-# p = pickle.load(open('processed_data/my_test_data.p', 'rb'))
-# l = pickle.load(open('processed_data/my_test_labels.p', 'rb'))
-# arr = np.reshape(p[1], (28, 28))
-# plt.gray()
-# plt.imshow(arr)
-# plt.show()
-# p,_,_ = normalize_data(p)
-# print(accuracy_on_test_data(p, l))
-# arr = np.reshape(p[1], (28, 28))
-# plt.gray()
-# plt.imshow(arr)
-# plt.show()
+create_test_data_and_labels('my_test', 0)
+i = pickle.load(open('processed_data/my_test_data.p', 'rb'))
+l = pickle.load(open('processed_data/my_test_labels.p', 'rb'))
+i, _, _ = normalize_data(i)
+print(accuracy_on_test_data(i, l))

@@ -62,8 +62,8 @@ def make_data_per_class(class_list):
 
 def view_data(start, end):
 
-	data = pickle.load(open('processed_data/train_data.p', 'rb'))
-	labels = pickle.load(open('processed_data/train_labels.p', 'rb'))
+	data = pickle.load(open('processed_data/val_data.p', 'rb'))
+	labels = pickle.load(open('processed_data/val_labels.p', 'rb'))
 	print(len(data))
 	for i in range(start, end):
 		arr = np.reshape(data[i], (28, 28))
