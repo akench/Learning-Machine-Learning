@@ -28,7 +28,7 @@ def model(net, keep_prob):
 				net = slim.max_pool2d(net, [2,2], scope='pool1')
 				net = slim.conv2d(net, 50, [5,5], scope='conv2')
 				net = slim.max_pool2d(net, [2,2], scope='pool2')
-				net = slim.conv2d(net, 50, [5,5], scope='conv3')
+				net = slim.conv2d(net, 100, [5,5], scope='conv3')
 				net = slim.max_pool2d(net, [2,2], scope='pool3')
 				net = slim.flatten(net, scope='flatten4')
 				net = slim.fully_connected(net, 500, activation_fn = tf.nn.sigmoid, scope='fc5')
@@ -147,9 +147,12 @@ def export_model(input_node_names, output_node_name):
 	mean = mean.flatten()
 	std = std.flatten()
 	with open('popMean.txt', 'w') as f:
-		f.write(str(mean))
+		for m in mean:
+			f.write(str(m) + "\n")
+
 	with open('popSTD.txt', 'w') as f:
-		f.write(str(std))
+		for s in std:
+			f.write(str(s) + "\n")
 
 	print("graph saved!")
 

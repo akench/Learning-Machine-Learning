@@ -1,4 +1,4 @@
-from cv_stuff.parse_img import resize_crop, images_to_arrays, rand_rotate_and_crop
+from cv_stuff.parse_img import resize_crop, images_to_arrays, rand_rotate_and_crop, normalize_data
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
@@ -71,6 +71,7 @@ def view_data(start, end):
 		plt.gray()
 		plt.imshow(arr)
 		plt.show()
+
 
 # start_time = time.time()
 # make_data_per_class(class_list=['piano', 'guitar'])
