@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ClassifyInstruments.iml" filepath="$PROJECT_DIR$/ClassifyInstruments.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ClassifyInstruments.iml" filepath="$PROJECT_DIR$/ClassifyInstruments.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tensorflow/tensorflow.iml" filepath="$PROJECT_DIR$/tensorflow/tensorflow.iml" />
       <module fileurl="file://$PROJECT_DIR$/tensorflow/tensorflow.iml" filepath="$PROJECT_DIR$/tensorflow/tensorflow.iml" />
     </modules>
   </component>

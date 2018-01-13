@@ -139,8 +139,9 @@ def export_model(input_node_names, output_node_name):
 	_, mean, std = normalize_data(images_train)
 	mean = mean.flatten()
 	std = std.flatten()
-	with open('stats.txt', 'w') as f:
+	with open('popMean.txt', 'w') as f:
 		f.write(str(mean))
+	with open('popSTD.txt', 'w') as f:
 		f.write(str(std))
 
 	print("graph saved!")

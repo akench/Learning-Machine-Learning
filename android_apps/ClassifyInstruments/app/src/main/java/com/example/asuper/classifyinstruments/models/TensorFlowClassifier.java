@@ -14,7 +14,6 @@ import java.util.List;
 import android.content.res.AssetManager;
 import android.util.Log;
 import java.io.BufferedReader;
-//for erros
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
 public class TensorFlowClassifier implements Classifier {
 
-    private static final float THRESHOLD = 0.1f;
+    private static final float THRESHOLD = 0.5f;
 
     private TensorFlowInferenceInterface tfHelper;
 
@@ -60,27 +59,27 @@ public class TensorFlowClassifier implements Classifier {
                                               String modelPath, String labelFile,
                                               int inputSize, String inputName, String outputName)
                                                 throws IOException {
-        TensorFlowClassifier c = new TensorFlowClassifier();
+        TensorFlowClassifier classifier = new TensorFlowClassifier();
 
-        c.name = name;
+        classifier.name = name;
 
-        c.inputName = inputName;
-        c.outputName = outputName;
+        classifier.inputName = inputName;
+        classifier.outputName = outputName;
 
-        c.labels = readLabels(assetManager, labelFile);
+        classifier.labels = readLabels(assetManager, labelFile);
 
-        c.tfHelper = new TensorFlowInferenceInterface(assetManager, modelPath);
+        classifier.tfHelper = new TensorFlowInferenceInterface(assetManager, modelPath);
         int numClasses = 2;
 
-        c.inputSize = inputSize;
+        classifier.inputSize = inputSize;
 
-        c.outputNames = new String[] { outputName };
+        classifier.outputNames = new String[] { outputName };
 
-        c.outputName = outputName;
-        c.output = new float[numClasses];
+        classifier.outputName = outputName;
+        classifier.output = new float[numClasses];
 
 
-        return c;
+        return classifier;
     }
 
     @Override
@@ -93,7 +92,7 @@ public class TensorFlowClassifier implements Classifier {
 
         tfHelper.feed(inputName, pixels, 1, inputSize, inputSize, 1);
 
-        tfHelper.feed("keep_prob", new float[] { 1 });
+//        tfHelper.feed("keep_prob", new float[] { 1 });
 
         tfHelper.run(outputNames);
 

@@ -116,12 +116,12 @@ def normalize_data(data):
 	@return normalized data, mean of data, standard deviation of data
 	'''
 	m = np.mean(data, axis = 0)
-	sd = np.std(data, axis = 0)
+	std = np.std(data, axis = 0)
 
 	data -= m
-	data /= sd
+	data /= std
 
-	return data, m, sd
+	return data, m, std
 
 def rand_rotate_and_crop(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
 

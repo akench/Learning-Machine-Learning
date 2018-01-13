@@ -24,7 +24,7 @@ def CNN_model(data):
 	data = tf.reshape(data,[-1, 28, 28, 1])
 
 	#defines a scope for each set of weights and biases, so they can be accessed later
-	with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.truncated_normal_initializer(stddev=0.9), weights_regularizer=slim.l2_regularizer(0.05)):
+	with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.truncated_normal_initializer(sddev=0.9), weights_regularizer=slim.l2_regularizer(0.05)):
 		net = slim.conv2d(data, 20, [5,5], scope='conv1')
 		net = slim.max_pool2d(net, [2,2], scope='pool1')
 		net = slim.conv2d(net, 50, [5,5], scope='conv2')
