@@ -20,14 +20,68 @@ logs_path = "/tmp/instr"
 #command to use TENSORBOARD
 #tensorboard --logdir=run1:/tmp/instr/ --port 6006
 
-
 import os
 import glob
 
 files = glob.glob('/tmp/instr/test/*')
-files += glob.glob('tmp/instr/train/*')
+files += glob.glob('/tmp/instr/train/*')
+
 for f in files:
 	os.remove(f)
+
+
+
+class DataUtil:
+
+	def __init__(self, batch_size, num_epochs):
+		self.images_train = list(pickle.load(open('processed_data/train_data.p', 'rb')))
+		self.labels_train = list(pickle.load(open('processed_data/train_labels.p', 'rb')))
+
+		images_val = list(pickle.load(open('processed_data/val_data.p', 'rb')))
+		images_val_norm, _, _ = normalize_data(images_val)
+		self.images_val_norm = images_val_norm
+		self.labels_val = list(pickle.load(open('processed_data/val_labels.p', 'rb')))
+
+		self.batch_size = batch_size
+		self.curr_data_num = 0
+		self.global_num = 0
+
+		self.curr_epoch = 0
+		self.num_epochs = num_epochs
+
+
+	def get_next_batch(self):
+		'''
+		Gets the next batch in training data.
+		@param None
+		@return The next normalized training batch
+		'''
+
+		img_batch = []
+		labels_batch = []
+
+		for _ in range(self.batch_size):
+
+			img_batch.append(self.images_train[self.curr_data_num])
+			labels_batch.append(self.labels_train[self.curr_data_num])
+
+			self.curr_data_num += 1
+			self.global_num += 1
+
+			if self.curr_data_num > len(self.images_train) - 1:
+
+				print('FINISHED EPOCH', self.curr_epoch)
+				self.curr_epoch += 1
+				self.curr_data_num = 0
+				self.images_train, self.labels_train = shuffle(self.images_train, self.labels_train)
+
+
+		img_batch, _, _ = normalize_data(img_batch)
+
+		return img_batch, labels_batch
+
+
+
 
 
 def model(inp, keep_prob):
@@ -63,13 +117,8 @@ def model(inp, keep_prob):
 
 def train():
 
-	images_train = list(pickle.load(open('processed_data/train_data.p', 'rb')))
-	labels_train = list(pickle.load(open('processed_data/train_labels.p', 'rb')))
+	data_util = DataUtil(batch_size = 128, num_epochs = 5)
 
-	images_val = list(pickle.load(open('processed_data/val_data.p', 'rb')))
-	labels_val = list(pickle.load(open('processed_data/val_labels.p', 'rb')))
-
-	images_val, _, _ = normalize_data(images_val)
 
 
 	prediction = model(data_placeholder, keep_prob_placeholder)
@@ -110,39 +159,9 @@ def train():
 
 		tf.train.write_graph(sess.graph_def, 'out', MODEL_NAME + '.pbtxt', True)
 
-		curr_epoch = 1
-		num_epochs = 5
-		batch_size = 128
-		num_examples = len(images_train)
-		img_num = 0
-		global_num = 0
+		while data_util.curr_epoch <= data_util.num_epochs:
 
-		val_acc_5_back = 0
-
-		while curr_epoch <= num_epochs:
-
-
-			img_batch = []
-			labels_batch = []
-
-			for _ in range(batch_size):
-
-				img_batch.append(images_train[img_num])
-				labels_batch.append(labels_train[img_num])
-
-				img_num += 1
-				global_num += 1
-
-				if img_num > num_examples - 1:
-
-					print('FINISHED EPOCH', curr_epoch)
-					curr_epoch += 1
-					img_num = 0
-					images_train, labels_train = shuffle(images_train, labels_train)
-
-
-			#normalizes data per batch
-			img_batch, _, _ = normalize_data(img_batch)
+			img_batch, labels_batch = data_util.get_next_batch()
 
 			_, summary = sess.run([train_step, summary_op],
 												feed_dict = {data_placeholder: img_batch,
@@ -150,24 +169,23 @@ def train():
 												keep_prob_placeholder: 0.5})
 
 
+			train_writer.add_summary(summary, data_util.global_num)
 
-			train_writer.add_summary(summary, global_num)
-
-			if global_num % 10 == 0:
-				print('inside val')
+			if data_util.global_num % 30 == 0:
+				# print('inside val')
 				with tf.name_scope('val_acc'):
 					_, summary_val = sess.run([accuracy, summary_op],
-									feed_dict = {data_placeholder: images_val,
-									labels_placeholder: labels_val,
+									feed_dict = {data_placeholder: data_util.images_val_norm,
+									labels_placeholder: data_util.labels_val,
 									keep_prob_placeholder: 1.0})
-				test_writer.add_summary(summary_val, global_num)
+				test_writer.add_summary(summary_val, data_util.global_num)
 
 
 
 		#TRAINING DONE!!!!!!!!!!!!!!
 		#VAL IMAGES ALREADY NORMALIZED
-		print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: images_val,
-													labels_placeholder: labels_val,
+		print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: data_util.images_val_norm,
+													labels_placeholder: data_util.labels_val,
 													keep_prob_placeholder: 1.0}))
 
 
