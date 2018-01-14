@@ -3428,7 +3428,7 @@ node {
   }
 }
 node {
-  name: "pvg_model/kernel/tag"
+  name: "pvg_model/weights/tag"
   op: "Const"
   attr {
     key: "dtype"
@@ -3443,15 +3443,15 @@ node {
         dtype: DT_STRING
         tensor_shape {
         }
-        string_val: "pvg_model/kernel"
+        string_val: "pvg_model/weights"
       }
     }
   }
 }
 node {
-  name: "pvg_model/kernel"
+  name: "pvg_model/weights"
   op: "HistogramSummary"
-  input: "pvg_model/kernel/tag"
+  input: "pvg_model/weights/tag"
   input: "pvg_model/fc6/weights/read"
   attr {
     key: "T"
@@ -3494,7 +3494,7 @@ node {
   }
 }
 node {
-  name: "pvg_model/act/tag"
+  name: "pvg_model/output/tag"
   op: "Const"
   attr {
     key: "dtype"
@@ -3509,15 +3509,15 @@ node {
         dtype: DT_STRING
         tensor_shape {
         }
-        string_val: "pvg_model/act"
+        string_val: "pvg_model/output"
       }
     }
   }
 }
 node {
-  name: "pvg_model/act"
+  name: "pvg_model/output"
   op: "HistogramSummary"
-  input: "pvg_model/act/tag"
+  input: "pvg_model/output/tag"
   input: "pvg_model/fc6/BiasAdd"
   attr {
     key: "T"
@@ -9367,9 +9367,9 @@ node {
   name: "Merge/MergeSummary"
   op: "MergeSummary"
   input: "input_1"
-  input: "pvg_model/kernel"
+  input: "pvg_model/weights"
   input: "pvg_model/bias"
-  input: "pvg_model/act"
+  input: "pvg_model/output"
   input: "total_loss_1"
   input: "accuracy_1"
   attr {

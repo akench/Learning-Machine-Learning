@@ -21,6 +21,15 @@ logs_path = "/tmp/instr"
 #tensorboard --logdir=run1:/tmp/instr/ --port 6006
 
 
+import os
+import glob
+
+files = glob.glob('/tmp/instr/test/*')
+files += glob.glob('tmp/instr/train/*')
+for f in files:
+	os.remove(f)
+
+
 def model(inp, keep_prob):
 	net = tf.reshape(inp, [-1, 28, 28, 1])
 
@@ -41,9 +50,9 @@ def model(inp, keep_prob):
 				net = slim.fully_connected(net, 3, activation_fn=None, scope='fc6')
 
 				fc6_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'pvg_model/fc6')
-				tf.summary.histogram('kernel', fc6_vars[0])
+				tf.summary.histogram('weights', fc6_vars[0])
 				tf.summary.histogram('bias', fc6_vars[1])
-				tf.summary.histogram('act', net)
+				tf.summary.histogram('output', net)
 
 	output = tf.identity(net, name='output')
 	# outputs = tf.nn.softmax(net, name='output')
@@ -59,6 +68,8 @@ def train():
 
 	images_val = list(pickle.load(open('processed_data/val_data.p', 'rb')))
 	labels_val = list(pickle.load(open('processed_data/val_labels.p', 'rb')))
+
+	images_val, _, _ = normalize_data(images_val)
 
 
 	prediction = model(data_placeholder, keep_prob_placeholder)
@@ -81,11 +92,6 @@ def train():
 
 
 
-	# fc6 = [v for v in tf.trainable_variables() if v.name == 'pvg_model/fc6/weights:0'][0]
-	#
-	# tf.summary.histogram("fc6_weight", fc6)
-
-
 
 	#MERGES ALL SUMMARIES INTO ONE OPERATION
 	#THIS CAN BE EXECUTED IN A SESSION
@@ -99,7 +105,8 @@ def train():
 
 		#FOR TENSORBOARD, CREATES A LOG WRITER OBJECT
 		# writer = tf.summary.FileWriter(logs_path, graph=tf.get_default_graph())
-		writer = tf.summary.FileWriter(logs_path, sess.graph)
+		train_writer = tf.summary.FileWriter(logs_path + '/train', sess.graph)
+		test_writer = tf.summary.FileWriter(logs_path + '/test', sess.graph)
 
 		tf.train.write_graph(sess.graph_def, 'out', MODEL_NAME + '.pbtxt', True)
 
@@ -110,6 +117,7 @@ def train():
 		img_num = 0
 		global_num = 0
 
+		val_acc_5_back = 0
 
 		while curr_epoch <= num_epochs:
 
@@ -141,10 +149,23 @@ def train():
 												labels_placeholder: labels_batch,
 												keep_prob_placeholder: 0.5})
 
-			writer.add_summary(summary, global_num)
 
 
-		images_val, _, _ = normalize_data(images_val)
+			train_writer.add_summary(summary, global_num)
+
+			if global_num % 10 == 0:
+				print('inside val')
+				with tf.name_scope('val_acc'):
+					_, summary_val = sess.run([accuracy, summary_op],
+									feed_dict = {data_placeholder: images_val,
+									labels_placeholder: labels_val,
+									keep_prob_placeholder: 1.0})
+				test_writer.add_summary(summary_val, global_num)
+
+
+
+		#TRAINING DONE!!!!!!!!!!!!!!
+		#VAL IMAGES ALREADY NORMALIZED
 		print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: images_val,
 													labels_placeholder: labels_val,
 													keep_prob_placeholder: 1.0}))
