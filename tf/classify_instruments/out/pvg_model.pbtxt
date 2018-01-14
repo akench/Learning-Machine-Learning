@@ -3341,7 +3341,7 @@ node {
   }
 }
 node {
-  name: "SparseSoftmaxCrossEntropyWithLogits/Shape"
+  name: "total_loss/SparseSoftmaxCrossEntropyWithLogits/Shape"
   op: "Shape"
   input: "Placeholder"
   attr {
@@ -3358,7 +3358,7 @@ node {
   }
 }
 node {
-  name: "SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
+  name: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
   op: "SparseSoftmaxCrossEntropyWithLogits"
   input: "pvg_model/fc6/BiasAdd"
   input: "Placeholder"
@@ -3376,7 +3376,7 @@ node {
   }
 }
 node {
-  name: "Const"
+  name: "total_loss/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -3400,10 +3400,10 @@ node {
   }
 }
 node {
-  name: "Mean"
+  name: "total_loss/Mean"
   op: "Mean"
-  input: "SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
-  input: "Const"
+  input: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
+  input: "total_loss/Const"
   attr {
     key: "T"
     value {
@@ -3479,7 +3479,7 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Reshape/shape"
+  name: "gradients/total_loss/Mean_grad/Reshape/shape"
   op: "Const"
   attr {
     key: "dtype"
@@ -3503,10 +3503,10 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Reshape"
+  name: "gradients/total_loss/Mean_grad/Reshape"
   op: "Reshape"
   input: "gradients/Fill"
-  input: "gradients/Mean_grad/Reshape/shape"
+  input: "gradients/total_loss/Mean_grad/Reshape/shape"
   attr {
     key: "T"
     value {
@@ -3521,9 +3521,9 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Shape"
+  name: "gradients/total_loss/Mean_grad/Shape"
   op: "Shape"
-  input: "SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
+  input: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
   attr {
     key: "T"
     value {
@@ -3538,10 +3538,10 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Tile"
+  name: "gradients/total_loss/Mean_grad/Tile"
   op: "Tile"
-  input: "gradients/Mean_grad/Reshape"
-  input: "gradients/Mean_grad/Shape"
+  input: "gradients/total_loss/Mean_grad/Reshape"
+  input: "gradients/total_loss/Mean_grad/Shape"
   attr {
     key: "T"
     value {
@@ -3556,9 +3556,9 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Shape_1"
+  name: "gradients/total_loss/Mean_grad/Shape_1"
   op: "Shape"
-  input: "SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
+  input: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
   attr {
     key: "T"
     value {
@@ -3573,7 +3573,7 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Shape_2"
+  name: "gradients/total_loss/Mean_grad/Shape_2"
   op: "Const"
   attr {
     key: "dtype"
@@ -3595,77 +3595,13 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Const"
+  name: "gradients/total_loss/Mean_grad/Const"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/Mean_grad/Shape_1"
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        int_val: 0
-      }
-    }
-  }
-}
-node {
-  name: "gradients/Mean_grad/Prod"
-  op: "Prod"
-  input: "gradients/Mean_grad/Shape_1"
-  input: "gradients/Mean_grad/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "Tidx"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@gradients/Mean_grad/Shape_1"
-      }
-    }
-  }
-  attr {
-    key: "keep_dims"
-    value {
-      b: false
-    }
-  }
-}
-node {
-  name: "gradients/Mean_grad/Const_1"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@gradients/Mean_grad/Shape_1"
+        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
@@ -3691,10 +3627,10 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Prod_1"
+  name: "gradients/total_loss/Mean_grad/Prod"
   op: "Prod"
-  input: "gradients/Mean_grad/Shape_2"
-  input: "gradients/Mean_grad/Const_1"
+  input: "gradients/total_loss/Mean_grad/Shape_1"
+  input: "gradients/total_loss/Mean_grad/Const"
   attr {
     key: "T"
     value {
@@ -3711,7 +3647,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/Mean_grad/Shape_1"
+        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
@@ -3723,13 +3659,77 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Maximum/y"
+  name: "gradients/total_loss/Mean_grad/Const_1"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/Mean_grad/Shape_1"
+        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "gradients/total_loss/Mean_grad/Prod_1"
+  op: "Prod"
+  input: "gradients/total_loss/Mean_grad/Shape_2"
+  input: "gradients/total_loss/Mean_grad/Const_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
+      }
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "gradients/total_loss/Mean_grad/Maximum/y"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
@@ -3752,10 +3752,10 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/Maximum"
+  name: "gradients/total_loss/Mean_grad/Maximum"
   op: "Maximum"
-  input: "gradients/Mean_grad/Prod_1"
-  input: "gradients/Mean_grad/Maximum/y"
+  input: "gradients/total_loss/Mean_grad/Prod_1"
+  input: "gradients/total_loss/Mean_grad/Maximum/y"
   attr {
     key: "T"
     value {
@@ -3766,16 +3766,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/Mean_grad/Shape_1"
+        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
 }
 node {
-  name: "gradients/Mean_grad/floordiv"
+  name: "gradients/total_loss/Mean_grad/floordiv"
   op: "FloorDiv"
-  input: "gradients/Mean_grad/Prod"
-  input: "gradients/Mean_grad/Maximum"
+  input: "gradients/total_loss/Mean_grad/Prod"
+  input: "gradients/total_loss/Mean_grad/Maximum"
   attr {
     key: "T"
     value {
@@ -3786,15 +3786,15 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/Mean_grad/Shape_1"
+        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
 }
 node {
-  name: "gradients/Mean_grad/Cast"
+  name: "gradients/total_loss/Mean_grad/Cast"
   op: "Cast"
-  input: "gradients/Mean_grad/floordiv"
+  input: "gradients/total_loss/Mean_grad/floordiv"
   attr {
     key: "DstT"
     value {
@@ -3809,10 +3809,10 @@ node {
   }
 }
 node {
-  name: "gradients/Mean_grad/truediv"
+  name: "gradients/total_loss/Mean_grad/truediv"
   op: "RealDiv"
-  input: "gradients/Mean_grad/Tile"
-  input: "gradients/Mean_grad/Cast"
+  input: "gradients/total_loss/Mean_grad/Tile"
+  input: "gradients/total_loss/Mean_grad/Cast"
   attr {
     key: "T"
     value {
@@ -3823,7 +3823,7 @@ node {
 node {
   name: "gradients/zeros_like"
   op: "ZerosLike"
-  input: "SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits:1"
+  input: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits:1"
   attr {
     key: "T"
     value {
@@ -3832,9 +3832,9 @@ node {
   }
 }
 node {
-  name: "gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/PreventGradient"
+  name: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/PreventGradient"
   op: "PreventGradient"
-  input: "SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits:1"
+  input: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits:1"
   attr {
     key: "T"
     value {
@@ -3849,7 +3849,7 @@ node {
   }
 }
 node {
-  name: "gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims/dim"
+  name: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims/dim"
   op: "Const"
   attr {
     key: "dtype"
@@ -3870,10 +3870,10 @@ node {
   }
 }
 node {
-  name: "gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims"
+  name: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims"
   op: "ExpandDims"
-  input: "gradients/Mean_grad/truediv"
-  input: "gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims/dim"
+  input: "gradients/total_loss/Mean_grad/truediv"
+  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims/dim"
   attr {
     key: "T"
     value {
@@ -3888,10 +3888,10 @@ node {
   }
 }
 node {
-  name: "gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+  name: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
   op: "Mul"
-  input: "gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims"
-  input: "gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/PreventGradient"
+  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims"
+  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/PreventGradient"
   attr {
     key: "T"
     value {
@@ -3902,7 +3902,7 @@ node {
 node {
   name: "gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
   attr {
     key: "T"
     value {
@@ -3919,13 +3919,13 @@ node {
 node {
   name: "gradients/pvg_model/fc6/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+  input: "^gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
   input: "^gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
 }
 node {
   name: "gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
   input: "^gradients/pvg_model/fc6/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
@@ -3937,7 +3937,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+        s: "loc:@gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
       }
     }
   }
@@ -8979,7 +8979,7 @@ node {
   input: "^Adam/Assign_1"
 }
 node {
-  name: "ArgMax/dimension"
+  name: "accuracy/ArgMax/dimension"
   op: "Const"
   attr {
     key: "dtype"
@@ -9000,10 +9000,10 @@ node {
   }
 }
 node {
-  name: "ArgMax"
+  name: "accuracy/ArgMax"
   op: "ArgMax"
   input: "pvg_model/fc6/BiasAdd"
-  input: "ArgMax/dimension"
+  input: "accuracy/ArgMax/dimension"
   attr {
     key: "T"
     value {
@@ -9024,9 +9024,9 @@ node {
   }
 }
 node {
-  name: "Equal"
+  name: "accuracy/Equal"
   op: "Equal"
-  input: "ArgMax"
+  input: "accuracy/ArgMax"
   input: "Placeholder"
   attr {
     key: "T"
@@ -9036,9 +9036,9 @@ node {
   }
 }
 node {
-  name: "Cast"
+  name: "accuracy/Cast"
   op: "Cast"
-  input: "Equal"
+  input: "accuracy/Equal"
   attr {
     key: "DstT"
     value {
@@ -9053,7 +9053,7 @@ node {
   }
 }
 node {
-  name: "Const_1"
+  name: "accuracy/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -9077,10 +9077,10 @@ node {
   }
 }
 node {
-  name: "Mean_1"
+  name: "accuracy/Mean"
   op: "Mean"
-  input: "Cast"
-  input: "Const_1"
+  input: "accuracy/Cast"
+  input: "accuracy/Const"
   attr {
     key: "T"
     value {
@@ -9097,6 +9097,84 @@ node {
     key: "keep_dims"
     value {
       b: false
+    }
+  }
+}
+node {
+  name: "total_loss_1/tags"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+        }
+        string_val: "total_loss_1"
+      }
+    }
+  }
+}
+node {
+  name: "total_loss_1"
+  op: "ScalarSummary"
+  input: "total_loss_1/tags"
+  input: "total_loss/Mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "accuracy_1/tags"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+        }
+        string_val: "accuracy_1"
+      }
+    }
+  }
+}
+node {
+  name: "accuracy_1"
+  op: "ScalarSummary"
+  input: "accuracy_1/tags"
+  input: "accuracy/Mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "Merge/MergeSummary"
+  op: "MergeSummary"
+  input: "total_loss_1"
+  input: "accuracy_1"
+  attr {
+    key: "N"
+    value {
+      i: 2
     }
   }
 }

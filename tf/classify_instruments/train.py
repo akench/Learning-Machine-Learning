@@ -16,6 +16,9 @@ data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32, name=
 labels_placeholder = tf.placeholder(shape = [None], dtype = tf.int64)
 keep_prob_placeholder = tf.placeholder(shape = (), dtype = tf.float32, name='keep_prob')
 
+logs_path = "/tmp/instr"
+#command to use TENSORBOARD
+#tensorboard --logdir=run1:/tmp/instr/ --port 6006
 
 
 def model(net, keep_prob):
@@ -50,25 +53,37 @@ def train():
 	labels_val = list(pickle.load(open('processed_data/val_labels.p', 'rb')))
 
 
-	# images_train,_, _ = normalize_data(images_train)
-
-
 	prediction = model(data_placeholder, keep_prob_placeholder)
 
-	total_loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
-			logits = prediction, labels = labels_placeholder))
+	with tf.name_scope('total_loss'):
+		total_loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
+				logits = prediction, labels = labels_placeholder))
 
-	optimizer = tf.train.AdamOptimizer()
-	train_step = optimizer.minimize(total_loss)
+	with tf.name_scope('train_step'):
+		optimizer = tf.train.AdamOptimizer()
+		train_step = optimizer.minimize(total_loss)
 
-	correct = tf.equal(tf.argmax(prediction, 1), labels_placeholder)
-	accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
+	with tf.name_scope('accuracy'):
+		correct = tf.equal(tf.argmax(prediction, 1), labels_placeholder)
+		accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
+
+	tf.summary.scalar("total_loss", total_loss)
+	tf.summary.scalar("accuracy", accuracy)
+	tf.summary.scalar("train_step", train_step)
+
+	#MERGES ALL SUMMARIES INTO ONE OPERATION
+	#THIS CAN BE EXECUTED IN A SESSION
+	summary_op = tf.summary.merge_all()
 
 	with tf.Session() as sess:
 		start_time = time.time()
 		saver = tf.train.Saver()
 		init = tf.global_variables_initializer()
 		init.run()
+
+		#FOR TENSORBOARD, CREATES A LOG WRITER OBJECT
+		# writer = tf.summary.FileWriter(logs_path, graph=tf.get_default_graph())
+		writer = tf.summary.FileWriter(logs_path, sess.graph)
 
 		tf.train.write_graph(sess.graph_def, 'out', MODEL_NAME + '.pbtxt', True)
 
@@ -77,6 +92,8 @@ def train():
 		batch_size = 128
 		num_examples = len(images_train)
 		img_num = 0
+		global_num = 0
+
 
 		while curr_epoch <= num_epochs:
 
@@ -90,6 +107,7 @@ def train():
 				labels_batch.append(labels_train[img_num])
 
 				img_num += 1
+				global_num += 1
 
 				if img_num > num_examples - 1:
 
@@ -102,9 +120,12 @@ def train():
 			#normalizes data per batch
 			img_batch, _, _ = normalize_data(img_batch)
 
-			sess.run(train_step, feed_dict = {data_placeholder: img_batch,
+			_, summary = sess.run([train_step, summary_op],
+												feed_dict = {data_placeholder: img_batch,
 												labels_placeholder: labels_batch,
 												keep_prob_placeholder: 0.5})
+
+			writer.add_summary(summary, global_num)
 
 
 		images_val, _, _ = normalize_data(images_val)
