@@ -3331,7 +3331,7 @@ node {
 }
 node {
   name: "output"
-  op: "Softmax"
+  op: "Identity"
   input: "pvg_model/fc6/BiasAdd"
   attr {
     key: "T"

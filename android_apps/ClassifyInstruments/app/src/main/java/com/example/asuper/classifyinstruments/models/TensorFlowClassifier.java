@@ -59,6 +59,7 @@ public class TensorFlowClassifier implements Classifier {
                                               String modelPath, String labelFile,
                                               int inputSize, String inputName, String outputName)
                                                 throws IOException {
+
         TensorFlowClassifier classifier = new TensorFlowClassifier();
 
         classifier.name = name;
@@ -75,7 +76,6 @@ public class TensorFlowClassifier implements Classifier {
 
         classifier.outputNames = new String[] { outputName };
 
-        classifier.outputName = outputName;
         classifier.output = new float[numClasses];
 
 
@@ -100,15 +100,35 @@ public class TensorFlowClassifier implements Classifier {
 
 
         Classification ans = new Classification();
+        ans.setOutput(this.output);
 
-        for (int i = 0; i < output.length; ++i) {
-            System.out.println(output[i]);
-            System.out.println(labels.get(i));
-            if (output[i] > THRESHOLD && output[i] > ans.getConf()) {
-                ans.update(output[i], labels.get(i));
+        float[] softmax_output = softmax(output);
+
+        for (int i = 0; i < softmax_output.length; ++i) {
+            if (softmax_output[i] > THRESHOLD && softmax_output[i] > ans.getConf()) {
+                ans.update(softmax_output[i], labels.get(i));
             }
         }
 
         return ans;
+    }
+
+
+    public static float[] softmax(float[] arr){
+
+        float sum = 0;
+        float e = 2.718281828459f;
+
+        for(float n : arr){
+            sum += Math.pow(e, n);
+        }
+
+        float[] sftmx = new float[arr.length];
+        for(int i = 0; i < arr.length; i++){
+            sftmx[i] = (float)(Math.pow(e, arr[i]) / sum);
+        }
+
+        return sftmx;
+
     }
 }

@@ -8,10 +8,19 @@ public class Classification {
 
     private float conf;
     private String label;
+    private float[] output;
 
     Classification() {
         this.conf = -1.0F;
         this.label = null;
+    }
+
+    public void setOutput(float[] o){
+        this.output = o;
+    }
+
+    public float[] getOutput(){
+        return this.output;
     }
 
     void update(float conf, String label) {
