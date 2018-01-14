@@ -101,6 +101,104 @@ node {
   }
 }
 node {
+  name: "Reshape_1/shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\377\377\377\377\034\000\000\000\034\000\000\000\001\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "Reshape_1"
+  op: "Reshape"
+  input: "input"
+  input: "Reshape_1/shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "input_1/tag"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+        }
+        string_val: "input_1"
+      }
+    }
+  }
+}
+node {
+  name: "input_1"
+  op: "ImageSummary"
+  input: "input_1/tag"
+  input: "Reshape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "bad_color"
+    value {
+      tensor {
+        dtype: DT_UINT8
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        int_val: 255
+        int_val: 0
+        int_val: 0
+        int_val: 255
+      }
+    }
+  }
+  attr {
+    key: "max_images"
+    value {
+      i: 10
+    }
+  }
+}
+node {
   name: "pvg_model/conv1/weights/Initializer/truncated_normal/shape"
   op: "Const"
   attr {
@@ -3330,6 +3428,105 @@ node {
   }
 }
 node {
+  name: "pvg_model/kernel/tag"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+        }
+        string_val: "pvg_model/kernel"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/kernel"
+  op: "HistogramSummary"
+  input: "pvg_model/kernel/tag"
+  input: "pvg_model/fc6/weights/read"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/bias/tag"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+        }
+        string_val: "pvg_model/bias"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/bias"
+  op: "HistogramSummary"
+  input: "pvg_model/bias/tag"
+  input: "pvg_model/fc6/biases/read"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "pvg_model/act/tag"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+        }
+        string_val: "pvg_model/act"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/act"
+  op: "HistogramSummary"
+  input: "pvg_model/act/tag"
+  input: "pvg_model/fc6/BiasAdd"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
   name: "output"
   op: "Identity"
   input: "pvg_model/fc6/BiasAdd"
@@ -3424,7 +3621,7 @@ node {
   }
 }
 node {
-  name: "gradients/Shape"
+  name: "train_step/gradients/Shape"
   op: "Const"
   attr {
     key: "dtype"
@@ -3446,7 +3643,7 @@ node {
   }
 }
 node {
-  name: "gradients/Const"
+  name: "train_step/gradients/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -3467,10 +3664,10 @@ node {
   }
 }
 node {
-  name: "gradients/Fill"
+  name: "train_step/gradients/Fill"
   op: "Fill"
-  input: "gradients/Shape"
-  input: "gradients/Const"
+  input: "train_step/gradients/Shape"
+  input: "train_step/gradients/Const"
   attr {
     key: "T"
     value {
@@ -3479,7 +3676,7 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Reshape/shape"
+  name: "train_step/gradients/total_loss/Mean_grad/Reshape/shape"
   op: "Const"
   attr {
     key: "dtype"
@@ -3503,10 +3700,10 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Reshape"
+  name: "train_step/gradients/total_loss/Mean_grad/Reshape"
   op: "Reshape"
-  input: "gradients/Fill"
-  input: "gradients/total_loss/Mean_grad/Reshape/shape"
+  input: "train_step/gradients/Fill"
+  input: "train_step/gradients/total_loss/Mean_grad/Reshape/shape"
   attr {
     key: "T"
     value {
@@ -3521,7 +3718,7 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Shape"
+  name: "train_step/gradients/total_loss/Mean_grad/Shape"
   op: "Shape"
   input: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
   attr {
@@ -3538,10 +3735,10 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Tile"
+  name: "train_step/gradients/total_loss/Mean_grad/Tile"
   op: "Tile"
-  input: "gradients/total_loss/Mean_grad/Reshape"
-  input: "gradients/total_loss/Mean_grad/Shape"
+  input: "train_step/gradients/total_loss/Mean_grad/Reshape"
+  input: "train_step/gradients/total_loss/Mean_grad/Shape"
   attr {
     key: "T"
     value {
@@ -3556,7 +3753,7 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Shape_1"
+  name: "train_step/gradients/total_loss/Mean_grad/Shape_1"
   op: "Shape"
   input: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits"
   attr {
@@ -3573,7 +3770,7 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Shape_2"
+  name: "train_step/gradients/total_loss/Mean_grad/Shape_2"
   op: "Const"
   attr {
     key: "dtype"
@@ -3595,77 +3792,13 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Const"
+  name: "train_step/gradients/total_loss/Mean_grad/Const"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
-      }
-    }
-  }
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        int_val: 0
-      }
-    }
-  }
-}
-node {
-  name: "gradients/total_loss/Mean_grad/Prod"
-  op: "Prod"
-  input: "gradients/total_loss/Mean_grad/Shape_1"
-  input: "gradients/total_loss/Mean_grad/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "Tidx"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
-      }
-    }
-  }
-  attr {
-    key: "keep_dims"
-    value {
-      b: false
-    }
-  }
-}
-node {
-  name: "gradients/total_loss/Mean_grad/Const_1"
-  op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
+        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
@@ -3691,10 +3824,10 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Prod_1"
+  name: "train_step/gradients/total_loss/Mean_grad/Prod"
   op: "Prod"
-  input: "gradients/total_loss/Mean_grad/Shape_2"
-  input: "gradients/total_loss/Mean_grad/Const_1"
+  input: "train_step/gradients/total_loss/Mean_grad/Shape_1"
+  input: "train_step/gradients/total_loss/Mean_grad/Const"
   attr {
     key: "T"
     value {
@@ -3711,7 +3844,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
+        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
@@ -3723,13 +3856,77 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Maximum/y"
+  name: "train_step/gradients/total_loss/Mean_grad/Const_1"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
+        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/total_loss/Mean_grad/Prod_1"
+  op: "Prod"
+  input: "train_step/gradients/total_loss/Mean_grad/Shape_2"
+  input: "train_step/gradients/total_loss/Mean_grad/Const_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
+      }
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "train_step/gradients/total_loss/Mean_grad/Maximum/y"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
@@ -3752,10 +3949,10 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Maximum"
+  name: "train_step/gradients/total_loss/Mean_grad/Maximum"
   op: "Maximum"
-  input: "gradients/total_loss/Mean_grad/Prod_1"
-  input: "gradients/total_loss/Mean_grad/Maximum/y"
+  input: "train_step/gradients/total_loss/Mean_grad/Prod_1"
+  input: "train_step/gradients/total_loss/Mean_grad/Maximum/y"
   attr {
     key: "T"
     value {
@@ -3766,16 +3963,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
+        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/floordiv"
+  name: "train_step/gradients/total_loss/Mean_grad/floordiv"
   op: "FloorDiv"
-  input: "gradients/total_loss/Mean_grad/Prod"
-  input: "gradients/total_loss/Mean_grad/Maximum"
+  input: "train_step/gradients/total_loss/Mean_grad/Prod"
+  input: "train_step/gradients/total_loss/Mean_grad/Maximum"
   attr {
     key: "T"
     value {
@@ -3786,15 +3983,15 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/total_loss/Mean_grad/Shape_1"
+        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
       }
     }
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/Cast"
+  name: "train_step/gradients/total_loss/Mean_grad/Cast"
   op: "Cast"
-  input: "gradients/total_loss/Mean_grad/floordiv"
+  input: "train_step/gradients/total_loss/Mean_grad/floordiv"
   attr {
     key: "DstT"
     value {
@@ -3809,10 +4006,10 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/Mean_grad/truediv"
+  name: "train_step/gradients/total_loss/Mean_grad/truediv"
   op: "RealDiv"
-  input: "gradients/total_loss/Mean_grad/Tile"
-  input: "gradients/total_loss/Mean_grad/Cast"
+  input: "train_step/gradients/total_loss/Mean_grad/Tile"
+  input: "train_step/gradients/total_loss/Mean_grad/Cast"
   attr {
     key: "T"
     value {
@@ -3821,7 +4018,7 @@ node {
   }
 }
 node {
-  name: "gradients/zeros_like"
+  name: "train_step/gradients/zeros_like"
   op: "ZerosLike"
   input: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits:1"
   attr {
@@ -3832,7 +4029,7 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/PreventGradient"
+  name: "train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/PreventGradient"
   op: "PreventGradient"
   input: "total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits:1"
   attr {
@@ -3849,7 +4046,7 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims/dim"
+  name: "train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims/dim"
   op: "Const"
   attr {
     key: "dtype"
@@ -3870,10 +4067,10 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims"
+  name: "train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims"
   op: "ExpandDims"
-  input: "gradients/total_loss/Mean_grad/truediv"
-  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims/dim"
+  input: "train_step/gradients/total_loss/Mean_grad/truediv"
+  input: "train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims/dim"
   attr {
     key: "T"
     value {
@@ -3888,10 +4085,10 @@ node {
   }
 }
 node {
-  name: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+  name: "train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
   op: "Mul"
-  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims"
-  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/PreventGradient"
+  input: "train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/ExpandDims"
+  input: "train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/PreventGradient"
   attr {
     key: "T"
     value {
@@ -3900,9 +4097,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
+  name: "train_step/gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+  input: "train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
   attr {
     key: "T"
     value {
@@ -3917,16 +4114,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/fc6/BiasAdd_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/fc6/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
-  input: "^gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+  input: "^train_step/gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
 }
 node {
-  name: "gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
-  input: "^gradients/pvg_model/fc6/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+  input: "^train_step/gradients/pvg_model/fc6/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -3937,16 +4134,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
+        s: "loc:@train_step/gradients/total_loss/SparseSoftmaxCrossEntropyWithLogits/SparseSoftmaxCrossEntropyWithLogits_grad/mul"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/pvg_model/fc6/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/pvg_model/fc6/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -3957,15 +4154,15 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
+        s: "loc:@train_step/gradients/pvg_model/fc6/BiasAdd_grad/BiasAddGrad"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/fc6/MatMul_grad/MatMul"
+  name: "train_step/gradients/pvg_model/fc6/MatMul_grad/MatMul"
   op: "MatMul"
-  input: "gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency"
   input: "pvg_model/fc6/weights/read"
   attr {
     key: "T"
@@ -3987,10 +4184,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/fc6/MatMul_grad/MatMul_1"
+  name: "train_step/gradients/pvg_model/fc6/MatMul_grad/MatMul_1"
   op: "MatMul"
   input: "pvg_model/dropout6/dropout/mul"
-  input: "gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -4011,16 +4208,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/fc6/MatMul_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/fc6/MatMul_grad/MatMul"
-  input: "^gradients/pvg_model/fc6/MatMul_grad/MatMul_1"
+  input: "^train_step/gradients/pvg_model/fc6/MatMul_grad/MatMul"
+  input: "^train_step/gradients/pvg_model/fc6/MatMul_grad/MatMul_1"
 }
 node {
-  name: "gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/fc6/MatMul_grad/MatMul"
-  input: "^gradients/pvg_model/fc6/MatMul_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/fc6/MatMul_grad/MatMul"
+  input: "^train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4031,16 +4228,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/fc6/MatMul_grad/MatMul"
+        s: "loc:@train_step/gradients/pvg_model/fc6/MatMul_grad/MatMul"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/fc6/MatMul_grad/MatMul_1"
-  input: "^gradients/pvg_model/fc6/MatMul_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/fc6/MatMul_grad/MatMul_1"
+  input: "^train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4051,13 +4248,13 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/fc6/MatMul_grad/MatMul_1"
+        s: "loc:@train_step/gradients/pvg_model/fc6/MatMul_grad/MatMul_1"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Shape"
   op: "Shape"
   input: "pvg_model/dropout6/dropout/div"
   attr {
@@ -4074,7 +4271,7 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Shape_1"
   op: "Shape"
   input: "pvg_model/dropout6/dropout/Floor"
   attr {
@@ -4091,10 +4288,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs"
   op: "BroadcastGradientArgs"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape_1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Shape"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Shape_1"
   attr {
     key: "T"
     value {
@@ -4103,9 +4300,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/mul"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/mul"
   op: "Mul"
-  input: "gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
   input: "pvg_model/dropout6/dropout/Floor"
   attr {
     key: "T"
@@ -4115,10 +4312,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Sum"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Sum"
   op: "Sum"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/mul"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/mul"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs"
   attr {
     key: "T"
     value {
@@ -4139,10 +4336,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
   op: "Reshape"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Sum"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Sum"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Shape"
   attr {
     key: "T"
     value {
@@ -4157,10 +4354,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/mul_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/mul_1"
   op: "Mul"
   input: "pvg_model/dropout6/dropout/div"
-  input: "gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -4169,10 +4366,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Sum_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Sum_1"
   op: "Sum"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/mul_1"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs:1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/mul_1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs:1"
   attr {
     key: "T"
     value {
@@ -4193,10 +4390,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
   op: "Reshape"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Sum_1"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Shape_1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Sum_1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Shape_1"
   attr {
     key: "T"
     value {
@@ -4211,16 +4408,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
-  input: "^gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
+  input: "^train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
+  input: "^train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
-  input: "^gradients/pvg_model/dropout6/dropout/mul_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
+  input: "^train_step/gradients/pvg_model/dropout6/dropout/mul_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4231,16 +4428,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
+        s: "loc:@train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Reshape"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
-  input: "^gradients/pvg_model/dropout6/dropout/mul_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
+  input: "^train_step/gradients/pvg_model/dropout6/dropout/mul_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4251,13 +4448,13 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
+        s: "loc:@train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Reshape_1"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/Shape"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Shape"
   op: "Shape"
   input: "pvg_model/fc5/Sigmoid"
   attr {
@@ -4274,7 +4471,7 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/Shape_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Shape_1"
   op: "Const"
   attr {
     key: "dtype"
@@ -4296,10 +4493,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/BroadcastGradientArgs"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/BroadcastGradientArgs"
   op: "BroadcastGradientArgs"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/Shape"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/Shape_1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Shape"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Shape_1"
   attr {
     key: "T"
     value {
@@ -4308,9 +4505,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/RealDiv"
   op: "RealDiv"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency"
   input: "pvg_model/dropout6/sub_1"
   attr {
     key: "T"
@@ -4320,10 +4517,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/Sum"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Sum"
   op: "Sum"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/BroadcastGradientArgs"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/RealDiv"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/BroadcastGradientArgs"
   attr {
     key: "T"
     value {
@@ -4344,10 +4541,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
   op: "Reshape"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/Sum"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/Shape"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Sum"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Shape"
   attr {
     key: "T"
     value {
@@ -4362,7 +4559,7 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/Neg"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Neg"
   op: "Neg"
   input: "pvg_model/fc5/Sigmoid"
   attr {
@@ -4373,9 +4570,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_1"
   op: "RealDiv"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/Neg"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Neg"
   input: "pvg_model/dropout6/sub_1"
   attr {
     key: "T"
@@ -4385,9 +4582,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_2"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_2"
   op: "RealDiv"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_1"
   input: "pvg_model/dropout6/sub_1"
   attr {
     key: "T"
@@ -4397,10 +4594,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/mul"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/mul"
   op: "Mul"
-  input: "gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_2"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/RealDiv_2"
   attr {
     key: "T"
     value {
@@ -4409,10 +4606,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/Sum_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Sum_1"
   op: "Sum"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/mul"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/BroadcastGradientArgs:1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/mul"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/BroadcastGradientArgs:1"
   attr {
     key: "T"
     value {
@@ -4433,10 +4630,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
   op: "Reshape"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/Sum_1"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/Shape_1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Sum_1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Shape_1"
   attr {
     key: "T"
     value {
@@ -4451,16 +4648,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
-  input: "^gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
+  input: "^train_step/gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
+  input: "^train_step/gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
-  input: "^gradients/pvg_model/dropout6/dropout/div_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
+  input: "^train_step/gradients/pvg_model/dropout6/dropout/div_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4471,16 +4668,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
+        s: "loc:@train_step/gradients/pvg_model/dropout6/dropout/div_grad/Reshape"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/dropout6/dropout/div_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
-  input: "^gradients/pvg_model/dropout6/dropout/div_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
+  input: "^train_step/gradients/pvg_model/dropout6/dropout/div_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4491,16 +4688,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
+        s: "loc:@train_step/gradients/pvg_model/dropout6/dropout/div_grad/Reshape_1"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
+  name: "train_step/gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
   op: "SigmoidGrad"
   input: "pvg_model/fc5/Sigmoid"
-  input: "gradients/pvg_model/dropout6/dropout/div_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/div_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -4509,9 +4706,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
+  name: "train_step/gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
+  input: "train_step/gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
   attr {
     key: "T"
     value {
@@ -4526,16 +4723,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/fc5/BiasAdd_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/fc5/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
-  input: "^gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
+  input: "^train_step/gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
 }
 node {
-  name: "gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
-  input: "^gradients/pvg_model/fc5/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
+  input: "^train_step/gradients/pvg_model/fc5/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4546,16 +4743,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
+        s: "loc:@train_step/gradients/pvg_model/fc5/Sigmoid_grad/SigmoidGrad"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/pvg_model/fc5/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/pvg_model/fc5/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4566,15 +4763,15 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
+        s: "loc:@train_step/gradients/pvg_model/fc5/BiasAdd_grad/BiasAddGrad"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/fc5/MatMul_grad/MatMul"
+  name: "train_step/gradients/pvg_model/fc5/MatMul_grad/MatMul"
   op: "MatMul"
-  input: "gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency"
   input: "pvg_model/fc5/weights/read"
   attr {
     key: "T"
@@ -4596,10 +4793,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/fc5/MatMul_grad/MatMul_1"
+  name: "train_step/gradients/pvg_model/fc5/MatMul_grad/MatMul_1"
   op: "MatMul"
   input: "pvg_model/flatten4/flatten/Reshape"
-  input: "gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -4620,16 +4817,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/fc5/MatMul_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/fc5/MatMul_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/fc5/MatMul_grad/MatMul"
-  input: "^gradients/pvg_model/fc5/MatMul_grad/MatMul_1"
+  input: "^train_step/gradients/pvg_model/fc5/MatMul_grad/MatMul"
+  input: "^train_step/gradients/pvg_model/fc5/MatMul_grad/MatMul_1"
 }
 node {
-  name: "gradients/pvg_model/fc5/MatMul_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/fc5/MatMul_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/fc5/MatMul_grad/MatMul"
-  input: "^gradients/pvg_model/fc5/MatMul_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/fc5/MatMul_grad/MatMul"
+  input: "^train_step/gradients/pvg_model/fc5/MatMul_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4640,16 +4837,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/fc5/MatMul_grad/MatMul"
+        s: "loc:@train_step/gradients/pvg_model/fc5/MatMul_grad/MatMul"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/fc5/MatMul_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/fc5/MatMul_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/fc5/MatMul_grad/MatMul_1"
-  input: "^gradients/pvg_model/fc5/MatMul_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/fc5/MatMul_grad/MatMul_1"
+  input: "^train_step/gradients/pvg_model/fc5/MatMul_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4660,13 +4857,13 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/fc5/MatMul_grad/MatMul_1"
+        s: "loc:@train_step/gradients/pvg_model/fc5/MatMul_grad/MatMul_1"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/flatten4/flatten/Reshape_grad/Shape"
+  name: "train_step/gradients/pvg_model/flatten4/flatten/Reshape_grad/Shape"
   op: "Shape"
   input: "pvg_model/pool3/MaxPool"
   attr {
@@ -4683,10 +4880,10 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/flatten4/flatten/Reshape_grad/Reshape"
+  name: "train_step/gradients/pvg_model/flatten4/flatten/Reshape_grad/Reshape"
   op: "Reshape"
-  input: "gradients/pvg_model/fc5/MatMul_grad/tuple/control_dependency"
-  input: "gradients/pvg_model/flatten4/flatten/Reshape_grad/Shape"
+  input: "train_step/gradients/pvg_model/fc5/MatMul_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/flatten4/flatten/Reshape_grad/Shape"
   attr {
     key: "T"
     value {
@@ -4701,11 +4898,11 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/pool3/MaxPool_grad/MaxPoolGrad"
+  name: "train_step/gradients/pvg_model/pool3/MaxPool_grad/MaxPoolGrad"
   op: "MaxPoolGrad"
   input: "pvg_model/conv3/Relu"
   input: "pvg_model/pool3/MaxPool"
-  input: "gradients/pvg_model/flatten4/flatten/Reshape_grad/Reshape"
+  input: "train_step/gradients/pvg_model/flatten4/flatten/Reshape_grad/Reshape"
   attr {
     key: "T"
     value {
@@ -4748,9 +4945,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv3/Relu_grad/ReluGrad"
+  name: "train_step/gradients/pvg_model/conv3/Relu_grad/ReluGrad"
   op: "ReluGrad"
-  input: "gradients/pvg_model/pool3/MaxPool_grad/MaxPoolGrad"
+  input: "train_step/gradients/pvg_model/pool3/MaxPool_grad/MaxPoolGrad"
   input: "pvg_model/conv3/Relu"
   attr {
     key: "T"
@@ -4760,9 +4957,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv3/BiasAdd_grad/BiasAddGrad"
+  name: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/pvg_model/conv3/Relu_grad/ReluGrad"
+  input: "train_step/gradients/pvg_model/conv3/Relu_grad/ReluGrad"
   attr {
     key: "T"
     value {
@@ -4777,16 +4974,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv3/BiasAdd_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/conv3/Relu_grad/ReluGrad"
-  input: "^gradients/pvg_model/conv3/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/pvg_model/conv3/Relu_grad/ReluGrad"
+  input: "^train_step/gradients/pvg_model/conv3/BiasAdd_grad/BiasAddGrad"
 }
 node {
-  name: "gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/conv3/Relu_grad/ReluGrad"
-  input: "^gradients/pvg_model/conv3/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv3/Relu_grad/ReluGrad"
+  input: "^train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4797,16 +4994,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv3/Relu_grad/ReluGrad"
+        s: "loc:@train_step/gradients/pvg_model/conv3/Relu_grad/ReluGrad"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/conv3/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/pvg_model/conv3/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4817,13 +5014,13 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv3/BiasAdd_grad/BiasAddGrad"
+        s: "loc:@train_step/gradients/pvg_model/conv3/BiasAdd_grad/BiasAddGrad"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/conv3/Conv2D_grad/ShapeN"
+  name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/ShapeN"
   op: "ShapeN"
   input: "pvg_model/pool2/MaxPool"
   input: "pvg_model/conv3/weights/read"
@@ -4847,11 +5044,11 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropInput"
+  name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "gradients/pvg_model/conv3/Conv2D_grad/ShapeN"
+  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/ShapeN"
   input: "pvg_model/conv3/weights/read"
-  input: "gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -4889,11 +5086,11 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
+  name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "pvg_model/pool2/MaxPool"
-  input: "gradients/pvg_model/conv3/Conv2D_grad/ShapeN:1"
-  input: "gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/ShapeN:1"
+  input: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -4931,16 +5128,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv3/Conv2D_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropInput"
-  input: "^gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropInput"
+  input: "^train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
 }
 node {
-  name: "gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropInput"
-  input: "^gradients/pvg_model/conv3/Conv2D_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropInput"
+  input: "^train_step/gradients/pvg_model/conv3/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4951,16 +5148,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropInput"
+        s: "loc:@train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropInput"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
-  input: "^gradients/pvg_model/conv3/Conv2D_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^train_step/gradients/pvg_model/conv3/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -4971,17 +5168,17 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
+        s: "loc:@train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/pool2/MaxPool_grad/MaxPoolGrad"
+  name: "train_step/gradients/pvg_model/pool2/MaxPool_grad/MaxPoolGrad"
   op: "MaxPoolGrad"
   input: "pvg_model/conv2/Relu"
   input: "pvg_model/pool2/MaxPool"
-  input: "gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -5024,9 +5221,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv2/Relu_grad/ReluGrad"
+  name: "train_step/gradients/pvg_model/conv2/Relu_grad/ReluGrad"
   op: "ReluGrad"
-  input: "gradients/pvg_model/pool2/MaxPool_grad/MaxPoolGrad"
+  input: "train_step/gradients/pvg_model/pool2/MaxPool_grad/MaxPoolGrad"
   input: "pvg_model/conv2/Relu"
   attr {
     key: "T"
@@ -5036,9 +5233,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv2/BiasAdd_grad/BiasAddGrad"
+  name: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/pvg_model/conv2/Relu_grad/ReluGrad"
+  input: "train_step/gradients/pvg_model/conv2/Relu_grad/ReluGrad"
   attr {
     key: "T"
     value {
@@ -5053,16 +5250,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv2/BiasAdd_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/conv2/Relu_grad/ReluGrad"
-  input: "^gradients/pvg_model/conv2/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/pvg_model/conv2/Relu_grad/ReluGrad"
+  input: "^train_step/gradients/pvg_model/conv2/BiasAdd_grad/BiasAddGrad"
 }
 node {
-  name: "gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/conv2/Relu_grad/ReluGrad"
-  input: "^gradients/pvg_model/conv2/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv2/Relu_grad/ReluGrad"
+  input: "^train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -5073,16 +5270,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv2/Relu_grad/ReluGrad"
+        s: "loc:@train_step/gradients/pvg_model/conv2/Relu_grad/ReluGrad"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/conv2/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/pvg_model/conv2/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -5093,13 +5290,13 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv2/BiasAdd_grad/BiasAddGrad"
+        s: "loc:@train_step/gradients/pvg_model/conv2/BiasAdd_grad/BiasAddGrad"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/conv2/Conv2D_grad/ShapeN"
+  name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/ShapeN"
   op: "ShapeN"
   input: "pvg_model/pool1/MaxPool"
   input: "pvg_model/conv2/weights/read"
@@ -5123,11 +5320,11 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropInput"
+  name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "gradients/pvg_model/conv2/Conv2D_grad/ShapeN"
+  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/ShapeN"
   input: "pvg_model/conv2/weights/read"
-  input: "gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -5165,11 +5362,11 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
+  name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "pvg_model/pool1/MaxPool"
-  input: "gradients/pvg_model/conv2/Conv2D_grad/ShapeN:1"
-  input: "gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/ShapeN:1"
+  input: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -5207,16 +5404,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv2/Conv2D_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropInput"
-  input: "^gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropInput"
+  input: "^train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
 }
 node {
-  name: "gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropInput"
-  input: "^gradients/pvg_model/conv2/Conv2D_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropInput"
+  input: "^train_step/gradients/pvg_model/conv2/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -5227,16 +5424,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropInput"
+        s: "loc:@train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropInput"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
-  input: "^gradients/pvg_model/conv2/Conv2D_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^train_step/gradients/pvg_model/conv2/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -5247,17 +5444,17 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
+        s: "loc:@train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/pool1/MaxPool_grad/MaxPoolGrad"
+  name: "train_step/gradients/pvg_model/pool1/MaxPool_grad/MaxPoolGrad"
   op: "MaxPoolGrad"
   input: "pvg_model/conv1/Relu"
   input: "pvg_model/pool1/MaxPool"
-  input: "gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -5300,9 +5497,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv1/Relu_grad/ReluGrad"
+  name: "train_step/gradients/pvg_model/conv1/Relu_grad/ReluGrad"
   op: "ReluGrad"
-  input: "gradients/pvg_model/pool1/MaxPool_grad/MaxPoolGrad"
+  input: "train_step/gradients/pvg_model/pool1/MaxPool_grad/MaxPoolGrad"
   input: "pvg_model/conv1/Relu"
   attr {
     key: "T"
@@ -5312,9 +5509,9 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv1/BiasAdd_grad/BiasAddGrad"
+  name: "train_step/gradients/pvg_model/conv1/BiasAdd_grad/BiasAddGrad"
   op: "BiasAddGrad"
-  input: "gradients/pvg_model/conv1/Relu_grad/ReluGrad"
+  input: "train_step/gradients/pvg_model/conv1/Relu_grad/ReluGrad"
   attr {
     key: "T"
     value {
@@ -5329,16 +5526,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv1/BiasAdd_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/conv1/BiasAdd_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/conv1/Relu_grad/ReluGrad"
-  input: "^gradients/pvg_model/conv1/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/pvg_model/conv1/Relu_grad/ReluGrad"
+  input: "^train_step/gradients/pvg_model/conv1/BiasAdd_grad/BiasAddGrad"
 }
 node {
-  name: "gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/conv1/Relu_grad/ReluGrad"
-  input: "^gradients/pvg_model/conv1/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv1/Relu_grad/ReluGrad"
+  input: "^train_step/gradients/pvg_model/conv1/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -5349,16 +5546,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv1/Relu_grad/ReluGrad"
+        s: "loc:@train_step/gradients/pvg_model/conv1/Relu_grad/ReluGrad"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/conv1/BiasAdd_grad/BiasAddGrad"
-  input: "^gradients/pvg_model/conv1/BiasAdd_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv1/BiasAdd_grad/BiasAddGrad"
+  input: "^train_step/gradients/pvg_model/conv1/BiasAdd_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -5369,13 +5566,13 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv1/BiasAdd_grad/BiasAddGrad"
+        s: "loc:@train_step/gradients/pvg_model/conv1/BiasAdd_grad/BiasAddGrad"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/conv1/Conv2D_grad/ShapeN"
+  name: "train_step/gradients/pvg_model/conv1/Conv2D_grad/ShapeN"
   op: "ShapeN"
   input: "Reshape"
   input: "pvg_model/conv1/weights/read"
@@ -5399,11 +5596,11 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropInput"
+  name: "train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
-  input: "gradients/pvg_model/conv1/Conv2D_grad/ShapeN"
+  input: "train_step/gradients/pvg_model/conv1/Conv2D_grad/ShapeN"
   input: "pvg_model/conv1/weights/read"
-  input: "gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -5441,11 +5638,11 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropFilter"
+  name: "train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "Reshape"
-  input: "gradients/pvg_model/conv1/Conv2D_grad/ShapeN:1"
-  input: "gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/conv1/Conv2D_grad/ShapeN:1"
+  input: "train_step/gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -5483,16 +5680,16 @@ node {
   }
 }
 node {
-  name: "gradients/pvg_model/conv1/Conv2D_grad/tuple/group_deps"
+  name: "train_step/gradients/pvg_model/conv1/Conv2D_grad/tuple/group_deps"
   op: "NoOp"
-  input: "^gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropInput"
-  input: "^gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropInput"
+  input: "^train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropFilter"
 }
 node {
-  name: "gradients/pvg_model/conv1/Conv2D_grad/tuple/control_dependency"
+  name: "train_step/gradients/pvg_model/conv1/Conv2D_grad/tuple/control_dependency"
   op: "Identity"
-  input: "gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropInput"
-  input: "^gradients/pvg_model/conv1/Conv2D_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropInput"
+  input: "^train_step/gradients/pvg_model/conv1/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -5503,16 +5700,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropInput"
+        s: "loc:@train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropInput"
       }
     }
   }
 }
 node {
-  name: "gradients/pvg_model/conv1/Conv2D_grad/tuple/control_dependency_1"
+  name: "train_step/gradients/pvg_model/conv1/Conv2D_grad/tuple/control_dependency_1"
   op: "Identity"
-  input: "gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropFilter"
-  input: "^gradients/pvg_model/conv1/Conv2D_grad/tuple/group_deps"
+  input: "train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropFilter"
+  input: "^train_step/gradients/pvg_model/conv1/Conv2D_grad/tuple/group_deps"
   attr {
     key: "T"
     value {
@@ -5523,13 +5720,13 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropFilter"
+        s: "loc:@train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropFilter"
       }
     }
   }
 }
 node {
-  name: "beta1_power/initial_value"
+  name: "train_step/beta1_power/initial_value"
   op: "Const"
   attr {
     key: "_class"
@@ -5558,7 +5755,7 @@ node {
   }
 }
 node {
-  name: "beta1_power"
+  name: "train_step/beta1_power"
   op: "VariableV2"
   attr {
     key: "_class"
@@ -5595,10 +5792,10 @@ node {
   }
 }
 node {
-  name: "beta1_power/Assign"
+  name: "train_step/beta1_power/Assign"
   op: "Assign"
-  input: "beta1_power"
-  input: "beta1_power/initial_value"
+  input: "train_step/beta1_power"
+  input: "train_step/beta1_power/initial_value"
   attr {
     key: "T"
     value {
@@ -5627,9 +5824,9 @@ node {
   }
 }
 node {
-  name: "beta1_power/read"
+  name: "train_step/beta1_power/read"
   op: "Identity"
-  input: "beta1_power"
+  input: "train_step/beta1_power"
   attr {
     key: "T"
     value {
@@ -5646,7 +5843,7 @@ node {
   }
 }
 node {
-  name: "beta2_power/initial_value"
+  name: "train_step/beta2_power/initial_value"
   op: "Const"
   attr {
     key: "_class"
@@ -5675,7 +5872,7 @@ node {
   }
 }
 node {
-  name: "beta2_power"
+  name: "train_step/beta2_power"
   op: "VariableV2"
   attr {
     key: "_class"
@@ -5712,10 +5909,10 @@ node {
   }
 }
 node {
-  name: "beta2_power/Assign"
+  name: "train_step/beta2_power/Assign"
   op: "Assign"
-  input: "beta2_power"
-  input: "beta2_power/initial_value"
+  input: "train_step/beta2_power"
+  input: "train_step/beta2_power/initial_value"
   attr {
     key: "T"
     value {
@@ -5744,9 +5941,9 @@ node {
   }
 }
 node {
-  name: "beta2_power/read"
+  name: "train_step/beta2_power/read"
   op: "Identity"
-  input: "beta2_power"
+  input: "train_step/beta2_power"
   attr {
     key: "T"
     value {
@@ -8355,7 +8552,7 @@ node {
   }
 }
 node {
-  name: "Adam/learning_rate"
+  name: "train_step/Adam/learning_rate"
   op: "Const"
   attr {
     key: "dtype"
@@ -8376,7 +8573,7 @@ node {
   }
 }
 node {
-  name: "Adam/beta1"
+  name: "train_step/Adam/beta1"
   op: "Const"
   attr {
     key: "dtype"
@@ -8397,7 +8594,7 @@ node {
   }
 }
 node {
-  name: "Adam/beta2"
+  name: "train_step/Adam/beta2"
   op: "Const"
   attr {
     key: "dtype"
@@ -8418,7 +8615,7 @@ node {
   }
 }
 node {
-  name: "Adam/epsilon"
+  name: "train_step/Adam/epsilon"
   op: "Const"
   attr {
     key: "dtype"
@@ -8439,18 +8636,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/conv1/weights/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/conv1/weights/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/conv1/weights"
   input: "pvg_model/conv1/weights/Adam"
   input: "pvg_model/conv1/weights/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/conv1/Conv2D_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/conv1/Conv2D_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8479,18 +8676,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/conv1/biases/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/conv1/biases/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/conv1/biases"
   input: "pvg_model/conv1/biases/Adam"
   input: "pvg_model/conv1/biases/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8519,18 +8716,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/conv2/weights/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/conv2/weights/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/conv2/weights"
   input: "pvg_model/conv2/weights/Adam"
   input: "pvg_model/conv2/weights/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8559,18 +8756,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/conv2/biases/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/conv2/biases/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/conv2/biases"
   input: "pvg_model/conv2/biases/Adam"
   input: "pvg_model/conv2/biases/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8599,18 +8796,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/conv3/weights/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/conv3/weights/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/conv3/weights"
   input: "pvg_model/conv3/weights/Adam"
   input: "pvg_model/conv3/weights/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8639,18 +8836,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/conv3/biases/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/conv3/biases/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/conv3/biases"
   input: "pvg_model/conv3/biases/Adam"
   input: "pvg_model/conv3/biases/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8679,18 +8876,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/fc5/weights/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/fc5/weights/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/fc5/weights"
   input: "pvg_model/fc5/weights/Adam"
   input: "pvg_model/fc5/weights/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/fc5/MatMul_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/fc5/MatMul_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8719,18 +8916,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/fc5/biases/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/fc5/biases/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/fc5/biases"
   input: "pvg_model/fc5/biases/Adam"
   input: "pvg_model/fc5/biases/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/fc5/BiasAdd_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8759,18 +8956,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/fc6/weights/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/fc6/weights/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/fc6/weights"
   input: "pvg_model/fc6/weights/Adam"
   input: "pvg_model/fc6/weights/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8799,18 +8996,18 @@ node {
   }
 }
 node {
-  name: "Adam/update_pvg_model/fc6/biases/ApplyAdam"
+  name: "train_step/Adam/update_pvg_model/fc6/biases/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/fc6/biases"
   input: "pvg_model/fc6/biases/Adam"
   input: "pvg_model/fc6/biases/Adam_1"
-  input: "beta1_power/read"
-  input: "beta2_power/read"
-  input: "Adam/learning_rate"
-  input: "Adam/beta1"
-  input: "Adam/beta2"
-  input: "Adam/epsilon"
-  input: "gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/fc6/BiasAdd_grad/tuple/control_dependency_1"
   attr {
     key: "T"
     value {
@@ -8839,20 +9036,20 @@ node {
   }
 }
 node {
-  name: "Adam/mul"
+  name: "train_step/Adam/mul"
   op: "Mul"
-  input: "beta1_power/read"
-  input: "Adam/beta1"
-  input: "^Adam/update_pvg_model/conv1/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv1/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv2/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv2/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv3/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv3/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc5/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc5/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc6/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc6/biases/ApplyAdam"
+  input: "train_step/beta1_power/read"
+  input: "train_step/Adam/beta1"
+  input: "^train_step/Adam/update_pvg_model/conv1/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv1/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv2/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv2/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv3/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv3/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc5/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc5/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc6/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc6/biases/ApplyAdam"
   attr {
     key: "T"
     value {
@@ -8869,10 +9066,10 @@ node {
   }
 }
 node {
-  name: "Adam/Assign"
+  name: "train_step/Adam/Assign"
   op: "Assign"
-  input: "beta1_power"
-  input: "Adam/mul"
+  input: "train_step/beta1_power"
+  input: "train_step/Adam/mul"
   attr {
     key: "T"
     value {
@@ -8901,20 +9098,20 @@ node {
   }
 }
 node {
-  name: "Adam/mul_1"
+  name: "train_step/Adam/mul_1"
   op: "Mul"
-  input: "beta2_power/read"
-  input: "Adam/beta2"
-  input: "^Adam/update_pvg_model/conv1/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv1/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv2/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv2/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv3/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv3/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc5/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc5/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc6/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc6/biases/ApplyAdam"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/beta2"
+  input: "^train_step/Adam/update_pvg_model/conv1/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv1/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv2/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv2/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv3/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv3/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc5/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc5/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc6/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc6/biases/ApplyAdam"
   attr {
     key: "T"
     value {
@@ -8931,10 +9128,10 @@ node {
   }
 }
 node {
-  name: "Adam/Assign_1"
+  name: "train_step/Adam/Assign_1"
   op: "Assign"
-  input: "beta2_power"
-  input: "Adam/mul_1"
+  input: "train_step/beta2_power"
+  input: "train_step/Adam/mul_1"
   attr {
     key: "T"
     value {
@@ -8963,20 +9160,20 @@ node {
   }
 }
 node {
-  name: "Adam"
+  name: "train_step/Adam"
   op: "NoOp"
-  input: "^Adam/update_pvg_model/conv1/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv1/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv2/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv2/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv3/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/conv3/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc5/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc5/biases/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc6/weights/ApplyAdam"
-  input: "^Adam/update_pvg_model/fc6/biases/ApplyAdam"
-  input: "^Adam/Assign"
-  input: "^Adam/Assign_1"
+  input: "^train_step/Adam/update_pvg_model/conv1/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv1/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv2/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv2/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv3/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/conv3/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc5/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc5/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc6/weights/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/fc6/biases/ApplyAdam"
+  input: "^train_step/Adam/Assign"
+  input: "^train_step/Adam/Assign_1"
 }
 node {
   name: "accuracy/ArgMax/dimension"
@@ -9169,12 +9366,16 @@ node {
 node {
   name: "Merge/MergeSummary"
   op: "MergeSummary"
+  input: "input_1"
+  input: "pvg_model/kernel"
+  input: "pvg_model/bias"
+  input: "pvg_model/act"
   input: "total_loss_1"
   input: "accuracy_1"
   attr {
     key: "N"
     value {
-      i: 2
+      i: 6
     }
   }
 }
@@ -9218,8 +9419,6 @@ node {
             size: 32
           }
         }
-        string_val: "beta1_power"
-        string_val: "beta2_power"
         string_val: "pvg_model/conv1/biases"
         string_val: "pvg_model/conv1/biases/Adam"
         string_val: "pvg_model/conv1/biases/Adam_1"
@@ -9250,6 +9449,8 @@ node {
         string_val: "pvg_model/fc6/weights"
         string_val: "pvg_model/fc6/weights/Adam"
         string_val: "pvg_model/fc6/weights/Adam_1"
+        string_val: "train_step/beta1_power"
+        string_val: "train_step/beta2_power"
       }
     }
   }
@@ -9315,8 +9516,6 @@ node {
   input: "save/Const"
   input: "save/SaveV2/tensor_names"
   input: "save/SaveV2/shape_and_slices"
-  input: "beta1_power"
-  input: "beta2_power"
   input: "pvg_model/conv1/biases"
   input: "pvg_model/conv1/biases/Adam"
   input: "pvg_model/conv1/biases/Adam_1"
@@ -9347,6 +9546,8 @@ node {
   input: "pvg_model/fc6/weights"
   input: "pvg_model/fc6/weights/Adam"
   input: "pvg_model/fc6/weights/Adam_1"
+  input: "train_step/beta1_power"
+  input: "train_step/beta2_power"
   attr {
     key: "dtypes"
     value {
@@ -9426,7 +9627,7 @@ node {
             size: 1
           }
         }
-        string_val: "beta1_power"
+        string_val: "pvg_model/conv1/biases"
       }
     }
   }
@@ -9473,7 +9674,7 @@ node {
 node {
   name: "save/Assign"
   op: "Assign"
-  input: "beta1_power"
+  input: "pvg_model/conv1/biases"
   input: "save/RestoreV2"
   attr {
     key: "T"
@@ -9521,7 +9722,7 @@ node {
             size: 1
           }
         }
-        string_val: "beta2_power"
+        string_val: "pvg_model/conv1/biases/Adam"
       }
     }
   }
@@ -9568,7 +9769,7 @@ node {
 node {
   name: "save/Assign_1"
   op: "Assign"
-  input: "beta2_power"
+  input: "pvg_model/conv1/biases/Adam"
   input: "save/RestoreV2_1"
   attr {
     key: "T"
@@ -9616,7 +9817,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/biases"
+        string_val: "pvg_model/conv1/biases/Adam_1"
       }
     }
   }
@@ -9663,7 +9864,7 @@ node {
 node {
   name: "save/Assign_2"
   op: "Assign"
-  input: "pvg_model/conv1/biases"
+  input: "pvg_model/conv1/biases/Adam_1"
   input: "save/RestoreV2_2"
   attr {
     key: "T"
@@ -9711,7 +9912,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/biases/Adam"
+        string_val: "pvg_model/conv1/weights"
       }
     }
   }
@@ -9758,7 +9959,7 @@ node {
 node {
   name: "save/Assign_3"
   op: "Assign"
-  input: "pvg_model/conv1/biases/Adam"
+  input: "pvg_model/conv1/weights"
   input: "save/RestoreV2_3"
   attr {
     key: "T"
@@ -9770,7 +9971,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/conv1/weights"
       }
     }
   }
@@ -9806,7 +10007,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/biases/Adam_1"
+        string_val: "pvg_model/conv1/weights/Adam"
       }
     }
   }
@@ -9853,7 +10054,7 @@ node {
 node {
   name: "save/Assign_4"
   op: "Assign"
-  input: "pvg_model/conv1/biases/Adam_1"
+  input: "pvg_model/conv1/weights/Adam"
   input: "save/RestoreV2_4"
   attr {
     key: "T"
@@ -9865,7 +10066,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/conv1/weights"
       }
     }
   }
@@ -9901,7 +10102,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/weights"
+        string_val: "pvg_model/conv1/weights/Adam_1"
       }
     }
   }
@@ -9948,7 +10149,7 @@ node {
 node {
   name: "save/Assign_5"
   op: "Assign"
-  input: "pvg_model/conv1/weights"
+  input: "pvg_model/conv1/weights/Adam_1"
   input: "save/RestoreV2_5"
   attr {
     key: "T"
@@ -9996,7 +10197,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/weights/Adam"
+        string_val: "pvg_model/conv2/biases"
       }
     }
   }
@@ -10043,7 +10244,7 @@ node {
 node {
   name: "save/Assign_6"
   op: "Assign"
-  input: "pvg_model/conv1/weights/Adam"
+  input: "pvg_model/conv2/biases"
   input: "save/RestoreV2_6"
   attr {
     key: "T"
@@ -10055,7 +10256,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/weights"
+        s: "loc:@pvg_model/conv2/biases"
       }
     }
   }
@@ -10091,7 +10292,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/weights/Adam_1"
+        string_val: "pvg_model/conv2/biases/Adam"
       }
     }
   }
@@ -10138,7 +10339,7 @@ node {
 node {
   name: "save/Assign_7"
   op: "Assign"
-  input: "pvg_model/conv1/weights/Adam_1"
+  input: "pvg_model/conv2/biases/Adam"
   input: "save/RestoreV2_7"
   attr {
     key: "T"
@@ -10150,7 +10351,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/weights"
+        s: "loc:@pvg_model/conv2/biases"
       }
     }
   }
@@ -10186,7 +10387,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/biases"
+        string_val: "pvg_model/conv2/biases/Adam_1"
       }
     }
   }
@@ -10233,7 +10434,7 @@ node {
 node {
   name: "save/Assign_8"
   op: "Assign"
-  input: "pvg_model/conv2/biases"
+  input: "pvg_model/conv2/biases/Adam_1"
   input: "save/RestoreV2_8"
   attr {
     key: "T"
@@ -10281,7 +10482,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/biases/Adam"
+        string_val: "pvg_model/conv2/weights"
       }
     }
   }
@@ -10328,7 +10529,7 @@ node {
 node {
   name: "save/Assign_9"
   op: "Assign"
-  input: "pvg_model/conv2/biases/Adam"
+  input: "pvg_model/conv2/weights"
   input: "save/RestoreV2_9"
   attr {
     key: "T"
@@ -10340,7 +10541,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/biases"
+        s: "loc:@pvg_model/conv2/weights"
       }
     }
   }
@@ -10376,7 +10577,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/biases/Adam_1"
+        string_val: "pvg_model/conv2/weights/Adam"
       }
     }
   }
@@ -10423,7 +10624,7 @@ node {
 node {
   name: "save/Assign_10"
   op: "Assign"
-  input: "pvg_model/conv2/biases/Adam_1"
+  input: "pvg_model/conv2/weights/Adam"
   input: "save/RestoreV2_10"
   attr {
     key: "T"
@@ -10435,7 +10636,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/biases"
+        s: "loc:@pvg_model/conv2/weights"
       }
     }
   }
@@ -10471,7 +10672,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/weights"
+        string_val: "pvg_model/conv2/weights/Adam_1"
       }
     }
   }
@@ -10518,7 +10719,7 @@ node {
 node {
   name: "save/Assign_11"
   op: "Assign"
-  input: "pvg_model/conv2/weights"
+  input: "pvg_model/conv2/weights/Adam_1"
   input: "save/RestoreV2_11"
   attr {
     key: "T"
@@ -10566,7 +10767,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/weights/Adam"
+        string_val: "pvg_model/conv3/biases"
       }
     }
   }
@@ -10613,7 +10814,7 @@ node {
 node {
   name: "save/Assign_12"
   op: "Assign"
-  input: "pvg_model/conv2/weights/Adam"
+  input: "pvg_model/conv3/biases"
   input: "save/RestoreV2_12"
   attr {
     key: "T"
@@ -10625,7 +10826,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/weights"
+        s: "loc:@pvg_model/conv3/biases"
       }
     }
   }
@@ -10661,7 +10862,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/weights/Adam_1"
+        string_val: "pvg_model/conv3/biases/Adam"
       }
     }
   }
@@ -10708,7 +10909,7 @@ node {
 node {
   name: "save/Assign_13"
   op: "Assign"
-  input: "pvg_model/conv2/weights/Adam_1"
+  input: "pvg_model/conv3/biases/Adam"
   input: "save/RestoreV2_13"
   attr {
     key: "T"
@@ -10720,7 +10921,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/weights"
+        s: "loc:@pvg_model/conv3/biases"
       }
     }
   }
@@ -10756,7 +10957,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/biases"
+        string_val: "pvg_model/conv3/biases/Adam_1"
       }
     }
   }
@@ -10803,7 +11004,7 @@ node {
 node {
   name: "save/Assign_14"
   op: "Assign"
-  input: "pvg_model/conv3/biases"
+  input: "pvg_model/conv3/biases/Adam_1"
   input: "save/RestoreV2_14"
   attr {
     key: "T"
@@ -10851,7 +11052,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/biases/Adam"
+        string_val: "pvg_model/conv3/weights"
       }
     }
   }
@@ -10898,7 +11099,7 @@ node {
 node {
   name: "save/Assign_15"
   op: "Assign"
-  input: "pvg_model/conv3/biases/Adam"
+  input: "pvg_model/conv3/weights"
   input: "save/RestoreV2_15"
   attr {
     key: "T"
@@ -10910,7 +11111,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/biases"
+        s: "loc:@pvg_model/conv3/weights"
       }
     }
   }
@@ -10946,7 +11147,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/biases/Adam_1"
+        string_val: "pvg_model/conv3/weights/Adam"
       }
     }
   }
@@ -10993,7 +11194,7 @@ node {
 node {
   name: "save/Assign_16"
   op: "Assign"
-  input: "pvg_model/conv3/biases/Adam_1"
+  input: "pvg_model/conv3/weights/Adam"
   input: "save/RestoreV2_16"
   attr {
     key: "T"
@@ -11005,7 +11206,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/biases"
+        s: "loc:@pvg_model/conv3/weights"
       }
     }
   }
@@ -11041,7 +11242,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/weights"
+        string_val: "pvg_model/conv3/weights/Adam_1"
       }
     }
   }
@@ -11088,7 +11289,7 @@ node {
 node {
   name: "save/Assign_17"
   op: "Assign"
-  input: "pvg_model/conv3/weights"
+  input: "pvg_model/conv3/weights/Adam_1"
   input: "save/RestoreV2_17"
   attr {
     key: "T"
@@ -11136,7 +11337,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/weights/Adam"
+        string_val: "pvg_model/fc5/biases"
       }
     }
   }
@@ -11183,7 +11384,7 @@ node {
 node {
   name: "save/Assign_18"
   op: "Assign"
-  input: "pvg_model/conv3/weights/Adam"
+  input: "pvg_model/fc5/biases"
   input: "save/RestoreV2_18"
   attr {
     key: "T"
@@ -11195,7 +11396,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/weights"
+        s: "loc:@pvg_model/fc5/biases"
       }
     }
   }
@@ -11231,7 +11432,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/weights/Adam_1"
+        string_val: "pvg_model/fc5/biases/Adam"
       }
     }
   }
@@ -11278,7 +11479,7 @@ node {
 node {
   name: "save/Assign_19"
   op: "Assign"
-  input: "pvg_model/conv3/weights/Adam_1"
+  input: "pvg_model/fc5/biases/Adam"
   input: "save/RestoreV2_19"
   attr {
     key: "T"
@@ -11290,7 +11491,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/weights"
+        s: "loc:@pvg_model/fc5/biases"
       }
     }
   }
@@ -11326,7 +11527,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/biases"
+        string_val: "pvg_model/fc5/biases/Adam_1"
       }
     }
   }
@@ -11373,7 +11574,7 @@ node {
 node {
   name: "save/Assign_20"
   op: "Assign"
-  input: "pvg_model/fc5/biases"
+  input: "pvg_model/fc5/biases/Adam_1"
   input: "save/RestoreV2_20"
   attr {
     key: "T"
@@ -11421,7 +11622,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/biases/Adam"
+        string_val: "pvg_model/fc5/weights"
       }
     }
   }
@@ -11468,7 +11669,7 @@ node {
 node {
   name: "save/Assign_21"
   op: "Assign"
-  input: "pvg_model/fc5/biases/Adam"
+  input: "pvg_model/fc5/weights"
   input: "save/RestoreV2_21"
   attr {
     key: "T"
@@ -11480,7 +11681,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/biases"
+        s: "loc:@pvg_model/fc5/weights"
       }
     }
   }
@@ -11516,7 +11717,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/biases/Adam_1"
+        string_val: "pvg_model/fc5/weights/Adam"
       }
     }
   }
@@ -11563,7 +11764,7 @@ node {
 node {
   name: "save/Assign_22"
   op: "Assign"
-  input: "pvg_model/fc5/biases/Adam_1"
+  input: "pvg_model/fc5/weights/Adam"
   input: "save/RestoreV2_22"
   attr {
     key: "T"
@@ -11575,7 +11776,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/biases"
+        s: "loc:@pvg_model/fc5/weights"
       }
     }
   }
@@ -11611,7 +11812,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/weights"
+        string_val: "pvg_model/fc5/weights/Adam_1"
       }
     }
   }
@@ -11658,7 +11859,7 @@ node {
 node {
   name: "save/Assign_23"
   op: "Assign"
-  input: "pvg_model/fc5/weights"
+  input: "pvg_model/fc5/weights/Adam_1"
   input: "save/RestoreV2_23"
   attr {
     key: "T"
@@ -11706,7 +11907,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/weights/Adam"
+        string_val: "pvg_model/fc6/biases"
       }
     }
   }
@@ -11753,7 +11954,7 @@ node {
 node {
   name: "save/Assign_24"
   op: "Assign"
-  input: "pvg_model/fc5/weights/Adam"
+  input: "pvg_model/fc6/biases"
   input: "save/RestoreV2_24"
   attr {
     key: "T"
@@ -11765,7 +11966,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/weights"
+        s: "loc:@pvg_model/fc6/biases"
       }
     }
   }
@@ -11801,7 +12002,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/weights/Adam_1"
+        string_val: "pvg_model/fc6/biases/Adam"
       }
     }
   }
@@ -11848,7 +12049,7 @@ node {
 node {
   name: "save/Assign_25"
   op: "Assign"
-  input: "pvg_model/fc5/weights/Adam_1"
+  input: "pvg_model/fc6/biases/Adam"
   input: "save/RestoreV2_25"
   attr {
     key: "T"
@@ -11860,7 +12061,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/weights"
+        s: "loc:@pvg_model/fc6/biases"
       }
     }
   }
@@ -11896,7 +12097,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/biases"
+        string_val: "pvg_model/fc6/biases/Adam_1"
       }
     }
   }
@@ -11943,7 +12144,7 @@ node {
 node {
   name: "save/Assign_26"
   op: "Assign"
-  input: "pvg_model/fc6/biases"
+  input: "pvg_model/fc6/biases/Adam_1"
   input: "save/RestoreV2_26"
   attr {
     key: "T"
@@ -11991,7 +12192,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/biases/Adam"
+        string_val: "pvg_model/fc6/weights"
       }
     }
   }
@@ -12038,7 +12239,7 @@ node {
 node {
   name: "save/Assign_27"
   op: "Assign"
-  input: "pvg_model/fc6/biases/Adam"
+  input: "pvg_model/fc6/weights"
   input: "save/RestoreV2_27"
   attr {
     key: "T"
@@ -12050,7 +12251,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/biases"
+        s: "loc:@pvg_model/fc6/weights"
       }
     }
   }
@@ -12086,7 +12287,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/biases/Adam_1"
+        string_val: "pvg_model/fc6/weights/Adam"
       }
     }
   }
@@ -12133,7 +12334,7 @@ node {
 node {
   name: "save/Assign_28"
   op: "Assign"
-  input: "pvg_model/fc6/biases/Adam_1"
+  input: "pvg_model/fc6/weights/Adam"
   input: "save/RestoreV2_28"
   attr {
     key: "T"
@@ -12145,7 +12346,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/biases"
+        s: "loc:@pvg_model/fc6/weights"
       }
     }
   }
@@ -12181,7 +12382,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/weights"
+        string_val: "pvg_model/fc6/weights/Adam_1"
       }
     }
   }
@@ -12228,7 +12429,7 @@ node {
 node {
   name: "save/Assign_29"
   op: "Assign"
-  input: "pvg_model/fc6/weights"
+  input: "pvg_model/fc6/weights/Adam_1"
   input: "save/RestoreV2_29"
   attr {
     key: "T"
@@ -12276,7 +12477,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/weights/Adam"
+        string_val: "train_step/beta1_power"
       }
     }
   }
@@ -12323,7 +12524,7 @@ node {
 node {
   name: "save/Assign_30"
   op: "Assign"
-  input: "pvg_model/fc6/weights/Adam"
+  input: "train_step/beta1_power"
   input: "save/RestoreV2_30"
   attr {
     key: "T"
@@ -12335,7 +12536,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/weights"
+        s: "loc:@pvg_model/conv1/biases"
       }
     }
   }
@@ -12371,7 +12572,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/weights/Adam_1"
+        string_val: "train_step/beta2_power"
       }
     }
   }
@@ -12418,7 +12619,7 @@ node {
 node {
   name: "save/Assign_31"
   op: "Assign"
-  input: "pvg_model/fc6/weights/Adam_1"
+  input: "train_step/beta2_power"
   input: "save/RestoreV2_31"
   attr {
     key: "T"
@@ -12430,7 +12631,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/weights"
+        s: "loc:@pvg_model/conv1/biases"
       }
     }
   }
@@ -12496,8 +12697,8 @@ node {
   input: "^pvg_model/fc5/biases/Assign"
   input: "^pvg_model/fc6/weights/Assign"
   input: "^pvg_model/fc6/biases/Assign"
-  input: "^beta1_power/Assign"
-  input: "^beta2_power/Assign"
+  input: "^train_step/beta1_power/Assign"
+  input: "^train_step/beta2_power/Assign"
   input: "^pvg_model/conv1/weights/Adam/Assign"
   input: "^pvg_model/conv1/weights/Adam_1/Assign"
   input: "^pvg_model/conv1/biases/Adam/Assign"

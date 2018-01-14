@@ -21,8 +21,10 @@ logs_path = "/tmp/instr"
 #tensorboard --logdir=run1:/tmp/instr/ --port 6006
 
 
-def model(net, keep_prob):
-	net = tf.reshape(net, [-1, 28, 28, 1])
+def model(inp, keep_prob):
+	net = tf.reshape(inp, [-1, 28, 28, 1])
+
+	tf.summary.image('input', tf.reshape(inp, [-1, 28, 28, 1]), 10)
 
 	with tf.variable_scope(MODEL_NAME):
 		with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
@@ -37,6 +39,12 @@ def model(net, keep_prob):
 				net = slim.fully_connected(net, 500, activation_fn = tf.nn.sigmoid, scope='fc5')
 				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout6')
 				net = slim.fully_connected(net, 3, activation_fn=None, scope='fc6')
+
+				fc6_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'pvg_model/fc6')
+				tf.summary.histogram('kernel', fc6_vars[0])
+				tf.summary.histogram('bias', fc6_vars[1])
+				tf.summary.histogram('act', net)
+
 	output = tf.identity(net, name='output')
 	# outputs = tf.nn.softmax(net, name='output')
 	return net
@@ -69,7 +77,15 @@ def train():
 
 	tf.summary.scalar("total_loss", total_loss)
 	tf.summary.scalar("accuracy", accuracy)
-	tf.summary.scalar("train_step", train_step)
+	# tf.summary.scalar("train_step", optimizer)
+
+
+
+	# fc6 = [v for v in tf.trainable_variables() if v.name == 'pvg_model/fc6/weights:0'][0]
+	#
+	# tf.summary.histogram("fc6_weight", fc6)
+
+
 
 	#MERGES ALL SUMMARIES INTO ONE OPERATION
 	#THIS CAN BE EXECUTED IN A SESSION
@@ -133,12 +149,7 @@ def train():
 													labels_placeholder: labels_val,
 													keep_prob_placeholder: 1.0}))
 
-		a=pickle.load(open('processed_data/train_data.p', 'rb'))
-		a,_,_ = normalize_data(a)
-		b = pickle.load(open('processed_data/train_labels.p', 'rb'))
-		print('\n\ntrain Accuracy:',accuracy.eval({data_placeholder: a,
-													labels_placeholder: b,
-													keep_prob_placeholder: 1.0}))
+
 
 		print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - start_time)))
 
@@ -190,7 +201,7 @@ def main():
 
 	train()
 
-	export_model([input_node_name, keep_prob_name], output_node_name)
+	# export_model([input_node_name, keep_prob_name], output_node_name)
 
 if __name__ == '__main__':
 	main()
