@@ -84,10 +84,10 @@ class DataUtil:
 
 
 
-def model(inp, keep_prob):
-	net = tf.reshape(inp, [-1, 28, 28, 1])
+def model(net, keep_prob):
+	net = tf.reshape(net, [-1, 28, 28, 1])
 
-	tf.summary.image('input', tf.reshape(inp, [-1, 28, 28, 1]), 10)
+	tf.summary.image('input', net, 10)
 
 	with tf.variable_scope(MODEL_NAME):
 		with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
@@ -101,12 +101,14 @@ def model(inp, keep_prob):
 				net = slim.flatten(net, scope='flatten4')
 				net = slim.fully_connected(net, 500, activation_fn = tf.nn.sigmoid, scope='fc5')
 				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout6')
-				net = slim.fully_connected(net, 3, activation_fn=None, scope='fc6')
+				net = slim.fully_connected(net, 4, activation_fn=None, scope='fc6')
 
 				fc6_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'pvg_model/fc6')
-				tf.summary.histogram('weights', fc6_vars[0])
-				tf.summary.histogram('bias', fc6_vars[1])
-				tf.summary.histogram('output', net)
+
+				with tf.name_scope('fc6'):
+					tf.summary.histogram('weights', fc6_vars[0])
+					tf.summary.histogram('bias', fc6_vars[1])
+					tf.summary.histogram('output', net)
 
 	output = tf.identity(net, name='output')
 	# outputs = tf.nn.softmax(net, name='output')
@@ -117,7 +119,7 @@ def model(inp, keep_prob):
 
 def train():
 
-	data_util = DataUtil(batch_size = 128, num_epochs = 5)
+	data_util = DataUtil(batch_size = 128, num_epochs = 7)
 
 
 
@@ -161,16 +163,7 @@ def train():
 
 		while data_util.curr_epoch <= data_util.num_epochs:
 
-			img_batch, labels_batch = data_util.get_next_batch()
-
-			_, summary = sess.run([train_step, summary_op],
-												feed_dict = {data_placeholder: img_batch,
-												labels_placeholder: labels_batch,
-												keep_prob_placeholder: 0.5})
-
-
-			train_writer.add_summary(summary, data_util.global_num)
-
+			'''VALIDATION ACCURACY'''
 			if data_util.global_num % 30 == 0:
 				# print('inside val')
 				with tf.name_scope('val_acc'):
@@ -182,11 +175,36 @@ def train():
 
 
 
+			'''ACTUAL TRAINING'''
+			img_batch, labels_batch = data_util.get_next_batch()
+
+			_, summary = sess.run([train_step, summary_op],
+												feed_dict = {data_placeholder: img_batch,
+												labels_placeholder: labels_batch,
+												keep_prob_placeholder: 0.5})
+
+
+			train_writer.add_summary(summary, data_util.global_num)
+
+
+
+
+
+
+
+
+		with tf.name_scope('val_acc'):
+			_, summary_val = sess.run([accuracy, summary_op],
+							feed_dict = {data_placeholder: data_util.images_val_norm,
+							labels_placeholder: data_util.labels_val,
+							keep_prob_placeholder: 1.0})
+		test_writer.add_summary(summary_val, data_util.global_num)
+
 		#TRAINING DONE!!!!!!!!!!!!!!
 		#VAL IMAGES ALREADY NORMALIZED
 		print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: data_util.images_val_norm,
-													labels_placeholder: data_util.labels_val,
-													keep_prob_placeholder: 1.0}))
+											labels_placeholder: data_util.labels_val,
+											keep_prob_placeholder: 1.0}))
 
 
 

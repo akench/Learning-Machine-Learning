@@ -36,13 +36,16 @@ def make_full_data():
 
 	piano_norm = pickle.load(open('processed_data/piano_data.p', 'rb'))
 	guitar_norm = pickle.load(open('processed_data/guitar_data.p', 'rb'))
+	violin_norm = pickle.load(open('processed_data/violin_data.p', 'rb'))
 	neither_norm = pickle.load(open('processed_data/neither_data.p', 'rb'))
 	print('piano', len(piano_norm))
 	print('guitar', len(guitar_norm))
+	print('violin', len(violin_norm))
+	print('neither', len(neither_norm))
 
-	all_data = list(piano_norm) + list(guitar_norm) + list(neither_norm)
+	all_data = list(piano_norm) + list(guitar_norm) + list(violin_norm) + list(neither_norm)
 
-	all_labels = list(np.full(len(piano_norm), 0)) + list(np.full(len(guitar_norm), 1)) + list(np.full(len(neither_norm), 2))
+	all_labels = list(np.full(len(piano_norm), 0)) + list(np.full(len(guitar_norm), 1)) + list(np.full(len(violin_norm), 2)) + list(np.full(len(neither_norm), 3))
 
 	from sklearn.utils import shuffle
 	all_data, all_labels = shuffle(all_data, all_labels)
@@ -73,9 +76,9 @@ def view_data(start, end):
 		plt.imshow(arr)
 		plt.show()
 
-# 
+#
 # start_time = time.time()
-# make_data_per_class(class_list=['piano', 'guitar', 'neither'])
+# make_data_per_class(class_list=['piano', 'guitar', 'violin', 'neither'])
 # data, labels = make_full_data()
 # split_data(data, labels)
 # view_data(start = 123, end = 133)

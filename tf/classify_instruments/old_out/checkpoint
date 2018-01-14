@@ -1,0 +1,2 @@
+model_checkpoint_path: "pvg_model.chkp"
+all_model_checkpoint_paths: "pvg_model.chkp"

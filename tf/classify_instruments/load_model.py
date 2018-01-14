@@ -28,7 +28,7 @@ def model(net, keep_prob):
 				net = slim.flatten(net, scope='flatten4')
 				net = slim.fully_connected(net, 500, activation_fn = tf.nn.sigmoid, scope='fc5')
 				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout5')
-				net = slim.fully_connected(net, 2, activation_fn=None, scope='fc6')
+				net = slim.fully_connected(net, 4, activation_fn=None, scope='fc6')
 	return net
 
 
@@ -52,29 +52,20 @@ def make_prediction(data, is_file_path):
 		saver = tf.train.Saver()
 		saver.restore(sess, 'out/pvg_model.chkp')
 
-		# var = [v for v in tf.trainable_variables() if v.name == "pvg_model/conv1/weights:0"]
-		# print(sess.run(var)[0][0][0][0][0])
-
 
 		logits = sess.run(prediction, feed_dict={data_placeholder: data, keep_prob_placeholder: 1.0})
 		logits = tf.squeeze(logits)
 		logits_arr = sess.run(logits)
 
 		print('LOGITS =', logits_arr)
-		# if abs(logits_arr[0] - logits_arr[1]) < 100:
-		# 	return 'neither'
 
 		softmax_output = tf.nn.softmax(logits = logits_arr)
 		probs = sess.run(softmax_output)
+		print('probs = ', probs)
+
 		n = sess.run(tf.argmax(softmax_output))
 
-		#
-		if n == 0:
-			return 'piano keyboard, ' + str(probs[n])
-		else:
-			return 'acoustic guitar, ' + str(probs[n])
-		return 'hi'
-
+		return {0: 'piano', 1: 'guitar', 2: 'violin', 3: 'neither'}[n] + ': ' + str(probs[n]) + '%'
 
 
 def accuracy_on_test_data(test_data, test_labels):
@@ -107,3 +98,6 @@ def create_test_data_and_labels(folder_name, label):
 
 	labels = np.full(len(data), label)
 	pickle.dump(labels, open('processed_data/' + folder_name + '_labels.p', 'wb'))
+
+
+print(make_prediction('org_data/mult.jpeg', True))
