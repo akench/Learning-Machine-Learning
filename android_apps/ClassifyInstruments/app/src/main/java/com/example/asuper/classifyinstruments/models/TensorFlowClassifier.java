@@ -29,6 +29,7 @@ import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 public class TensorFlowClassifier implements Classifier {
 
     private static final float THRESHOLD = 0.5f;
+    private static final int NUM_CLASSES  = 3;
 
     private TensorFlowInferenceInterface tfHelper;
 
@@ -48,7 +49,6 @@ public class TensorFlowClassifier implements Classifier {
         List<String> labels = new ArrayList<>();
         while ((line = br.readLine()) != null) {
             labels.add(line);
-            Log.d("label", "LABEL!!!!!!  " + line);
         }
 
         br.close();
@@ -70,13 +70,12 @@ public class TensorFlowClassifier implements Classifier {
         classifier.labels = readLabels(assetManager, labelFile);
 
         classifier.tfHelper = new TensorFlowInferenceInterface(assetManager, modelPath);
-        int numClasses = 2;
 
         classifier.inputSize = inputSize;
 
         classifier.outputNames = new String[] { outputName };
 
-        classifier.output = new float[numClasses];
+        classifier.output = new float[NUM_CLASSES];
 
 
         return classifier;

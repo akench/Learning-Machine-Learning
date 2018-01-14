@@ -33,7 +33,7 @@ def model(net, keep_prob):
 				net = slim.flatten(net, scope='flatten4')
 				net = slim.fully_connected(net, 500, activation_fn = tf.nn.sigmoid, scope='fc5')
 				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout6')
-				net = slim.fully_connected(net, 2, activation_fn=None, scope='fc6')
+				net = slim.fully_connected(net, 3, activation_fn=None, scope='fc6')
 	output = tf.identity(net, name='output')
 	# outputs = tf.nn.softmax(net, name='output')
 	return net

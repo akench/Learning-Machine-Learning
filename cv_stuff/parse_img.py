@@ -43,7 +43,11 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 			)
 		elif crop_type == 'random':
 
-			start_width  = randint(w//8, w - h)
+			if w//8 > w-h:
+				start_width = randint(0, w - h)
+			else:
+				start_width  = randint(w//8, w - h)
+				
 			img = img.crop(
 				(
 					start_width,
@@ -72,7 +76,11 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = 28):
 			)
 		elif crop_type == 'random':
 
-			start_height  = randint(h // 8, h - w)
+			if h // 8 > h - w:
+				start_height = randint(0, h-w)
+			else:
+				start_height  = randint(h // 8, h - w)
+
 			img = img.crop(
 				(
 					0,
@@ -137,6 +145,7 @@ def rand_rotate_and_crop(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
 	processed_images = []
 
 	for path in file_paths_list:
+		print(path)
 		img = Image.open(path)
 
 		for _ in range(rots_per_img):

@@ -220,11 +220,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 			float[] pixels = bitmapToPixels(processed_image);
 
-			for(float f : pixels){
-			    Log.d("value", "" + f);
-            }
 
-			List<Float> mean = null, std = null;
+			List<Float> mean, std;
 			try {
                 mean = getPopMean(getAssets(), "popMean.txt");
                 std = getPopStd(getAssets(), "popSTD.txt");
@@ -247,6 +244,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 				else if(res.getLabel().equals("1")){
 					text += "Guitar\n";
 				}
+				else if(res.getLabel().equals("2")){
+				    text += "Neither\n";
+                }
 
 				text += ("Probability:" + res.getConf()*100 + "%\n");
 			}
@@ -278,11 +278,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int[] intPix = new int[PIXEL_WIDTH * PIXEL_WIDTH];
         bmp.getPixels(intPix, 0, bmp.getWidth(), 0, 0,
                 bmp.getWidth(), bmp.getHeight());
-
-
-        for(int i : intPix){
-            Log.d("intpix", ""+i);
-        }
 
         float[] pixels = new float[intPix.length];
 
