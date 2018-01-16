@@ -18,39 +18,67 @@ def _int64_feature(value):
 def _bytes_feature(value):
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
-def serialize():
-	with tf.python_io.TFRecordWriter('dataset/mnist.tfrecords') as w:
+def serialize(all_data, labels, file_path, data_purpose):
+	with tf.python_io.TFRecordWriter(file_path) as w:
 
-		i = 0
-		for image, label in zip(images, labels):
+		for data, label in zip(all_data, labels):
 
-			if i%10000 == 0:
-				print(i)
-
-			feature = {'number': _int64_feature(label),  'input': _bytes_feature(np.array(image).tobytes())}
-			# feature = {'number': _int64_feature(label),  'input': _bytes_feature(image.tobytes())}
+			feature = {'label': _int64_feature(label),  'data': _bytes_feature(data.tobytes())}
 
 			example = tf.train.Example(features=tf.train.Features(feature=feature))
 
 			w.write(example.SerializeToString())
 
-			i+=1
 		print('done serializing')
 
 
 
 
-def deserialize():
-	serialized_example = helpers.get_serialized_examples(['mnist.tfrecords'], 1)
-
-	batch = helpers.generate_batch(serialized_example, batch_size = 100, capacity = 10, shuffle = False)
-
-	feature = {'image': tf.FixedLenFeature([], tf.float32),  'label': tf.FixedLenFeature([], tf.int64)}
-	deserialized = helpers.tfrecord_deserializer(batch, annotation_map = feature, classes = ['label'], shape = (1, 784, 1), batch_size = 100)
+def deserialize(file_path, data_purpose, batch_size):
 	
-	print(deserialized[0])
-	return deserialized
+	with tf.Session() as sess:
+	    feature = {data_purpose + '/data' : tf.FixedLenFeature([], tf.string),
+	               data_purpose + '/label' : tf.FixedLenFeature([], tf.int64)}
 
-serialize()
+	    filename_queue = tf.train.string_input_producer([file_path], num_epochs=1)
 
+	    reader = tf.TFRecordReader()
+	    _, serialized_example = reader.read(filename_queue)
+
+	    features = tf.parse_single_example(serialized_example, features=feature)
+
+	    image = tf.decode_raw(features[data_purpose + '/data'], tf.float32)
+	    
+	    # Cast label data into int32
+	    label = tf.cast(features[data_purpose + '/label'], tf.int32)
+	    # Reshape image data into the original shape
+	    image = tf.reshape(image, [28, 28])
+	    
+	    # Any preprocessing here ...
+	    
+	    # Creates batches by randomly shuffling tensors
+	    images, labels = tf.train.shuffle_batch([image, label], batch_size=batch_size, capacity=3*batch_size, 
+	    	num_threads=1, min_after_dequeue=batch_size)
+
+
+	    init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
+	    sess.run(init_op)
+
+	    coord = tf.train.Coordinator()
+
+	    threads = tf.train.start_queue_runners(coord=coord)
+
+	    img, lbl = sess.run([images, labels])
+
+	    coord.request_stop()
+	    
+	    coord.join(threads)
+
+
+# from tensorflow.examples.tutorials.mnist import input_data
+# mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+# x = mnist.train.images
+# y = mnist.train.labels
+
+# serialize(all_data = x, labels = y, file_path = 'test/test.tfrecords', data_purpose='train')
 
