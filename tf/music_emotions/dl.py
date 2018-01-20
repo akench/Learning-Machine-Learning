@@ -10,7 +10,7 @@ ydl_opts = {
         'preferredcodec': 'wav',
         'preferredquality': '192',
     }],
-    'outtmpl': unicode()
+    'outtmpl': outfile
 }
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    ydl.download(['https://www.youtube.com/watch?v=QqL8hmD931Y'])
+    ydl.download(['https://www.youtube.com/watch?v=aGjjnZdK4HA'])

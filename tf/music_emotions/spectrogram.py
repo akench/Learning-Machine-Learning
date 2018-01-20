@@ -1,19 +1,21 @@
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 
+def split_list_by_num_samples(data, num_samples):
 
-def get_wav_info(wav_file):
-    rate, data = wavfile.read(wav_file)
-    mono_data = data.sum(axis = 1) / 2
-    return rate, mono_data
+    new = []
+    index = 0
+    while index + num_samples < len(data):
 
-def graph_spectrogram(wav_file):
-    rate, data = get_wav_info(wav_file)
-    print('RATE!!!', rate)
+        new.append(data[index : index + num_samples])
+        index += num_samples
 
+    return new
+
+def remove_trailing_silence(data):
     #removes beginning silence
     silence_index = 0
-    for silence_index in xrange(len(data)):
+    for silence_index in range(len(data)):
         if data[silence_index] != 0:
             break
 
@@ -21,31 +23,52 @@ def graph_spectrogram(wav_file):
 
     #removes ending silence
     silence_index = len(data) - 1
-    for silence_index in reversed(xrange(len(data))):
+    for silence_index in reversed(range(len(data))):
         if data[silence_index] != 0:
             break
     data = data[ : silence_index + 1]
 
+    return data
 
+
+
+
+def get_wav_info(wav_file):
+    rate, data = wavfile.read(wav_file)
+
+    if len(data.shape) > 1:
+        data = data.sum(axis = 1) / 2
+    return rate, data
+
+def graph_spectrogram(wav_file):
+    rate, data = get_wav_info(wav_file)
+    print('RATE!!!', rate)
+
+    print(len(data) / rate)
+    data = remove_trailing_silence(data)
+    print(len(data) / rate)
+    # quit()
+    split_data = split_list_by_num_samples(data, rate * 10)
 
     # Length of the windowing segments
-    nfft = 256
-    # Sampling frequency
-    fs = 2560   
-
-    print(len(data))
-    data = data[int(5339044 / 3): int(5339044 / 2)]
+    nfft = 256  
+    sampling_freq = 2  
 
 
-    pxx, freqs, bins, im = plt.specgram(data, nfft,fs)
-    plt.axis('off')
-    plt.savefig('test.png',
-                dpi=100, #resolution of image
-                frameon='false',
-                aspect='normal',
-                bbox_inches='tight',
-                pad_inches=1) 
+    name_index = 0
+    for mini_data in split_data:
+        pxx, freqs, bins, im = plt.specgram(mini_data, NFFT = nfft, Fs = sampling_freq, scale = 'dB')
+        plt.axis('off')
+        plt.savefig('testdir/test' + str(name_index) + '.png',
+                    dpi=300, #size of image
+                    frameon='false',
+                    aspect='equal',
+                    bbox_inches='tight',
+                    pad_inches=-.2) 
+        plt.clf()
+
+        name_index += 1
 
 
 
-graph_spectrogram('davy_dl.wav')
+graph_spectrogram('dl/10kHz.wav')
