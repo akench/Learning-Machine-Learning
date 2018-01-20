@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import youtube_dl
 
-outfile = 'dl/test.wav'
+outfile = 'dl/output.%(ext)s'
 
 ydl_opts = {
     'format': 'bestaudio/best',
@@ -13,4 +13,5 @@ ydl_opts = {
     'outtmpl': outfile
 }
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    ydl.download(['https://www.youtube.com/watch?v=aGjjnZdK4HA'])
+	link = 'https://www.youtube.com/watch?v=YyknBTm_YyM'
+	ydl.download([link])

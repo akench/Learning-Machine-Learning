@@ -1,0 +1,6 @@
+happy
+sad
+motivational
+relaxing
+angry
+tense
