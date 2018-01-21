@@ -1,2 +1,5 @@
 venv
 mlenv
+tf/music_emotions/dl/*
+tf/music_emotions/gen_specs/*
+tf/music_emotions/wav_files/*
