@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
-
+import os.path as path
 
 almost_zero = 0.001
 
@@ -52,14 +52,20 @@ def get_wav_info(wav_file):
 
 def graph_spectrogram(wav_file):
 
-    rate, data = get_wav_info(wav_file)
-    print('RATE!!!', rate)
-
-
     vid_id = wav_file.split('/')[-1].split('.')[0]
     emot = wav_file.split('/')[1]
 
     save_path = 'gen_specs/' + emot + '/' + vid_id
+
+    #if the current .wav has already been converted, skip
+    if path.exists(save_path + '0.png'):
+        return
+
+
+    rate, data = get_wav_info(wav_file)
+    print('RATE!!!', rate)
+
+
 
     data = remove_trailing_silence(data)
     data = replace_silence(data)
@@ -67,7 +73,7 @@ def graph_spectrogram(wav_file):
 
     # Length of the windowing segments
     nfft = 256
-    sampling_freq = 2
+    sampling_freq = 256
 
 
     name_index = 0
