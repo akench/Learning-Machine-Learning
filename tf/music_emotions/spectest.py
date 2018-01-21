@@ -1,12 +1,14 @@
 import matplotlib.pyplot as plt
+import matplotlib
 from scipy.io import wavfile
 import numpy as np
+from scipy.fftpack import rfft, fftshift
 
 def remove_trailing_silence(data):
     #removes beginning silence
     silence_index = 0
     for silence_index in range(len(data)):
-        if data[silence_index] == 0:
+        if abs(data[silence_index]) <= 0.001:
             break
 
     data = data[silence_index : ]
@@ -14,7 +16,7 @@ def remove_trailing_silence(data):
     #removes ending silence
     silence_index = len(data) - 1
     for silence_index in reversed(range(len(data))):
-        if data[silence_index] == 0:
+        if abs(data[silence_index]) <= 0.001:
             break
     data = data[ : silence_index + 1]
 
@@ -37,11 +39,12 @@ def graph_spectrogram(wav_file):
     print(len(data))
 
     data = remove_trailing_silence(data)
-    data = replace_silence(data)
-    pxx, freqs, bins, im = plt.specgram(data, nfft,fs)
-    plt.axis('off')
+    # data = replace_silence(data)
+    pxx, freqs, bins, im = plt.specgram(data, nfft,fs, cmap = 'magma')
+    # plt.axis('off')
+    plt.colorbar()
     plt.savefig('testspec.png',
-                dpi=100, # Dots per inch
+                dpi=300, # Dots per inch
                 frameon='false',
                 aspect='normal',
                 bbox_inches='tight',
@@ -55,9 +58,19 @@ def get_wav_info(wav_file):
     print('max', data[np.argmax(data)])
     print('min', data[np.argmin(data)])
 
+    print(data)
+    plt.plot(data)
+    plt.show()
 
+    plt.clf()
+
+    dataf = rfft(data)
+    dataf = fftshift(dataf)
+    plt.plot(dataf)
+    plt.show()
     return rate, data
 
 if __name__ == '__main__': # Main function
-    wav_file = 'wav_files/tense/3X9LvC9WkkQ.wav' # Filename of the wav file
+    # wav_file = '/home/super/Desktop/loudclap.wav' # Filename of the wav file
+    wav_file = 'dl/10kHz.wav'
     graph_spectrogram(wav_file)

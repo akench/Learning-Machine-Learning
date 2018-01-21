@@ -19,7 +19,7 @@ def remove_trailing_silence(data):
     #removes beginning silence
     silence_index = 0
     for silence_index in range(len(data)):
-        if data[silence_index] > almost_zero:
+        if abs(data[silence_index]) > almost_zero:
             break
 
     data = data[silence_index : ]
@@ -27,7 +27,7 @@ def remove_trailing_silence(data):
     #removes ending silence
     silence_index = len(data) - 1
     for silence_index in reversed(range(len(data))):
-        if data[silence_index] > almost_zero:
+        if abs(data[silence_index]) > almost_zero:
             break
     data = data[ : silence_index + 1]
 
@@ -37,7 +37,7 @@ def remove_trailing_silence(data):
 def replace_silence(data):
 
     for i in range(len(data)):
-        if data[i] <= almost_zero:
+        if abs(data[i]) <= almost_zero:
             data[i] = 1
 
     return data

@@ -38,13 +38,12 @@ def read_file():
 
 
 def main():
-	# read_file()
+	read_file()
 
-	import glob
-	dirs = glob.glob('wav_files/*')
-	for d in dirs:
-		all_wavs_to_spec(d)
+	# import glob
+	# dirs = glob.glob('wav_files/*')
+	# for d in dirs:
+	# 	all_wavs_to_spec(d)
 
 
 main()
-
