@@ -7,9 +7,12 @@ from spectrogram import all_wavs_to_spec
 def dl_audio(url, emot):
 
 	vid_id = url.split('=')[1]
-	outfile = 'wav_files/' + emot + '/' + vid_id + '.%(ext)s'
+	outfile = 'wav_files/' + emot + '/' + vid_id 
 
-	if path.exists(outfile):
+
+
+	if path.exists(outfile + '.wav'):
+		print('already exists!')
 		return
 
 	ydl_opts = {
@@ -19,7 +22,7 @@ def dl_audio(url, emot):
 	        'preferredcodec': 'wav',
 	        'preferredquality': '192',
 	    }],
-	    'outtmpl': outfile
+	    'outtmpl': outfile + '.%(ext)s'
 	}
 	with youtube_dl.YoutubeDL(ydl_opts) as ydl:
 		ydl.download([url])
@@ -46,4 +49,5 @@ def main():
 	# 	all_wavs_to_spec(d)
 
 
-main()
+# main()
+dl_audio('https://www.youtube.com/watch?v=l6Gl7AAnT8U', 'test')
