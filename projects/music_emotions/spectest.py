@@ -40,7 +40,7 @@ def graph_spectrogram(wav_file):
 
     data = remove_trailing_silence(data)
     # data = replace_silence(data)
-    pxx, freqs, bins, im = plt.specgram(data[rate*20 :rate*30], nfft,fs)
+    pxx, freqs, bins, im = plt.specgram(data[rate*145 :rate*155], nfft,fs)
     # plt.axis('off')
     plt.colorbar()
     plt.savefig(wav_file[:-4] + 'old.png',
@@ -80,7 +80,7 @@ def spec_test(wav_file):
     pylab.subplot(111)
     pylab.title('spectrogram of %r' % wav_file)
 
-    pylab.specgram(sound_info[frame_rate*100 : frame_rate*130], Fs=frame_rate)
+    pylab.specgram(sound_info[frame_rate*0 : frame_rate*10], Fs=frame_rate)
 
     # pylab.ion()
     pylab.savefig(wav_file[: -4] + '.png')
@@ -108,7 +108,7 @@ def get_wav_info_test(wav_file):
 
 if __name__ == '__main__': # Main function
     # wav_file = '/home/super/Desktop/loudclap.wav' # Filename of the wav file
-    wav_file = 'wav_files/motivational/cWXZlIwAoYY.wav'
+    wav_file = 'wav_files/relaxing/kLp_Hh6DKWc.wav'
     spec_test(wav_file)
     print('done')
     # graph_spectrogram(wav_file)

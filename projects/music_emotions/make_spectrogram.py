@@ -9,7 +9,6 @@ def split_list_by_num_samples(data, num_samples):
     new = []
     index = 0
     while index + num_samples < len(data):
-
         new.append(data[index : index + num_samples])
         index += num_samples
 
@@ -50,7 +49,8 @@ def get_wav_info(wav_file):
         data = data.sum(axis = 1) / 2
     return rate, data
 
-def graph_spectrogram(wav_file):
+
+def graph_spectrogram(wav_file, secs_per_spec = 10):
 
     vid_id = wav_file.split('/')[-1].split('.')[0]
     emot = wav_file.split('/')[1]
@@ -68,8 +68,10 @@ def graph_spectrogram(wav_file):
 
 
     data = remove_trailing_silence(data)
-    data = replace_silence(data)
-    split_data = split_list_by_num_samples(data, rate * 10)
+
+    #replacing silence causes some weird spectrograms
+    # data = replace_silence(data)
+    split_data = split_list_by_num_samples(data, rate * secs_per_spec)
 
     # Length of the windowing segments
     nfft = 256
@@ -78,7 +80,7 @@ def graph_spectrogram(wav_file):
 
     name_index = 0
     for mini_data in split_data:
-        pxx, freqs, bins, im = plt.specgram(mini_data, NFFT = nfft, Fs = sampling_freq, scale = 'dB')
+        pxx, freqs, bins, im = plt.specgram(mini_data, NFFT = nfft, Fs = sampling_freq, scale = 'dB', cmap = 'Greys')
         plt.axis('off')
         plt.savefig(save_path + str(name_index) + '.png',
                     dpi=300, #size of image
@@ -95,6 +97,6 @@ def graph_spectrogram(wav_file):
 def all_wavs_to_spec(wav_dir):
     import glob
     wavs = glob.glob(wav_dir + '/*.wav')
-    print(wavs)
+    # print(wavs)
     for w in wavs:
         graph_spectrogram(w)

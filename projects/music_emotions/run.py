@@ -1,18 +1,18 @@
 from __future__ import unicode_literals
 import youtube_dl
 from random import *
-import os.path as path
-from spectrogram import all_wavs_to_spec
+import os.path
+from make_spectrogram import all_wavs_to_spec
 
 def dl_audio(url, emot):
 
 	vid_id = url.split('=')[1]
-	outfile = 'wav_files/' + emot + '/' + vid_id 
+	outfile = 'wav_files/' + emot + '/' + vid_id
 
 
 
-	if path.exists(outfile + '.wav'):
-		print('already exists!')
+	if os.path.exists(outfile + '.wav'):
+		print('.', end='')
 		return
 
 	ydl_opts = {
@@ -43,11 +43,18 @@ def read_file():
 def main():
 	read_file()
 
-	# import glob
-	# dirs = glob.glob('wav_files/*')
-	# for d in dirs:
-	# 	all_wavs_to_spec(d)
+	import glob
+	dirs = glob.glob('wav_files/*')
+
+	for d in dirs:
+
+		spec_path = 'gen_specs/' + d.split('/')[1]
+		if not os.path.exists(spec_path):
+			os.mkdir(spec_path)
+
+		all_wavs_to_spec(d)
+		quit()
 
 
-# main()
-dl_audio('https://www.youtube.com/watch?v=l6Gl7AAnT8U', 'test')
+main()
+# dl_audio('https://www.youtube.com/watch?v=l6Gl7AAnT8U', 'test')
