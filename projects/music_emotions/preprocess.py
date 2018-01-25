@@ -2,6 +2,7 @@ import utils.parse_img as parse_img
 import glob
 from PIL import Image
 from random import *
+import pickle
 
 def preprocess_per_emot(emot, num_stretch = 4, num_salt = 2):
 
@@ -42,4 +43,32 @@ def preprocess_all():
     for e in emots:
         preprocess_per_emot(e)
 
-preprocess_all()
+
+def make_data():
+
+    emots = glob.glob('processed_data/*/')
+    all_data = []
+    all_labels = []
+
+    curr_label = 0
+    for e in emots:
+        print(e)
+        image_paths = glob.glob(e + '/*')
+
+        for path in image_paths:
+            img = Image.open(path)
+            arr = parse_img.images_to_arrays([img])
+            all_data.append(arr)
+            all_labels.append(curr_label)
+
+        curr_label += 1
+
+    from sklearn.utils import shuffle as skshuffle
+    all_data, all_labels = skshuffle(all_data, all_labels)
+
+
+
+    from utils.split_data import split_data
+    split_data('processed_data', all_data, all_labels)
+
+make_data()
