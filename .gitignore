@@ -1,8 +1,6 @@
-venv
 mlenv
-projects/music_emotions/dl/*
 projects/music_emotions/gen_specs/*
-projects/classify_instruments/org_data/*
-projects/classify_instruments/procesed_data/*
 projects/music_emotions/wav_files/*
-projects/music_emotions/testdir/*
+projects/music_emotions/processed_data/*
+projects/classify_instruments/org_data/*
+projects/classify_instruments/processed_data/*

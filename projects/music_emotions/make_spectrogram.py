@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import os.path as path
+import io
+from PIL import Image
 
 almost_zero = 0.001
 
@@ -82,12 +84,20 @@ def graph_spectrogram(wav_file, secs_per_spec = 10):
     for mini_data in split_data:
         pxx, freqs, bins, im = plt.specgram(mini_data, NFFT = nfft, Fs = sampling_freq, scale = 'dB', cmap = 'Greys')
         plt.axis('off')
-        plt.savefig(save_path + str(name_index) + '.jpg',
+
+        buf = io.BytesIO()
+        plt.savefig(buf,
+                    format='jpg',
                     dpi=300, #size of image
                     frameon='false',
                     aspect='equal',
                     bbox_inches='tight',
                     pad_inches=-.2)
+        buf.seek(0)
+        img = Image.open(buf)
+        img = img.crop((49, 0, 1480, 1050))
+        img.save(save_path + str(name_index) + '.jpg')
+        buf.close()
         plt.clf()
 
         name_index += 1
@@ -97,6 +107,5 @@ def graph_spectrogram(wav_file, secs_per_spec = 10):
 def all_wavs_to_spec(wav_dir):
     import glob
     wavs = glob.glob(wav_dir + '/*.wav')
-    # print(wavs)
     for w in wavs:
         graph_spectrogram(w)

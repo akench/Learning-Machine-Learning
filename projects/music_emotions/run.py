@@ -42,6 +42,7 @@ def read_file():
 
 def main():
 	read_file()
+	print('')
 
 	import glob
 	dirs = glob.glob('wav_files/*')
@@ -53,7 +54,6 @@ def main():
 			os.mkdir(spec_path)
 
 		all_wavs_to_spec(d)
-		quit()
 
 
 main()

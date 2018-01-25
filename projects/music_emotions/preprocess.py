@@ -3,13 +3,17 @@ import glob
 from PIL import Image
 from random import *
 
-def preprocess_per_emot(emot, num_stretch = 3, num_salt = 2):
+def preprocess_per_emot(emot, num_stretch = 4, num_salt = 2):
 
     paths = glob.glob('gen_specs/' + emot + '/*')
-    # paths = ['gen_specs/motivational/tGh4FcZKekA0.jpg']
     processed = []
+    file_names = []
 
     for p in paths:
+
+        vid_id = p.split('/')[-1].split('.')[0]
+        i = 0
+
         img = Image.open(p).convert('L')
         img = img.resize((128, 128))
         print('.', end='', flush=True)
@@ -21,11 +25,21 @@ def preprocess_per_emot(emot, num_stretch = 3, num_salt = 2):
 
             for _ in range(num_salt):
                 processed.append(parse_img.salt_and_pepper(stretched, 0.001))
+                file_names.append(vid_id + str(i))
+                i += 1
 
-    for im in processed:
-        im.save('testdir/' + str(randint(0, 100000000000)) + '.jpg')
+
+    for im, name in zip(processed, file_names):
+        im.save('processed_data/' + emot + '/' + name + '.jpg')
 
     print('SAVED')
 
 
-preprocess_per_emot('motivational')
+def preprocess_all():
+    dirs = glob.glob('gen_specs/*')
+    emots = [d.split('/')[1] for d in dirs]
+
+    for e in emots:
+        preprocess_per_emot(e)
+
+preprocess_all()
