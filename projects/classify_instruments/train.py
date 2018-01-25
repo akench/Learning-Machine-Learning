@@ -31,58 +31,6 @@ for f in files:
 
 
 
-class DataUtil:
-
-	def __init__(self, batch_size, num_epochs):
-		self.images_train = list(pickle.load(open('processed_data/train_data.p', 'rb')))
-		self.labels_train = list(pickle.load(open('processed_data/train_labels.p', 'rb')))
-
-		images_val = list(pickle.load(open('processed_data/val_data.p', 'rb')))
-		images_val_norm, _, _ = normalize_data(images_val)
-		self.images_val_norm = images_val_norm
-		self.labels_val = list(pickle.load(open('processed_data/val_labels.p', 'rb')))
-
-		self.batch_size = batch_size
-		self.curr_data_num = 0
-		self.global_num = 0
-
-		self.curr_epoch = 0
-		self.num_epochs = num_epochs
-
-
-	def get_next_batch(self):
-		'''
-		Gets the next batch in training data.
-		@param None
-		@return The next normalized training batch
-		'''
-
-		img_batch = []
-		labels_batch = []
-
-		for _ in range(self.batch_size):
-
-			img_batch.append(self.images_train[self.curr_data_num])
-			labels_batch.append(self.labels_train[self.curr_data_num])
-
-			self.curr_data_num += 1
-			self.global_num += 1
-
-			if self.curr_data_num > len(self.images_train) - 1:
-
-				print('FINISHED EPOCH', self.curr_epoch)
-				self.curr_epoch += 1
-				self.curr_data_num = 0
-				self.images_train, self.labels_train = shuffle(self.images_train, self.labels_train)
-
-
-		img_batch, _, _ = normalize_data(img_batch)
-
-		return img_batch, labels_batch
-
-
-
-
 
 def model(net, keep_prob):
 	net = tf.reshape(net, [-1, 28, 28, 1])
@@ -119,7 +67,7 @@ def model(net, keep_prob):
 
 def train():
 
-	data_util = DataUtil(batch_size = 128, num_epochs = 7)
+	data_util = DataUtil('processed_data', batch_size = 128, num_epochs = 7)
 
 
 
@@ -195,7 +143,7 @@ def train():
 
 		with tf.name_scope('val_acc'):
 			_, summary_val = sess.run([accuracy, summary_op],
-							feed_dict = {data_placeholder: data_util.images_val_norm,
+							feed_dict = {data_placeholder: data_util.images_val,
 							labels_placeholder: data_util.labels_val,
 							keep_prob_placeholder: 1.0})
 		test_writer.add_summary(summary_val, data_util.global_num)

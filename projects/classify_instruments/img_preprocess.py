@@ -6,6 +6,7 @@ import glob
 from random import *
 import pickle
 import time
+from utils.split_data import split_data
 
 
 def split_data(all_data, all_labels, perc_train = 0.72, perc_val = 0.18, perc_test = 0.1):
@@ -80,6 +81,6 @@ def view_data(start, end):
 # start_time = time.time()
 # make_data_per_class(class_list=['piano', 'guitar', 'violin', 'neither'])
 # data, labels = make_full_data()
-# split_data(data, labels)
+# split_data('processed_data', data, labels)
 # view_data(start = 123, end = 133)
 # print('time to make data:', time.time() - start_time)
