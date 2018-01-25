@@ -3,7 +3,7 @@ import tensorflow.contrib.slim as slim
 from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 from PIL import Image
-from cv_stuff.parse_img import resize_crop
+from utils.parse_img import resize_crop
 
 tf.reset_default_graph()
 data_placeholder = tf.placeholder(shape=[None, 784], dtype=tf.float32, name = 'data_placeholder')

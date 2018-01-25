@@ -1,4 +1,4 @@
-import cv_stuff.parse_img as parse_img
+import utils.parse_img as parse_img
 import glob
 from PIL import Image
 from random import *

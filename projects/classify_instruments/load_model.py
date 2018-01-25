@@ -1,7 +1,7 @@
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
 import numpy as np
-from cv_stuff.parse_img import resize_crop, images_to_arrays, normalize_data
+from utils.parse_img import resize_crop, images_to_arrays, normalize_data
 import pickle
 import PIL.ImageOps
 from PIL import Image

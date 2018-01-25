@@ -1,4 +1,4 @@
-from cv_stuff.parse_img import resize_crop, images_to_arrays, rand_rotate_and_crop, normalize_data
+from utils.parse_img import resize_crop, images_to_arrays, rand_rotate_and_crop, normalize_data
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt

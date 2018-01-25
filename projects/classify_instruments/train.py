@@ -8,7 +8,7 @@ import pickle
 from sklearn.utils import shuffle
 import os
 import os.path as path
-from cv_stuff.parse_img import normalize_data
+from utils.parse_img import normalize_data
 
 
 MODEL_NAME = 'pvg_model'
