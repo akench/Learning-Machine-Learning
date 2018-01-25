@@ -63,7 +63,7 @@ def graph_spectrogram(wav_file, secs_per_spec = 10):
 
 
     rate, data = get_wav_info(wav_file)
-    print('RATE!!!', rate)
+    print('rate: ', rate)
 
 
 
@@ -82,7 +82,7 @@ def graph_spectrogram(wav_file, secs_per_spec = 10):
     for mini_data in split_data:
         pxx, freqs, bins, im = plt.specgram(mini_data, NFFT = nfft, Fs = sampling_freq, scale = 'dB', cmap = 'Greys')
         plt.axis('off')
-        plt.savefig(save_path + str(name_index) + '.png',
+        plt.savefig(save_path + str(name_index) + '.jpg',
                     dpi=300, #size of image
                     frameon='false',
                     aspect='equal',

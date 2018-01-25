@@ -12,7 +12,7 @@ def dl_audio(url, emot):
 
 
 	if os.path.exists(outfile + '.wav'):
-		print('.', end='')
+		print('.', end='', flush=True)
 		return
 
 	ydl_opts = {
@@ -57,4 +57,3 @@ def main():
 
 
 main()
-# dl_audio('https://www.youtube.com/watch?v=l6Gl7AAnT8U', 'test')
