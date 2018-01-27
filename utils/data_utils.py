@@ -1,9 +1,9 @@
 import pickle
-
+from utils.parse_img import normalize_data
 
 class DataUtil:
 
-    def __init__(self, data_dir, batch_size, num_epochs, normalize = False):
+    def __init__(self, data_dir, batch_size, num_epochs, normalize = True):
         self.images_train = list(pickle.load(open(data_dir + '/train_data.p', 'rb')))
         self.labels_train = list(pickle.load(open(data_dir + '/train_labels.p', 'rb')))
 
@@ -32,6 +32,7 @@ class DataUtil:
 
         img_batch = []
         labels_batch = []
+        finished_epoch = False
 
         for _ in range(self.batch_size):
 
@@ -44,14 +45,15 @@ class DataUtil:
             if self.curr_data_num > len(self.images_train) - 1:
 
                 print('FINISHED EPOCH', self.curr_epoch)
+                finished_epoch = True
                 self.curr_epoch += 1
                 self.curr_data_num = 0
                 self.images_train, self.labels_train = shuffle(self.images_train, self.labels_train)
 
 
-        # img_batch, _, _ = normalize_data(img_batch)
+        img_batch, _, _ = normalize_data(img_batch)
 
-        return img_batch, labels_batch
+        return img_batch, labels_batch, finished_epoch
 
 
 

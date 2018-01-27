@@ -26,20 +26,20 @@ def model(data, keep_prob):
         with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False), weights_regularizer=slim.l2_regularizer(0.05)):
             with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.xavier_initializer(), weights_regularizer=slim.l2_regularizer(0.05)):
 
-                net = slim.conv2d(net, 50, [25,25], scope='conv1')
+                net = slim.conv2d(net, 50, [7,7], scope='conv1')
                 net = slim.max_pool2d(net, [5,5], scope='pool1')
-                net = slim.conv2d(net, 100, [20,20], scope='conv2')
+                net = slim.conv2d(net, 100, [5,5], scope='conv2')
                 net = slim.max_pool2d(net, [5,5], scope='pool2')
-                net = slim.conv2d(net, 120, [20,20], scope='conv3')
+                net = slim.conv2d(net, 120, [5,5], scope='conv3')
                 net = slim.max_pool2d(net, [5,5], scope='pool3')
-                net = slim.conv2d(net, 150, [20,20], scope='conv4')
+                net = slim.conv2d(net, 150, [5,5], scope='conv4')
                 net = slim.max_pool2d(net, [3,3], scope='pool4')
-                net = slim.conv2d(net, 180, [10,10], scope='conv5')
+                net = slim.conv2d(net, 180, [5,5], scope='conv5')
                 net = slim.max_pool2d(net, [3,3], scope='pool5')
                 net = slim.flatten(net, scope='flatten6')
-                net = slim.fully_connected(net, 1000, activation_fn=tf.nn.sigmoid, scope='fc7')
+                net = slim.fully_connected(net, 500, activation_fn=tf.nn.sigmoid, scope='fc7')
                 net = slim.dropout(net, keep_prob=keep_prob, scope='dropout7')
-                net = slim.fully_connected(net, 500, activation_fn=tf.nn.sigmoid, scope='fc8')
+                net = slim.fully_connected(net, 100, activation_fn=tf.nn.sigmoid, scope='fc8')
                 net = slim.dropout(net, keep_prob=keep_prob, scope='dropout8')
 
                 net = slim.fully_connected(net, NUM_CLASSES, activation_fn=None, scope='fc9')
@@ -49,7 +49,7 @@ def model(data, keep_prob):
 
 def train():
 
-    data_util = DataUtil('processed_data', batch_size = 128, num_epochs = 1)
+    data_util = DataUtil('processed_data', batch_size = 64, num_epochs = 1)
 
     prediction = model(data_placeholder, keep_prob_placeholder)
 
@@ -81,16 +81,22 @@ def train():
         while data_util.curr_epoch < data_util.num_epochs:
 
 
-            img_batch, labels_batch = data_util.get_next_batch()
-            img_batch = np.reshape(img_batch, (128, 16384))
+            img_batch, labels_batch, finished_epoch = data_util.get_next_batch()
+
+            if finished_epoch:
+                save_path = saver.save(sess, 'out/' + MODEL_NAME + '.chkp')
+                print("path saved in", save_path)
+
+
 
             _, summary = sess.run([optimizer, summary_op],
                     feed_dict= {data_placeholder: img_batch,
                                 label_placeholder: labels_batch,
                                 keep_prob_placeholder: 0.5})
 
+
             writer.add_summary(summary, data_util.global_num)
-            print('test')
+
 
             if data_util.global_num % 100 == 0:
 
@@ -101,15 +107,18 @@ def train():
 
 
 
-        print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: data_util.images_val,
-    labels_placeholder: data_util.labels_val,
-    keep_prob_placeholder: 1.0}))
+        
 
 
     print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - t0)))
 
     save_path = saver.save(sess, 'out/' + MODEL_NAME + '.chkp')
     print("path saved in", save_path)
+
+
+    print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: data_util.images_val,
+                                labels_placeholder: data_util.labels_val,
+                                keep_prob_placeholder: 1.0}))
 
 
 def main():
