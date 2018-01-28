@@ -76,7 +76,10 @@ def train():
 
     summary_op = tf.summary.merge_all()
 
-    with tf.Session() as sess:
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+
+    with tf.Session(config=config) as sess:
         init = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
         sess.run(init)
 
@@ -114,6 +117,9 @@ def train():
                 print('curr acc =', acc)
 
 
+        print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: data_util.images_val,
+                            labels_placeholder: data_util.labels_val,
+                            keep_prob_placeholder: 1.0}))
 
         
 
@@ -124,9 +130,7 @@ def train():
     print("path saved in", save_path)
 
 
-    print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: data_util.images_val,
-                                labels_placeholder: data_util.labels_val,
-                                keep_prob_placeholder: 1.0}))
+    
 
 
 def main():
