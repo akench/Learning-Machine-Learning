@@ -23,23 +23,31 @@ def model(data, keep_prob):
     tf.summary.image('inputimg', net, 20)
 
     with tf.variable_scope(MODEL_NAME):
-        with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False), weights_regularizer=slim.l2_regularizer(0.05)):
-            with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.xavier_initializer(), weights_regularizer=slim.l2_regularizer(0.05)):
+        with slim.arg_scope([slim.conv2d], padding='SAME', stride = 2, activation_fn = tf.nn.relu,
+            weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False), 
+            weights_regularizer=slim.l2_regularizer(0.05)):
 
-                net = slim.conv2d(net, 120, [5,5], scope='conv1')
-                net = slim.max_pool2d(net, [5,5], scope='pool1')
-                net = slim.conv2d(net, 100, [5,5], scope='conv2')
+            with slim.arg_scope([slim.fully_connected], 
+                weights_initializer=tf.contrib.layers.xavier_initializer(), 
+                weights_regularizer=slim.l2_regularizer(0.05)):
+
+                net = slim.conv2d(net, 500, [3,3], scope='conv1')
+                net = slim.max_pool2d(net, [2,2], scope='pool1')
+                net = slim.conv2d(net, 350, [3,3], scope='conv2')
                 net = slim.max_pool2d(net, [2,2], scope='pool2')
-                net = slim.conv2d(net, 100, [5,5], scope='conv3')
+                net = slim.conv2d(net, 225, [3,3], scope='conv3')
                 net = slim.max_pool2d(net, [2,2], scope='pool3')
-                net = slim.conv2d(net, 100, [5,5], scope='conv4')
+                net = slim.conv2d(net, 150, [3,3], scope='conv4')
                 net = slim.max_pool2d(net, [2,2], scope='pool4')
-                net = slim.conv2d(net, 100, [5,5], scope='conv5')
+                net = slim.conv2d(net, 150, [3,3], scope='conv5')
                 net = slim.max_pool2d(net, [2,2], scope='pool5')
-                net = slim.flatten(net, scope='flatten6')
-                net = slim.fully_connected(net, 500, activation_fn=tf.nn.sigmoid, scope='fc7')
-                net = slim.dropout(net, keep_prob=keep_prob, scope='dropout7')
-                net = slim.fully_connected(net, 100, activation_fn=tf.nn.sigmoid, scope='fc8')
+                net = slim.conv2d(net, 50, [3,3], scope='conv6')
+                net = slim.max_pool2d(net, [2,2], scope='pool6')
+                net = slim.conv2d(net, 50, [3,3], scope='conv7')
+                net = slim.max_pool2d(net, [2,2], scope='pool7')
+
+                net = slim.flatten(net, scope='flatten7')
+                net = slim.fully_connected(net, 500, activation_fn=tf.nn.sigmoid, scope='fc8')
                 net = slim.dropout(net, keep_prob=keep_prob, scope='dropout8')
 
                 net = slim.fully_connected(net, NUM_CLASSES, activation_fn=None, scope='fc9')
@@ -49,7 +57,7 @@ def model(data, keep_prob):
 
 def train():
 
-    data_util = DataUtil('processed_data', batch_size = 64, num_epochs = 5)
+    data_util = DataUtil('processed_data', batch_size = 128, num_epochs = 10)
 
     prediction = model(data_placeholder, keep_prob_placeholder)
 

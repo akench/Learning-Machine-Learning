@@ -109,7 +109,7 @@ def get_wav_info_test(wav_file):
 if __name__ == '__main__': # Main function
     # wav_file = '/home/super/Desktop/loudclap.wav' # Filename of the wav file
     wav_file = 'wav_files/relaxing/kLp_Hh6DKWc.wav'
-    spec_test(wav_file)
+    # spec_test(wav_file)
     print('done')
-    # graph_spectrogram(wav_file)
+    graph_spectrogram(wav_file)
     print('done')
