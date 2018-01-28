@@ -41,10 +41,6 @@ def model(data, keep_prob):
                 net = slim.max_pool2d(net, [2,2], scope='pool4')
                 net = slim.conv2d(net, 150, [3,3], scope='conv5')
                 net = slim.max_pool2d(net, [2,2], scope='pool5')
-                net = slim.conv2d(net, 50, [3,3], scope='conv6')
-                net = slim.max_pool2d(net, [2,2], scope='pool6')
-                net = slim.conv2d(net, 50, [3,3], scope='conv7')
-                net = slim.max_pool2d(net, [2,2], scope='pool7')
 
                 net = slim.flatten(net, scope='flatten7')
                 net = slim.fully_connected(net, 500, activation_fn=tf.nn.sigmoid, scope='fc8')
