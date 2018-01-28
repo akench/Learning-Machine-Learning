@@ -3,6 +3,9 @@ from scipy.io import wavfile
 import os.path as path
 import io
 from PIL import Image
+import librosa
+import librosa.display
+import numpy as np
 
 almost_zero = 0.001
 
@@ -60,7 +63,8 @@ def graph_spectrogram(wav_file, secs_per_spec = 10):
     save_path = 'gen_specs/' + emot + '/' + vid_id
 
     #if the current .wav has already been converted, skip
-    if path.exists(save_path + '0.png'):
+    if path.exists(save_path + '_0.png'):
+        print('exists')
         return
 
 
@@ -82,30 +86,62 @@ def graph_spectrogram(wav_file, secs_per_spec = 10):
 
     name_index = 0
     for mini_data in split_data:
-        pxx, freqs, bins, im = plt.specgram(mini_data, NFFT = nfft, Fs = sampling_freq, scale = 'dB', cmap = 'Greys')
-        plt.axis('off')
+        # pxx, freqs, bins, im = plt.specgram(mini_data, NFFT = nfft, Fs = sampling_freq, scale = 'dB', cmap = 'Greys')
+        # plt.axis('off')
 
+        # buf = io.BytesIO()
+        # plt.savefig(buf,
+        #             format='jpg',
+        #             dpi=300, #size of image
+        #             frameon='false',
+        #             aspect='equal',
+        #             bbox_inches='tight',
+        #             pad_inches=-.2)
+        # buf.seek(0)
+        # img = Image.open(buf)
+        # img = img.crop((49, 0, 1480, 1050))
+        # img.save(save_path + str(name_index) + '.jpg')
+        # buf.close()
+        # plt.clf()
+
+        S = librosa.feature.melspectrogram(mini_data, sr=rate, n_mels=128)
+        log_S = librosa.logamplitude(S, ref_power=np.max)
+
+        plt.figure(figsize=(secs_per_spec, 7))
+
+        librosa.display.specshow(log_S, sr=rate, x_axis='time', y_axis='mel')
+
+        # plt.colorbar(format='%+02.0f dB')
+
+        plt.tight_layout()
+        plt.axis('off')
+        plt.draw()
+
+        import io
         buf = io.BytesIO()
-        plt.savefig(buf,
-                    format='jpg',
-                    dpi=300, #size of image
-                    frameon='false',
-                    aspect='equal',
-                    bbox_inches='tight',
-                    pad_inches=-.2)
+        plt.savefig(buf, bbox_inches='tight', pad_inches = 0, dpi=50)
+
         buf.seek(0)
         img = Image.open(buf)
-        img = img.crop((49, 0, 1480, 1050))
-        img.save(save_path + str(name_index) + '.jpg')
+        img = img.crop((120, 4, img.size[0] - 3, img.size[1] - 20))
+        img = img.convert('L')
+        img.save(save_path + '_' + str(name_index) + '.jpg')
         buf.close()
+
         plt.clf()
+        plt.cla()
+        plt.close()
 
         name_index += 1
+
 
 
 
 def all_wavs_to_spec(wav_dir):
     import glob
     wavs = glob.glob(wav_dir + '/*.wav')
+
     for w in wavs:
         graph_spectrogram(w)
+
+

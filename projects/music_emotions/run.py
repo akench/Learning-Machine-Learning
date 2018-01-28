@@ -41,7 +41,7 @@ def read_file():
 
 
 def main():
-	read_file()
+	# read_file()
 	print('')
 
 	import glob
@@ -56,4 +56,4 @@ def main():
 		all_wavs_to_spec(d)
 
 
-main()
+read_file()

@@ -31,16 +31,14 @@ def model(data, keep_prob):
                 weights_initializer=tf.contrib.layers.xavier_initializer(), 
                 weights_regularizer=slim.l2_regularizer(0.05)):
 
-                net = slim.conv2d(net, 500, [3,3], scope='conv1')
+                net = slim.conv2d(net, 128, [3,3], scope='conv1')
                 net = slim.max_pool2d(net, [2,2], scope='pool1')
-                net = slim.conv2d(net, 350, [3,3], scope='conv2')
+                net = slim.conv2d(net, 128, [3,3], scope='conv2')
                 net = slim.max_pool2d(net, [2,2], scope='pool2')
-                net = slim.conv2d(net, 225, [3,3], scope='conv3')
+                net = slim.conv2d(net, 64, [3,3], scope='conv3')
                 net = slim.max_pool2d(net, [2,2], scope='pool3')
-                net = slim.conv2d(net, 150, [3,3], scope='conv4')
+                net = slim.conv2d(net, 32, [3,3], scope='conv4')
                 net = slim.max_pool2d(net, [2,2], scope='pool4')
-                net = slim.conv2d(net, 150, [3,3], scope='conv5')
-                net = slim.max_pool2d(net, [2,2], scope='pool5')
 
                 net = slim.flatten(net, scope='flatten7')
                 net = slim.fully_connected(net, 500, activation_fn=tf.nn.sigmoid, scope='fc8')
@@ -53,7 +51,7 @@ def model(data, keep_prob):
 
 def train():
 
-    data_util = DataUtil('processed_data', batch_size = 128, num_epochs = 10)
+    data_util = DataUtil('processed_data', batch_size = 64, num_epochs = 1)
 
     prediction = model(data_placeholder, keep_prob_placeholder)
 
