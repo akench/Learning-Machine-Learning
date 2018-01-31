@@ -37,12 +37,16 @@ def inference(data):
 		return label
 
 
-def softmax(x):
+def percent(x):
 
-	e = np.exp(np.array(x))
-	dist = e / np.sum(e)
-	print(dist)
-	return dist
+	perc = (x / np.sum(x))
+	print(perc)
+	return perc
+
+	# e = np.exp(np.array(x))
+	# dist = e / np.sum(e)
+	# print(dist)
+	# return dist
 
 
 def predict_song(spec_list):
@@ -59,15 +63,16 @@ def predict_song(spec_list):
 
 	print(label_list)
 
-	return softmax(label_list)
+	return percent(label_list)
 
 
-def make_output(softmax_output):
+def make_output(percent_output):
 
 	print('The song is:')
 
-	for i in range(len(softmax_output)):
-		print('%f percent %s' % (softmax_output[i] * 100, label_to_emot[i]))
+	for i in range(len(percent_output)):
+		if percent_output[i] > 0.001:
+			print('%f percent %s' % (percent_output[i] * 100, label_to_emot[i]))
 
 
 
