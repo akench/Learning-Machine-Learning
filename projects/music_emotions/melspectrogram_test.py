@@ -4,15 +4,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import wavfile
 
-# y, sr = librosa.core.load("hungary.wav")
-sr, y = wavfile.read("hungary.wav")
+y, sr = librosa.core.load("test.mp3")
+# sr, y = wavfile.read("test.mp3")
 
 if len(y.shape) > 1:
     y = y.sum(axis = 1) / 2
 
 
-start = 150
-duration = 150
+start = 0
+duration = 10
 y = y[sr * start: sr * (start + duration)]
 
 

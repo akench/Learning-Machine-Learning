@@ -2,16 +2,20 @@ from __future__ import unicode_literals
 import youtube_dl
 from random import *
 import os.path
-from make_spectrogram import all_wavs_to_spec
+from make_spectrogram import all_audio_to_spec
 
-def dl_audio(url, emot):
+def dl_audio(url, emot, save = True):
 
 	vid_id = url.split('=')[1]
-	outfile = 'wav_files/' + emot + '/' + vid_id
+
+	if emot is None:
+		outfile = vid_id
+	else:	
+		outfile = 'audio/' + emot + '/' + vid_id
 
 
 
-	if os.path.exists(outfile + '.wav'):
+	if os.path.exists(outfile + '.mp3'):
 		print('.', end='', flush=True)
 		return
 
@@ -19,13 +23,15 @@ def dl_audio(url, emot):
 	    'format': 'bestaudio/best',
 	    'postprocessors': [{
 	        'key': 'FFmpegExtractAudio',
-	        'preferredcodec': 'wav',
+	        'preferredcodec': 'mp3',
 	        'preferredquality': '192',
 	    }],
 	    'outtmpl': outfile + '.%(ext)s'
 	}
 	with youtube_dl.YoutubeDL(ydl_opts) as ydl:
 		ydl.download([url])
+
+	return outfile
 
 
 
@@ -41,11 +47,11 @@ def read_file():
 
 
 def main():
-	# read_file()
+	read_file()
 	print('')
 
 	import glob
-	dirs = glob.glob('wav_files/*')
+	dirs = glob.glob('audio/*')
 
 	for d in dirs:
 
@@ -53,7 +59,6 @@ def main():
 		if not os.path.exists(spec_path):
 			os.mkdir(spec_path)
 
-		all_wavs_to_spec(d)
+		all_audio_to_spec(d)
 
 
-read_file()
