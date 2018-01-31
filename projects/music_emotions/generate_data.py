@@ -9,7 +9,7 @@ def dl_audio(url, emot, save = True):
 	vid_id = url.split('=')[1]
 
 	if emot is None:
-		outfile = vid_id
+		outfile = 'temp'
 	else:	
 		outfile = 'audio/' + emot + '/' + vid_id
 
@@ -31,7 +31,7 @@ def dl_audio(url, emot, save = True):
 	with youtube_dl.YoutubeDL(ydl_opts) as ydl:
 		ydl.download([url])
 
-	return outfile
+	return outfile + '.mp3'
 
 
 

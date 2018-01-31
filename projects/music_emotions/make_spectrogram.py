@@ -29,15 +29,17 @@ def get_wav_info(audio_file):
 
 def graph_spectrogram(audio_file, secs_per_spec = 10, save=True):
 
-    vid_id = audio_file.split('/')[-1].split('.')[0]
-    emot = audio_file.split('/')[1]
 
-    save_path = 'gen_specs/' + emot + '/' + vid_id
+    if save:
+        vid_id = audio_file.split('/')[-1].split('.')[0]
+        emot = audio_file.split('/')[1]
 
-    #if the current .wav has already been converted, skip
-    if path.exists(save_path + '_0.jpg') and save:
-        print('exists')
-        return
+        save_path = 'gen_specs/' + emot + '/' + vid_id
+
+        #if the current .wav has already been converted, skip
+        if path.exists(save_path + '_0.jpg') and save:
+            print('exists')
+            return
 
 
     data, rate = librosa.core.load(audio_file)
@@ -64,7 +66,7 @@ def graph_spectrogram(audio_file, secs_per_spec = 10, save=True):
 
         import io
         buf = io.BytesIO()
-        plt.savefig(buf, bbox_inches='tight', pad_inches = 0, dpi=50)
+        plt.savefig(buf, bbox_inches='tight', pad_inches = 0, dpi=50, format='jpg')
 
         buf.seek(0)
         img = Image.open(buf)
@@ -82,7 +84,7 @@ def graph_spectrogram(audio_file, secs_per_spec = 10, save=True):
 
         name_index += 1
 
-    if not saved:
+    if not save:
         return specs
 
 
