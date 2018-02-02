@@ -3,7 +3,7 @@ from PIL import Image
 import numpy as np
 from random import *
 
-def resize_crop(img, save_path = None, crop_type = 'center', size = None):
+def resize_crop(img, save_path = None, crop_type = 'center', size = None, grey = True):
 	'''
 	Args:
 		img : image to crop and resize
@@ -16,11 +16,11 @@ def resize_crop(img, save_path = None, crop_type = 'center', size = None):
 
 	if not isinstance(img, Image.Image):
 		try:
-			img = Image.open(img).convert('L')
+			img = Image.open(img)
 		except IOError:
 			raise ValueError('file %s not found' % (img))
 
-	else:
+	if grey:
 		img = img.convert('L')
 
 
@@ -165,7 +165,7 @@ def salt_and_pepper(image, prob):
 	Returns:
 		Image with salt and pepper
 	'''
-	arr = images_to_arrays([image])[0]
+	arr = images_to_arrays([image])
 	arr = np.reshape(arr, (image.size))
 	output = np.zeros(image.size, np.uint8)
 	thres = 1 - prob

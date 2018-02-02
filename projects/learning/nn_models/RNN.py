@@ -15,7 +15,7 @@ x = tf.placeholder('float', [None, n_chunks,chunk_size])
 y = tf.placeholder('float')
 
 def recurrent_neural_network(x):
-
+    print(tf.shape(x))
 
     layer = {'weights':tf.Variable(tf.random_normal([rnn_size,n_classes])),
              'biases':tf.Variable(tf.random_normal([n_classes]))}
@@ -28,6 +28,7 @@ def recurrent_neural_network(x):
     #Splits a tensor into num_split tensors along one dimension
     # x = tf.split(0, n_chunks, x)
     x = tf.split(x, n_chunks, 0)
+    print(tf.shape(x))
 
     lstm_cell = rnn_cell.BasicLSTMCell(rnn_size,state_is_tuple=True)
     outputs, states = rnn.static_rnn(lstm_cell, x, dtype=tf.float32)

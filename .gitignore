@@ -1,7 +1,7 @@
 mlenv
 projects/music_emotions/gen_specs/*
-projects/music_emotions/wav_files/*
-projects/music_emotions/out/*
+projects/music_emotions/audio/*
+projects/music_emotions/example_library/*
 projects/music_emotions/processed_data/*
 projects/classify_instruments/org_data/*
 projects/classify_instruments/processed_data/*

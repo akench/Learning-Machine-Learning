@@ -67,7 +67,7 @@ def model(net, keep_prob):
 
 def train():
 
-	data_util = DataUtil('processed_data', batch_size = 128, num_epochs = 7)
+	data_util = DataUtil('processed_data', batch_size = 128, num_epochs = 3)
 
 
 
@@ -154,6 +154,7 @@ def train():
 											labels_placeholder: data_util.labels_val,
 											keep_prob_placeholder: 1.0}))
 
+		confusion = tf.confusion_matrix(labels=y_, predictions=y, num_classes=4)
 
 
 		print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - start_time)))
