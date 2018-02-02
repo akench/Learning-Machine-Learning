@@ -14,7 +14,6 @@ Use Case:  If a person is feeling excited about something, they can simply navig
 
 How it was done:
 * The mp3 file was decoded and split up into segments of 10 seconds each
-* Each audio segment was converted to a spectrogram using the Librosa library
-* Spectrogram of sad song segment
+* Each audio segment was converted to a spectrogram using the Librosa library. Below is a spectrogram of sad song segment
 ![alt text](projects/music_emotions/readme_pics/spec_pic.jpg "spectrogram of sad song")
 
