@@ -1,9 +1,9 @@
 # Learning Machine Learning
 Tensorflow and ML stuff
 
-##Projects
+## Projects
 
-###Music Emotions
+### Music Emotions
 
 Summary: Organizes your music library depending on the emotion that the song evokes
 Can give a breakdown of the emotions (by %) present in a given song (either by mp3 file or youtube link)
