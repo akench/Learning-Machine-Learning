@@ -1,0 +1,76 @@
+﻿Simple GANs (Generative Adversarial Networks)
+
+Generator vs Discriminator
+Generator generates fake images to fool the discriminator
+Discriminator tries to discriminate real images from fake images made by the generator
+Not really an optimization problem, more like a “game” between the generator and discriminator
+
+
+GENERATOR
+received ‘z’, or noise
+just random values from gaussian distribution
+Some networks take the original image and use that to generate noise, but here we are generating noise from an independent distribution
+Generator upsamples the ‘z’ value to an image
+Takes a lot of values and turns that into fewer and bigger images in each layer
+The generator learns how to take a random value from the distribution and best turn it into a realistic image
+Uses batch normalization
+
+DISCRIMINATOR (deconvolutional network)
+Downsamples the input image
+takes a big image and creates numerous smaller and smaller images
+
+
+
+
+
+
+
+
+Discriminator Loss:
+
+
+
+Upside down triangle = Gradient, since we want the gradient of the loss function to optimize it
+
+First term: Discriminator wants to correctly categorize the real data ‘x’ as ‘1’
+Second term: Discriminator wants to categorize G(z), or the fake generated data, as fake, or ‘0’. Then 1 minus that optimal number 0, is still ~1. 
+Overall, the discriminator wants to MAXIMIZE this loss function, so we use gradient ascent, or gradient descent on the negative of this function.
+Repeat for all ‘m’ images in batch
+
+
+Generator Loss: 
+
+
+Generator wants to generate data that the discriminator thinks is real, so it wants the discriminator to output a ‘1’ for the generator’s images. Then we subtract 1 from the discriminator’s output, soo…
+The generator wants to MINIMIZE this loss function , so we use gradient descent
+
+
+Why using Log(x)?
+Gradient methods work better optimizing log functions because the gradient is usually better scaled than just the loss itself.
+Also, the discriminator may output very small probabilities such as 0.000001 for input images it thinks are fake, and we have limited floating point precision. 
+The log function gets rid of small numbers since log(0.001) is -3 and approaches negative infinity as x approaches 0.
+
+
+
+Alternating loss functions between generator and discriminator’s gradients.
+
+
+
+Some problems that can arise:
+Discriminator loss approaches 0
+no gradients left for the generator to optimize
+Kind of like vanishing gradients
+Discriminator loss keeps increasing
+Generator stops training
+Exploding gradients
+If the discriminator learns some shortcut by classifying everything as real or everything as fake
+won’t actually improve the generator then
+
+
+Overview:
+During every iteration, two updates
+To generator
+Feed in random z vector and then feed the output to discriminator.
+To discriminators
+output of generator or a real image
+Training generator and discriminator alternatively every iteration
