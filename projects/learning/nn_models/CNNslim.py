@@ -24,7 +24,7 @@ def CNN_model(data):
 	data = tf.reshape(data,[-1, 28, 28, 1])
 
 	#defines a scope for each set of weights and biases, so they can be accessed later
-	with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.truncated_normal_initializer(sddev=0.9), weights_regularizer=slim.l2_regularizer(0.05)):
+	with slim.arg_scope([slim.conv2d], padding='SAME', weights_initializer=tf.truncated_normal_initializer(stddev=0.9), weights_regularizer=slim.l2_regularizer(0.05)):
 		net = slim.conv2d(data, 20, [5,5], scope='conv1')
 		net = slim.max_pool2d(net, [2,2], scope='pool1')
 		net = slim.conv2d(net, 50, [5,5], scope='conv2')
@@ -48,8 +48,6 @@ optimizer = tf.train.GradientDescentOptimizer(learning_rate=.001)
 #train_tensor = slim.learning.create_train_op(total_loss, optimizer)
 # slim.learning.train(train_tensor, train_log_dir,feed_dict={data_placeholder:images, label_placeholder:labels})
 
-print(total_loss)
-
 
 correct = tf.equal(tf.argmax(prediction, 1), label_placeholder)
 accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
@@ -63,8 +61,7 @@ with tf.Session() as sess:
 		batch_ys = [np.argmax(v) for v in batch_ys]
 		sess.run(train_step, feed_dict={data_placeholder: batch_xs, label_placeholder: batch_ys})
 
-		# if c % 10 == 0:
-		# 	print("test")
-
 		print('Accuracy:',accuracy.eval({data_placeholder:batch_xs, label_placeholder:batch_ys}))
+	
+
 	print('final Accuracy:',accuracy.eval({data_placeholder:images_test, label_placeholder:labels_test}))

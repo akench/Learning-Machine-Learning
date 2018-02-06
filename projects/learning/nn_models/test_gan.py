@@ -74,11 +74,6 @@ G_sample = generator(Z)
 D_real, D_logit_real = discriminator(X)
 D_fake, D_logit_fake = discriminator(G_sample)
 
-# D_loss = -tf.reduce_mean(tf.log(D_real) + tf.log(1. - D_fake))
-# G_loss = -tf.reduce_mean(tf.log(D_fake))
-
-# Alternative losses:
-# -------------------
 D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=D_logit_real, labels=tf.ones_like(D_logit_real)))
 D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=D_logit_fake, labels=tf.zeros_like(D_logit_fake)))
 D_loss = D_loss_real + D_loss_fake
@@ -90,7 +85,7 @@ G_solver = tf.train.AdamOptimizer().minimize(G_loss, var_list=theta_G)
 mb_size = 128
 Z_dim = 100
 
-mnist = input_data.read_data_sets('../../MNIST_data', one_hot=True)
+mnist = input_data.read_data_sets('/tmp/mnist_data', one_hot=True)
 
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
