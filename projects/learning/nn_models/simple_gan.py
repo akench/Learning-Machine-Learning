@@ -20,6 +20,24 @@ X = tf.placeholder(dtype=tf.float32, shape=[None, 784])
 Z = tf.placeholder(dtype=tf.float32, shape=[None, 100])
 
 
+# D_W1 = tf.Variable(xavier_init([784, 128]), name='d_w1')
+# D_b1 = tf.Variable(tf.zeros(shape=[128]), name='d_b1')
+
+# D_W2 = tf.Variable(xavier_init([128, 1]), name='d_w2')
+# D_b2 = tf.Variable(tf.zeros(shape=[1]), name='d_b2')
+
+# # theta_D = [D_W1, D_W2, D_b1, D_b2]
+
+
+
+# G_W1 = tf.Variable(xavier_init([100, 128]),name='g_w1')
+# G_b1 = tf.Variable(tf.zeros(shape=[128]),name='g_b1')
+
+# G_W2 = tf.Variable(xavier_init([128, 784]),name='g_w2')
+# G_b2 = tf.Variable(tf.zeros(shape=[784]),name='g_b2')
+
+# theta_G = [G_W1, G_W2, G_b1, G_b2]
+
 
 
 def sample_Z(m, n):
@@ -29,36 +47,42 @@ def sample_Z(m, n):
 
 def generator(z):
 
-    G_W1 = tf.Variable(xavier_init([100, 128]), name='g_w1')
-    G_b1 = tf.Variable(tf.zeros(shape=[128]), name='g_b1')
+    with tf.variable_scope('gen', reuse=tf.AUTO_REUSE):
 
-    net = tf.matmul(z, G_W1) + G_b1
-    net = tf.nn.relu(net)
+        G_w1 = tf.get_variable('g_w1', shape=[100, 128], initializer=tf.contrib.layers.xavier_initializer())
+        G_b1 = tf.get_variable('g_b1', shape=[128], initializer=tf.contrib.layers.xavier_initializer())
 
-    G_W2 = tf.Variable(xavier_init([128, 784]), name='g_w2')
-    G_b2 = tf.Variable(tf.zeros(shape=[784]), name='g_b2')
+        net = tf.matmul(z, G_w1) + G_b1
+        net = tf.nn.relu(net)
 
 
-    net = tf.matmul(net, G_W2) + G_b2
-    net = tf.nn.sigmoid(net)
+        G_w2 = tf.get_variable('g_w2', shape=[128, 784], initializer=tf.contrib.layers.xavier_initializer())
+        G_b2 = tf.get_variable('g_b2', shape=[784], initializer=tf.contrib.layers.xavier_initializer())
+
+
+        net = tf.matmul(net, G_w2) + G_b2
+        net = tf.nn.sigmoid(net)
 
     return net
 
 
 def discriminator(x):
 
-    D_W1 = tf.Variable(xavier_init([784, 1]), name='d_w1')
-    D_b1 = tf.Variable(tf.zeros(shape=[1]), name='d_b1')
+    with tf.variable_scope('dis', reuse=tf.AUTO_REUSE):
 
-    net = tf.matmul(x, D_W1) + D_b1
-    net = tf.nn.relu(net)
+        D_w1 = tf.get_variable('d_w1', shape=[784, 128], initializer=tf.contrib.layers.xavier_initializer())
+        D_b1 = tf.get_variable('d_b1', shape=[128], initializer=tf.contrib.layers.xavier_initializer())
+
+        net = tf.matmul(x, D_w1) + D_b1
+        net = tf.nn.relu(net)
 
 
-    D_W2 = tf.Variable(xavier_init([128, 1]), name='d_w2')
-    D_b2 = tf.Variable(tf.zeros(shape=[1]), name='d_b2')
+        D_w2 = tf.get_variable('d_w2', shape=[128, 1], initializer=tf.contrib.layers.xavier_initializer())
+        D_b2 = tf.get_variable('d_b2', shape=[1], initializer=tf.contrib.layers.xavier_initializer())
 
-    net = tf.matmul(net, D_W2) + D_b2
+        net = tf.matmul(net, D_w2) + D_b2
     return net
+
 
 
 def train():
@@ -86,6 +110,11 @@ def train():
     tvars = tf.trainable_variables()
     d_vars = [var for var in tvars if 'd_' in var.name]
     g_vars = [var for var in tvars if 'g_' in var.name]
+
+    print(d_vars)
+    print('')
+    print('')
+    print(g_vars)
 
     D_train_step = tf.train.AdamOptimizer().minimize(D_loss, var_list=d_vars)
     G_train_step = tf.train.AdamOptimizer().minimize(G_loss, var_list=g_vars)
