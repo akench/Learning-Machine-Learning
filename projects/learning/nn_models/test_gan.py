@@ -36,6 +36,7 @@ theta_G = [G_W1, G_W2, G_b1, G_b2]
 
 def sample_Z(m, n):
     return np.random.uniform(-1., 1., size=[m, n])
+    # return np.full([m, n], 0.0)
 
 
 def generator(z):
@@ -94,6 +95,8 @@ if not os.path.exists('out/'):
     os.makedirs('out/')
 
 i = 0
+G_loss_curr=0.
+D_loss_curr=0.
 
 for it in range(1000000):
     if it % 1000 == 0:
@@ -106,10 +109,11 @@ for it in range(1000000):
 
     X_mb, _ = mnist.train.next_batch(mb_size)
 
+
     _, D_loss_curr = sess.run([D_solver, D_loss], feed_dict={X: X_mb, Z: sample_Z(mb_size, Z_dim)})
     _, G_loss_curr = sess.run([G_solver, G_loss], feed_dict={Z: sample_Z(mb_size, Z_dim)})
 
-    if it % 1000 == 0:
+    if it % 100 == 0:
         print('Iter: {}'.format(it))
         print('D loss: {:.4}'. format(D_loss_curr))
         print('G_loss: {:.4}'.format(G_loss_curr))

@@ -156,12 +156,14 @@ with tf.Session() as sess:
 
     writer = tf.summary.FileWriter(logdir, sess.graph)
 
-    gLoss = 0
-    dLossFake, dLossReal = 1, 1
+    gLoss = 0.
+    dLossFake, dLossReal = 1., 1.
     d_real_count, d_fake_count, g_count = 0, 0, 0
     for i in range(50000):
 
-        print('hihi')
+        print('Generator loss {:.4}'.format(gLoss))
+        print('Discriminator loss real {:.4}'.format(dLossReal))
+        print('Discriminator loss fake {:.4}'.format(dLossFake))
 
         
         real_image_batch = mnist.train.next_batch(batch_size)[0].reshape([batch_size, 28, 28, 1])
