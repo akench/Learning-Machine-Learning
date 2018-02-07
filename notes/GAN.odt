@@ -74,3 +74,7 @@ Feed in random z vector and then feed the output to discriminator.
 To discriminators
 output of generator or a real image
 Training generator and discriminator alternatively every iteration
+
+
+
+src: https://github.com/llSourcell/Generative_Adversarial_networks_LIVE/blob/master/EZGAN.ipynb
