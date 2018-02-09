@@ -3,17 +3,26 @@ from utils.parse_img import normalize_data
 
 class DataUtil:
 
-    def __init__(self, data_dir, batch_size, num_epochs, normalize = True):
-        self.images_train = list(pickle.load(open(data_dir + '/train_data.p', 'rb')))
-        self.labels_train = list(pickle.load(open(data_dir + '/train_labels.p', 'rb')))
+    def __init__(self, data_dir, batch_size, num_epochs, normalize = True, GAN = False):
 
-        images_val = list(pickle.load(open(data_dir + '/val_data.p', 'rb')))
 
-        if normalize:
-            images_val, _, _ = normalize_data(images_val)
+        if GAN:
+            self.images_train = list(pickle.load(open(data_dir + '/train_data.p', 'rb')))
 
-        self.images_val = images_val
-        self.labels_val = list(pickle.load(open(data_dir + '/val_labels.p', 'rb')))
+
+        else:
+            self.images_train = list(pickle.load(open(data_dir + '/train_data.p', 'rb')))
+            self.labels_train = list(pickle.load(open(data_dir + '/train_labels.p', 'rb')))
+
+            images_val = list(pickle.load(open(data_dir + '/val_data.p', 'rb')))
+
+            if normalize:
+                images_val, _, _ = normalize_data(images_val)
+
+            self.images_val = images_val
+            self.labels_val = list(pickle.load(open(data_dir + '/val_labels.p', 'rb')))
+
+
 
         self.batch_size = batch_size
         self.curr_data_num = 0

@@ -115,8 +115,7 @@ def images_to_arrays(image_list):
 		list of list of pixels for each image
 		...each image is in each row
 	'''
-
-	return [np.array(img).reshape((1, img.size[0] * img.size[1])).squeeze() for img in image_list]
+	return [np.array(img).flatten() for img in image_list]
 
 
 
