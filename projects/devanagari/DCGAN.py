@@ -21,9 +21,32 @@ def generator(Z):
 			weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
 			weights_regularizer=slim.l2_regularizer(.05)):
 
-			net = slim.fully_connected(Z, 264*2*2, activation_fn=None, scope='fc1')
-			net = tf.reshape(net, (-1, 2, 2, 264))
-			
+			net = slim.fully_connected(Z, 4*4*64, activation_fn=None, scope='fc1')
+			net = tf.reshape(net, (-1, 4, 4, 64))
+			net = slim.batch_norm(net)
+			net = tf.nn.leaky_relu(net)
+			# tensor = 4 x 4 x 64
+
+			net = slim.conv2d_transpose(net, 512, [5,5], strides=2)
+			net = slim.batch_norm(net)
+			net = tf.nn.leaky_relu(net)
+			# tensor = 8 x 8 x 32
+
+			net = slim.conv2d_transpose(net, 256, [5,5])
+			net = slim.batch_norm(net)
+			net = tf.nn.leaky_relu(net)
+			# tensor = 16 x 16 x 16
+
+			net = slim.conv2d_transpose(net, 128, [5,5])
+			net = slim.batch_norm(net)
+			net = tf.nn.leaky_relu(net)
+			# tensor = 32 x 32 x 8
+
+			net = slim.conv2d(net, 1 , [1,1])
+			net = tf.nn.sigmoid(net)
+
+	return net
+
 
 
 def discriminator(X):
