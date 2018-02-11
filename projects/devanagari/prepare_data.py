@@ -5,8 +5,12 @@ from utils.parse_img import images_to_arrays
 import pickle
 
 
-char_dirs = glob.glob('/home/super/Downloads/devanagari/Test/*')
+# char_dirs = glob.glob('/home/super/Documents/devanagari/Test/*')
+char_dirs = glob.glob('/home/super/Documents/devanagari/digits_train/*')
 
+if len(char_dirs) == 0:
+	print('not a dir')
+	quit()
 
 all_data = []
 
@@ -18,14 +22,11 @@ for char in char_dirs:
 	image_objs = []
 	for path in img_paths_per_char:
 
-		im = Image.open(path)
-		image_objs.append(im)
+		with Image.open(path) as im:
+			all_data = all_data + images_to_arrays([im])
 
-
-	data = images_to_arrays(image_objs)
-	all_data = all_data + data
 	print(len(all_data))
 
 
-
+print('dumping...')
 pickle.dump(all_data, open('data/train_data.p', 'wb'))
