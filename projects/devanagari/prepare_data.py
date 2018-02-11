@@ -22,7 +22,6 @@ for char in char_dirs:
 		image_objs.append(im)
 
 
-
 	data = images_to_arrays(image_objs)
 	all_data = all_data + data
 	print(len(all_data))

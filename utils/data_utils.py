@@ -1,5 +1,7 @@
 import pickle
 from utils.parse_img import normalize_data
+import random
+from sklearn.utils import shuffle as skshuffle
 
 class DataUtil:
 
@@ -40,7 +42,7 @@ class DataUtil:
             Next training batch, None if finished all epochs
         '''
 
-        if self.curr_epoch >= num_epochs:
+        if self.curr_epoch >= self.num_epochs:
             return None
 
 
@@ -48,7 +50,7 @@ class DataUtil:
             return self.get_next_batch_with_labels()
 
         else:
-            return self.get_next_batch_with_labels()
+            return self.get_next_batch_without_labels()
 
 
 
@@ -74,10 +76,10 @@ class DataUtil:
                 print('FINISHED EPOCH', self.curr_epoch)
                 self.curr_epoch += 1
                 self.curr_data_num = 0
-                self.images_train = shuffle(self.images_train)
+                random.shuffle(self.images_train)
 
 
-        img_batch, _, _ = normalize_data(img_batch)
+        # img_batch, _, _ = normalize_data(img_batch)
 
         return img_batch
 
@@ -106,7 +108,7 @@ class DataUtil:
                 print('FINISHED EPOCH', self.curr_epoch)
                 self.curr_epoch += 1
                 self.curr_data_num = 0
-                self.images_train, self.labels_train = shuffle(self.images_train, self.labels_train)
+                self.images_train, self.labels_train = skshuffle(self.images_train, self.labels_train)
 
 
         img_batch, _, _ = normalize_data(img_batch)
