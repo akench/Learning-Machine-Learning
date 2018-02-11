@@ -9,15 +9,6 @@ import time
 mnist = input_data.read_data_sets('/tmp/mnist_data', one_hot=True)
 
 
-#TODO
-#avg pool, leaky_relu, conv2d_Transpose
-
-
-def xavier_init(size):
-    in_dim = size[0]
-    xavier_stddev = 1. / tf.sqrt(in_dim / 2.)
-    return tf.random_normal(shape=size, stddev=xavier_stddev)
-
 
 X = tf.placeholder(dtype=tf.float32, shape=[None, 784])
 Z = tf.placeholder(dtype=tf.float32, shape=[None, 100])
@@ -25,7 +16,7 @@ Z = tf.placeholder(dtype=tf.float32, shape=[None, 100])
 
 
 def sample_Z(m, n):
-    # return np.random.uniform(-1., 1., size=[m, n])
+    #return np.random.uniform(-1., 1., size=[m, n])
     return np.random.normal(size=(m, n))
 
 
@@ -215,20 +206,17 @@ def gen_image_with_seed(seed):
             plt.close()
 
 
-        
-
-        
 
 
-train()
+
+
+
+# train()
 # gen_images(50)
 
 
-# seed = -1.0
-# while seed <= 1.0:
-#     gen_image_with_seed(seed)
-#     seed += 0.01
-
-
-
-
+seed = -1.0
+# seed = np.random.normal(size=(100))
+while seed <= 1.0:
+    gen_image_with_seed(seed)
+    seed += 0.1
