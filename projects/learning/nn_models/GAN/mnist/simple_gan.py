@@ -78,8 +78,8 @@ def discriminator(x):
         net = tf.matmul(x, D_w1) + D_b1
         net = tf.nn.relu(net)
 
-        D_w2 = tf.get_variable('d_w2', shape=[512, 128], initializer=tf.contrib.layers.xavier_initializer())
-        D_b2 = tf.get_variable('d_b2', shape=[128], initializer=tf.contrib.layers.xavier_initializer())
+        D_w2 = tf.get_variable('d_w2', shape=[512, 1], initializer=tf.contrib.layers.xavier_initializer())
+        D_b2 = tf.get_variable('d_b2', shape=[1], initializer=tf.contrib.layers.xavier_initializer())
 
         net = tf.matmul(net, D_w2) + D_b2
 
@@ -93,9 +93,11 @@ def train(restore = False):
     d_logit_real = discriminator(X)
     d_logit_fake = discriminator(generated)
 
+    print(d_logit_real.shape)
+
     D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_real,
-        labels=tf.fill(d_logit_real.get_shape(), 0.9)))
+        labels=tf.fill([128,1], 0.9)))
 
     D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_fake,
@@ -138,7 +140,7 @@ def train(restore = False):
 
             if it % 10000 == 0:
                 path = g_saver.save(sess, 'generator_mnist/model.ckpt')
-                print('path saved in %s', path)
+                print('path saved in %s' % path)
 
             if it % 1000 == 0:
                 sample = sess.run(generated, feed_dict={Z: np.full((1, 100), 0.01)})
@@ -212,11 +214,11 @@ def gen_image_with_seed(seed):
 
 
 # train()
-# gen_images(50)
+gen_images(50)
 
 
-seed = -1.0
-# seed = np.random.normal(size=(100))
-while seed <= 1.0:
-    gen_image_with_seed(seed)
-    seed += 0.1
+# seed = -1.0
+# # seed = np.random.normal(size=(100))
+# while seed <= 1.0:
+#     gen_image_with_seed(seed)
+#     seed += 0.1

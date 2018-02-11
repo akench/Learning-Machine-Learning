@@ -31,17 +31,67 @@ class DataUtil:
         self.curr_epoch = 0
         self.num_epochs = num_epochs
 
+        self.get_labels = not GAN
+
 
     def get_next_batch(self):
         '''
-        Gets the next batch in training data.
+        Returns:
+            Next training batch, None if finished all epochs
+        '''
+
+        if self.curr_epoch >= num_epochs:
+            return None
+
+
+        if self.get_labels:
+            return self.get_next_batch_with_labels()
+
+        else:
+            return self.get_next_batch_with_labels()
+
+
+
+    def get_next_batch_without_labels(self):
+
+        '''
+        Gets the next batch in training data. WITHOUT LABELS
+        @param None
+        @return The next normalized training DATA BATCH
+        '''
+
+        img_batch = []
+
+        for _ in range(self.batch_size):
+
+            img_batch.append(self.images_train[self.curr_data_num])
+
+            self.curr_data_num += 1
+            self.global_num += 1
+
+            if self.curr_data_num > len(self.images_train) - 1:
+
+                print('FINISHED EPOCH', self.curr_epoch)
+                self.curr_epoch += 1
+                self.curr_data_num = 0
+                self.images_train = shuffle(self.images_train)
+
+
+        img_batch, _, _ = normalize_data(img_batch)
+
+        return img_batch
+
+
+
+    def get_next_batch_with_labels(self):
+        '''
+        Gets the next batch in training data. WITH LABELS
         @param None
         @return The next normalized training batch
         '''
 
         img_batch = []
         labels_batch = []
-        finished_epoch = False
 
         for _ in range(self.batch_size):
 
@@ -54,7 +104,6 @@ class DataUtil:
             if self.curr_data_num > len(self.images_train) - 1:
 
                 print('FINISHED EPOCH', self.curr_epoch)
-                finished_epoch = True
                 self.curr_epoch += 1
                 self.curr_data_num = 0
                 self.images_train, self.labels_train = shuffle(self.images_train, self.labels_train)
@@ -62,7 +111,7 @@ class DataUtil:
 
         img_batch, _, _ = normalize_data(img_batch)
 
-        return img_batch, labels_batch, finished_epoch
+        return img_batch, labels_batch
 
 
 
