@@ -42,15 +42,20 @@ class DataUtil:
             Next training batch, None if finished all epochs
         '''
 
-        if self.curr_epoch >= self.num_epochs:
-            return None
+        
 
 
         if self.get_labels:
-            return self.get_next_batch_with_labels()
+            if self.curr_epoch >= self.num_epochs:
+                return None, None
+            else:
+                return self.get_next_batch_with_labels()
 
         else:
-            return self.get_next_batch_without_labels()
+            if self.curr_epoch >= self.num_epochs:
+                return None
+            else:  
+                return self.get_next_batch_without_labels()
 
 
 

@@ -9,6 +9,7 @@ from sklearn.utils import shuffle
 import os
 import os.path as path
 from utils.parse_img import normalize_data
+from utils.data_utils import DataUtil
 
 
 MODEL_NAME = 'pvg_model'
@@ -109,14 +110,15 @@ def train():
 
 		tf.train.write_graph(sess.graph_def, 'out', MODEL_NAME + '.pbtxt', True)
 
-		while data_util.curr_epoch <= data_util.num_epochs:
+		img_batch, labels_batch = data_util.get_next_batch()
+		while img_batch is not None:
 
 			'''VALIDATION ACCURACY'''
 			if data_util.global_num % 30 == 0:
 				# print('inside val')
 				with tf.name_scope('val_acc'):
 					_, summary_val = sess.run([accuracy, summary_op],
-									feed_dict = {data_placeholder: data_util.images_val_norm,
+									feed_dict = {data_placeholder: data_util.images_val,
 									labels_placeholder: data_util.labels_val,
 									keep_prob_placeholder: 1.0})
 				test_writer.add_summary(summary_val, data_util.global_num)
@@ -124,7 +126,7 @@ def train():
 
 
 			'''ACTUAL TRAINING'''
-			img_batch, labels_batch = data_util.get_next_batch()
+			
 
 			_, summary = sess.run([train_step, summary_op],
 												feed_dict = {data_placeholder: img_batch,
@@ -133,6 +135,8 @@ def train():
 
 
 			train_writer.add_summary(summary, data_util.global_num)
+
+			img_batch, labels_batch = data_util.get_next_batch()
 
 
 
@@ -150,11 +154,12 @@ def train():
 
 		#TRAINING DONE!!!!!!!!!!!!!!
 		#VAL IMAGES ALREADY NORMALIZED
-		print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: data_util.images_val_norm,
+		print('\n\nfinal Accuracy:',accuracy.eval({data_placeholder: data_util.images_val,
 											labels_placeholder: data_util.labels_val,
 											keep_prob_placeholder: 1.0}))
 
 		confusion = tf.confusion_matrix(labels=y_, predictions=y, num_classes=4)
+		print(confusion)
 
 
 		print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - start_time)))
