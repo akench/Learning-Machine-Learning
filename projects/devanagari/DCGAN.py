@@ -195,12 +195,12 @@ def gen_images(num):
         saver=tf.train.Saver()
         saver.restore(sess, tf.train.latest_checkpoint('model/'))
 
-        images = sess.run(generated, feed_dict={Z: sample_Z(num_img, 100)})
+        images = sess.run(generated, feed_dict={Z: sample_Z(num, 100)})
 
         for i, img in enumerate(images):
 
             plt.axis('off')
-            plt.imshow(img.reshape(28, 28), cmap='Greys_r')
+            plt.imshow(img.reshape(32, 32), cmap='Greys_r')
             plt.savefig('gen_images/{}.png'.format(i), bbox_inches='tight')
             plt.close()
 
