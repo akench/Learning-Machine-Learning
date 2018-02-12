@@ -187,6 +187,23 @@ def train(continue_training=False):
                 print()
 
 
+def gen_images(num):
+
+    generated = generator(Z)
+
+    with tf.Session() as sess:
+        saver=tf.train.Saver()
+        saver.restore(sess, tf.train.latest_checkpoint('model/model.ckpt'))
+
+        images = sess.run(generated, feed_dict={Z: sample_Z(num_img, 100)})
+
+        for i, img in enumerate(images):
+
+            plt.axis('off')
+            plt.imshow(img.reshape(28, 28), cmap='Greys_r')
+            plt.savefig('gen_images/{}.png'.format(i), bbox_inches='tight')
+            plt.close()
 
 
-train()
+gen_images(50)
+# train()
