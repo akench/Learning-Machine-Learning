@@ -56,8 +56,11 @@ def conf_mat():
 
 		confusion = tf.confusion_matrix(labels=data_util.labels_val,
 				 predictions=model_output_val, num_classes=4)
-		print(sess.run(confusion))
+		confusion = sess.run(confusion)
 
+		print('horizontal = prediction')
+		print('vertical = actual')
+		print(confusion)
 
 
 def make_prediction(data, is_file_path):
