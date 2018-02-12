@@ -193,7 +193,7 @@ def gen_images(num):
 
     with tf.Session() as sess:
         saver=tf.train.Saver()
-        saver.restore(sess, tf.train.latest_checkpoint('model/model.ckpt'))
+        saver.restore(sess, tf.train.latest_checkpoint('model/'))
 
         images = sess.run(generated, feed_dict={Z: sample_Z(num_img, 100)})
 
