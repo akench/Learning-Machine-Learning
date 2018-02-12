@@ -181,7 +181,7 @@ def train(continue_training=False):
 
             _, G_loss_curr = sess.run([G_train_step, G_loss],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM)})
-		if it % 2 == 0:
+            if it % 2 == 0:
                 _, D_loss_curr = sess.run([D_train_step, D_loss],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
 
