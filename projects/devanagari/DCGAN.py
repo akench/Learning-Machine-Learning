@@ -80,22 +80,22 @@ def discriminator(X):
                 net = slim.conv2d(net, 64, [5,5], scope='conv1')
                 net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], scope='pool1')
+                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool1')
 
                 net = slim.conv2d(net, 128, [5,5], scope='conv2')
                 net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], scope='pool2')
+                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool2')
 
                 net = slim.conv2d(net, 256, [4,4], scope='conv3')
                 net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], scope='pool3')
+                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool3')
 
                 net = slim.conv2d(net, 512, [3,3], scope='conv4')
                 net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], scope='pool4')
+                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool4')
 
                 net = slim.flatten(net, scope='flatten5')
                 net = slim.fully_connected(net, 128, activation_fn=tf.nn.relu, scope='fc6')
