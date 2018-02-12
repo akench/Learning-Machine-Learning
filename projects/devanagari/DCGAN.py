@@ -113,7 +113,8 @@ def train(continue_training=False):
 
     D_loss_real = tf.log(tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_real,
-        labels=tf.fill([BATCH_SIZE, 1], 0.9)
+        labels=tf.ones_like(d_logit_real)
+        # labels=tf.fill([BATCH_SIZE, 1], 0.9)
     )))
     D_loss_fake = tf.log(tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_fake,
