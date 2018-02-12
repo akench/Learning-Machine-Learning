@@ -111,22 +111,22 @@ def train(continue_training=False):
     d_logit_real = discriminator(X)
     d_logit_fake = discriminator(generated)
 
-    D_loss_real = tf.log(tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+    D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_real,
         labels=tf.ones_like(d_logit_real)
         # labels=tf.fill([BATCH_SIZE, 1], 0.9)
-    )))
-    D_loss_fake = tf.log(tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+    ))
+    D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_fake,
         labels=tf.zeros_like(d_logit_fake)
-    )))
+    ))
 
     D_loss = D_loss_fake + D_loss_real
 
-    G_loss = tf.log(tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+    G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_fake,
         labels=tf.ones_like(d_logit_fake)
-    )))
+    ))
 
     tvars = tf.trainable_variables()
     d_vars = [v for v in tvars if 'disc' in v.name]
@@ -137,8 +137,8 @@ def train(continue_training=False):
     print()
     print(g_vars)
 
-    D_train_step = tf.train.AdamOptimizer().minimize(D_loss, var_list=d_vars)
-    G_train_step = tf.train.AdamOptimizer().minimize(G_loss, var_list=g_vars)
+    D_train_step = tf.train.AdamOptimizer(0.00001).minimize(D_loss, var_list=d_vars)
+    G_train_step = tf.train.AdamOptimizer(.001).minimize(G_loss, var_list=g_vars)
 
     data_util = DataUtil(data_dir='data', batch_size=BATCH_SIZE,
             num_epochs=5, GAN = True)
@@ -179,10 +179,10 @@ def train(continue_training=False):
                 print('path saved in %s' % (path))
                 return
 
-
-            _, G_loss_curr = sess.run([G_train_step, G_loss],
-                    feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM)})
             if it % 2 == 0:
+                _, G_loss_curr = sess.run([G_train_step, G_loss],
+                    feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM)})
+            if it % 1 == 0:
                 _, D_loss_curr = sess.run([D_train_step, D_loss],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
 
