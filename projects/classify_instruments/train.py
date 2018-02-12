@@ -136,6 +136,11 @@ def train():
 
 			train_writer.add_summary(summary, data_util.global_num)
 
+
+			print('curr acc:',accuracy.eval({data_placeholder: data_util.images_val[:100],
+											labels_placeholder: data_util.labels_val[:100],
+											keep_prob_placeholder: 1.0}))
+
 			img_batch, labels_batch = data_util.get_next_batch()
 
 
@@ -158,8 +163,8 @@ def train():
 											labels_placeholder: data_util.labels_val,
 											keep_prob_placeholder: 1.0}))
 
-		confusion = tf.confusion_matrix(labels=y_, predictions=y, num_classes=4)
-		print(confusion)
+
+		
 
 
 		print('TIME TO TRAIN:', time.strftime("%M mins and %S secs", time.gmtime(time.time() - start_time)))

@@ -8,6 +8,7 @@ from PIL import Image
 import glob
 from matplotlib import pyplot as plt
 from random import *
+from utils.data_utils import DataUtil
 
 data_placeholder = tf.placeholder(shape = [None, 784], dtype = tf.float32)
 label_placeholder = tf.placeholder(shape=[None], dtype = tf.int64)
@@ -30,6 +31,33 @@ def model(net, keep_prob):
 				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout5')
 				net = slim.fully_connected(net, 4, activation_fn=None, scope='fc6')
 	return net
+
+
+def conf_mat():
+
+	data_util = DataUtil('processed_data', batch_size = 128, num_epochs = 3)
+
+	prediction = model(data_placeholder, keep_prob_placeholder)
+
+	with tf.Session() as sess:
+
+		saver = tf.train.Saver()
+		saver.restore(sess, 'out/pvg_model.chkp')
+
+		model_output_val = sess.run(prediction, feed_dict={
+				data_placeholder:data_util.images_val,
+				keep_prob_placeholder: 1.0
+		})
+
+		model_output_val = tf.argmax(model_output_val, axis=1)
+
+		# print(sess.run(tf.argmax(model_output_val, axis=1)))
+		# quit()
+
+		confusion = tf.confusion_matrix(labels=data_util.labels_val,
+				 predictions=model_output_val, num_classes=4)
+		print(sess.run(confusion))
+
 
 
 def make_prediction(data, is_file_path):
@@ -100,4 +128,5 @@ def create_test_data_and_labels(folder_name, label):
 	pickle.dump(labels, open('processed_data/' + folder_name + '_labels.p', 'wb'))
 
 
-print(make_prediction('org_data/mult.jpeg', True))
+conf_mat()
+# print(make_prediction('org_data/mult.jpeg', True))
