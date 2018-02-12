@@ -87,15 +87,15 @@ def discriminator(X):
                 net = tf.nn.leaky_relu(net)
                 net = slim.avg_pool2d(net, [2,2], scope='pool2')
 
-                net = slim.conv2d(net, 256, [5,5], scope='conv3')
+                net = slim.conv2d(net, 256, [4,4], scope='conv3')
                 net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                # net = slim.avg_pool2d(net, [2,2], scope='pool3')
+                net = slim.avg_pool2d(net, [2,2], scope='pool3')
 
-                net = slim.conv2d(net, 512, [5,5], scope='conv4')
+                net = slim.conv2d(net, 512, [3,3], scope='conv4')
                 net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                # net = slim.avg_pool2d(net, [2,2], scope='pool4')
+                net = slim.avg_pool2d(net, [2,2], scope='pool4')
 
                 net = slim.flatten(net, scope='flatten5')
                 net = slim.fully_connected(net, 128, activation_fn=tf.nn.relu, scope='fc6')
@@ -111,25 +111,30 @@ def train(continue_training=False):
     d_logit_real = discriminator(X)
     d_logit_fake = discriminator(generated)
 
-    D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+    D_loss_real = tf.log(tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_real,
         labels=tf.fill([BATCH_SIZE, 1], 0.9)
-    ))
-    D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+    )))
+    D_loss_fake = tf.log(tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_fake,
         labels=tf.zeros_like(d_logit_fake)
-    ))
+    )))
 
     D_loss = D_loss_fake + D_loss_real
 
-    G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+    G_loss = tf.log(tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
         logits=d_logit_fake,
         labels=tf.ones_like(d_logit_fake)
-    ))
+    )))
 
     tvars = tf.trainable_variables()
     d_vars = [v for v in tvars if 'disc' in v.name]
     g_vars = [v for v in tvars if 'gen' in v.name]
+
+
+    print(d_vars)
+    print()
+    print(g_vars)
 
     D_train_step = tf.train.AdamOptimizer().minimize(D_loss, var_list=d_vars)
     G_train_step = tf.train.AdamOptimizer().minimize(G_loss, var_list=g_vars)
@@ -176,8 +181,8 @@ def train(continue_training=False):
 
             _, G_loss_curr = sess.run([G_train_step, G_loss],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM)})
-
-            _, D_loss_curr = sess.run([D_train_step, D_loss],
+		if it % 2 == 0:
+                _, D_loss_curr = sess.run([D_train_step, D_loss],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
 
             if it % 1 == 0:
@@ -205,5 +210,5 @@ def gen_images(num):
             plt.close()
 
 
-gen_images(50)
-# train()
+#gen_images(50)
+train()
