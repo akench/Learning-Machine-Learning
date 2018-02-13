@@ -51,8 +51,6 @@ def conf_mat():
 
 		model_output_val = tf.argmax(model_output_val, axis=1)
 
-		# print(sess.run(tf.argmax(model_output_val, axis=1)))
-		# quit()
 
 		confusion = tf.confusion_matrix(labels=data_util.labels_val,
 				 predictions=model_output_val, num_classes=4)

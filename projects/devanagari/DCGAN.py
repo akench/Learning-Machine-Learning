@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import time
 import tensorflow.contrib.slim as slim
 from utils.data_utils import DataUtil
+from utils.parse_img import normalize_datas
 
 
 BATCH_SIZE = 128
@@ -56,8 +57,7 @@ def generator(Z):
             # shape = 32 x 32 x 1
             print(net.shape)
 
-            net = tf.nn.sigmoid(net)
-            # quit()
+            net = tf.nn.tanh(net)
 
     return net
 
@@ -133,15 +133,15 @@ def train(continue_training=False):
     g_vars = [v for v in tvars if 'gen' in v.name]
 
 
-    print(d_vars)
-    print()
-    print(g_vars)
+    # print(d_vars)
+    # print()
+    # print(g_vars)
 
     D_train_step = tf.train.AdamOptimizer(0.00001).minimize(D_loss, var_list=d_vars)
     G_train_step = tf.train.AdamOptimizer(.001).minimize(G_loss, var_list=g_vars)
 
     data_util = DataUtil(data_dir='data', batch_size=BATCH_SIZE,
-            num_epochs=5, GAN = True)
+            num_epochs=200, supervised=False)
 
 
     with tf.Session() as sess:
@@ -158,11 +158,11 @@ def train(continue_training=False):
 
         for it in range(1000000):
 
-            if it % 100 == 0:
+            if it % 1000 == 0:
                 path = saver.save(sess, 'model/model.ckpt', global_step = it)
                 print('path saved in %s' % (path))
 
-            if it % 10 == 0:
+            if it % 100 == 0:
                 seed = np.full((1, 100), 0.0)
                 sample = sess.run(generated, feed_dict={Z: seed})
                 plt.axis('off')
@@ -179,14 +179,18 @@ def train(continue_training=False):
                 print('path saved in %s' % (path))
                 return
 
-            if it % 2 == 0:
+
+            batch_x, _, _ = normalize_data(batch_x)
+
+
+            if it % 1 == 0:
                 _, G_loss_curr = sess.run([G_train_step, G_loss],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM)})
-            if it % 1 == 0:
+            if it % 2 == 0:
                 _, D_loss_curr = sess.run([D_train_step, D_loss],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
 
-            if it % 1 == 0:
+            if it % 10 == 0:
                 print('Iter: {}'.format(it))
                 print('D_loss: {:.4}'.format(D_loss_curr))
                 print('G_loss: {:.4}'.format(G_loss_curr))

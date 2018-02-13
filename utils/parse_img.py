@@ -114,6 +114,8 @@ def images_to_arrays(image_list):
 	Returns:
 		list of list of pixels for each image
 		...each image is in each row
+
+		!!!assumes greyscale images with one channel!!!
 	'''
 
 	x = [np.array(img).flatten() for img in image_list]
@@ -135,7 +137,7 @@ def normalize_data(data):
 	std = np.std(data, axis = 0)
 
 	data -= m
-	data /= std
+	data /= (std + 1e-8)
 
 	return data, m, std
 

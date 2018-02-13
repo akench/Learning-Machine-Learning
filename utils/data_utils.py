@@ -5,7 +5,7 @@ from sklearn.utils import shuffle as skshuffle
 
 class DataUtil:
 
-    def __init__(self, data_dir, batch_size, num_epochs, normalize = True, GAN = False):
+    def __init__(self, data_dir, batch_size, num_epochs, normalize = True, supervised=True):
 
 
         if GAN:
@@ -33,7 +33,7 @@ class DataUtil:
         self.curr_epoch = 0
         self.num_epochs = num_epochs
 
-        self.get_labels = not GAN
+        self.supervised = supervised
 
 
     def get_next_batch(self):
@@ -42,10 +42,8 @@ class DataUtil:
             Next training batch, None if finished all epochs
         '''
 
-        
 
-
-        if self.get_labels:
+        if self.supervised:
             if self.curr_epoch >= self.num_epochs:
                 return None, None
             else:
@@ -54,7 +52,7 @@ class DataUtil:
         else:
             if self.curr_epoch >= self.num_epochs:
                 return None
-            else:  
+            else:
                 return self.get_next_batch_without_labels()
 
 
