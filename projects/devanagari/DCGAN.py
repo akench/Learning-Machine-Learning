@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import time
 import tensorflow.contrib.slim as slim
 from utils.data_utils import DataUtil
-from utils.parse_img import normalize_datas
+from utils.parse_img import normalize_data
 
 
 BATCH_SIZE = 128
@@ -32,6 +32,7 @@ def generator(Z):
             weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
             weights_regularizer=slim.l2_regularizer(.05)):
 
+            print('generator shapes')
             net = slim.fully_connected(Z, 2*2*256, activation_fn=None, scope='fc1')
             net = tf.reshape(net, (-1, 2, 2, 256))
             net = slim.batch_norm(net)
@@ -77,30 +78,41 @@ def discriminator(X):
                 weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
                 weights_regularizer=slim.l2_regularizer(.05)):
 
+                print('discriminator shapes')
+
                 net = slim.conv2d(net, 64, [5,5], scope='conv1')
+                print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
                 net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool1')
+                print(net.shape)
 
                 net = slim.conv2d(net, 128, [5,5], scope='conv2')
+                print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
                 net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool2')
+                print(net.shape)
 
                 net = slim.conv2d(net, 256, [4,4], scope='conv3')
+                print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
                 net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool3')
+                print(net.shape)
 
                 net = slim.conv2d(net, 512, [3,3], scope='conv4')
+                print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
                 net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool4')
+                print(net.shape)
 
                 net = slim.flatten(net, scope='flatten5')
+                print(net.shape)
                 net = slim.fully_connected(net, 128, activation_fn=tf.nn.relu, scope='fc6')
                 net = slim.fully_connected(net, 1, activation_fn=None, scope='fc7')
-
+                print(net.shape)
 
     return net
 

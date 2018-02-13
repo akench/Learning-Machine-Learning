@@ -8,7 +8,7 @@ class DataUtil:
     def __init__(self, data_dir, batch_size, num_epochs, normalize = True, supervised=True):
 
 
-        if GAN:
+        if not supervised:
             self.images_train = list(pickle.load(open(data_dir + '/train_data.p', 'rb')))
 
 
@@ -34,6 +34,23 @@ class DataUtil:
         self.num_epochs = num_epochs
 
         self.supervised = supervised
+
+
+    def normalize_data(data):
+
+    	'''
+    	Args:
+    		2D array with arr storing each image, and arr[i] storing pixels of image i
+    	Returns:
+    		normalized data, mean of data, standard deviation of data
+    	'''
+    	m = np.mean(data, axis = 0)
+    	std = np.std(data, axis = 0)
+
+    	data -= m
+    	data /= (std + 1e-8)
+
+    	return data, m, std
 
 
     def get_next_batch(self):
