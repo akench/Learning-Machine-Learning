@@ -754,6 +754,667 @@ node {
   }
 }
 node {
+  name: "pvg_model/BatchNorm/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 20
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 20
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 20
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm/beta"
+  input: "pvg_model/BatchNorm/beta/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm/beta"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_mean/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 20
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_mean"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 20
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_mean/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm/moving_mean"
+  input: "pvg_model/BatchNorm/moving_mean/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_mean/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm/moving_mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_variance/Initializer/ones"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 20
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_variance"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 20
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_variance/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm/moving_variance"
+  input: "pvg_model/BatchNorm/moving_variance/Initializer/ones"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_variance/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm/moving_variance"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/Const_1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/Const_2"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/FusedBatchNorm"
+  op: "FusedBatchNorm"
+  input: "pvg_model/pool1/MaxPool"
+  input: "pvg_model/BatchNorm/Const"
+  input: "pvg_model/BatchNorm/beta/read"
+  input: "pvg_model/BatchNorm/Const_1"
+  input: "pvg_model/BatchNorm/Const_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "epsilon"
+    value {
+      f: 0.0010000000474974513
+    }
+  }
+  attr {
+    key: "is_training"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/Const_3"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0010000000474974513
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/AssignMovingAvg/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm/moving_mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/AssignMovingAvg/Sub"
+  op: "Sub"
+  input: "pvg_model/BatchNorm/AssignMovingAvg/read"
+  input: "pvg_model/BatchNorm/FusedBatchNorm:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/AssignMovingAvg/Mul"
+  op: "Mul"
+  input: "pvg_model/BatchNorm/AssignMovingAvg/Sub"
+  input: "pvg_model/BatchNorm/Const_3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/AssignMovingAvg"
+  op: "AssignSub"
+  input: "pvg_model/BatchNorm/moving_mean"
+  input: "pvg_model/BatchNorm/AssignMovingAvg/Mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/AssignMovingAvg_1/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm/moving_variance"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/AssignMovingAvg_1/Sub"
+  op: "Sub"
+  input: "pvg_model/BatchNorm/AssignMovingAvg_1/read"
+  input: "pvg_model/BatchNorm/FusedBatchNorm:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/AssignMovingAvg_1/Mul"
+  op: "Mul"
+  input: "pvg_model/BatchNorm/AssignMovingAvg_1/Sub"
+  input: "pvg_model/BatchNorm/Const_3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/AssignMovingAvg_1"
+  op: "AssignSub"
+  input: "pvg_model/BatchNorm/moving_variance"
+  input: "pvg_model/BatchNorm/AssignMovingAvg_1/Mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
   name: "pvg_model/conv2/weights/Initializer/truncated_normal/shape"
   op: "Const"
   attr {
@@ -1238,7 +1899,7 @@ node {
 node {
   name: "pvg_model/conv2/Conv2D"
   op: "Conv2D"
-  input: "pvg_model/pool1/MaxPool"
+  input: "pvg_model/BatchNorm/FusedBatchNorm"
   input: "pvg_model/conv2/weights/read"
   attr {
     key: "T"
@@ -1347,6 +2008,667 @@ node {
         i: 2
         i: 1
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 50
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 50
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 50
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_1/beta"
+  input: "pvg_model/BatchNorm_1/beta/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_1/beta"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_mean/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 50
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_mean"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 50
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_mean/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_1/moving_mean"
+  input: "pvg_model/BatchNorm_1/moving_mean/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_mean/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_1/moving_mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_variance/Initializer/ones"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 50
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_variance"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 50
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_variance/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_1/moving_variance"
+  input: "pvg_model/BatchNorm_1/moving_variance/Initializer/ones"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_variance/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_1/moving_variance"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/Const_1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/Const_2"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/FusedBatchNorm"
+  op: "FusedBatchNorm"
+  input: "pvg_model/pool2/MaxPool"
+  input: "pvg_model/BatchNorm_1/Const"
+  input: "pvg_model/BatchNorm_1/beta/read"
+  input: "pvg_model/BatchNorm_1/Const_1"
+  input: "pvg_model/BatchNorm_1/Const_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "epsilon"
+    value {
+      f: 0.0010000000474974513
+    }
+  }
+  attr {
+    key: "is_training"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/Const_3"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0010000000474974513
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/AssignMovingAvg/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_1/moving_mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/AssignMovingAvg/Sub"
+  op: "Sub"
+  input: "pvg_model/BatchNorm_1/AssignMovingAvg/read"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/AssignMovingAvg/Mul"
+  op: "Mul"
+  input: "pvg_model/BatchNorm_1/AssignMovingAvg/Sub"
+  input: "pvg_model/BatchNorm_1/Const_3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/AssignMovingAvg"
+  op: "AssignSub"
+  input: "pvg_model/BatchNorm_1/moving_mean"
+  input: "pvg_model/BatchNorm_1/AssignMovingAvg/Mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/AssignMovingAvg_1/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_1/moving_variance"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/AssignMovingAvg_1/Sub"
+  op: "Sub"
+  input: "pvg_model/BatchNorm_1/AssignMovingAvg_1/read"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/AssignMovingAvg_1/Mul"
+  op: "Mul"
+  input: "pvg_model/BatchNorm_1/AssignMovingAvg_1/Sub"
+  input: "pvg_model/BatchNorm_1/Const_3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/AssignMovingAvg_1"
+  op: "AssignSub"
+  input: "pvg_model/BatchNorm_1/moving_variance"
+  input: "pvg_model/BatchNorm_1/AssignMovingAvg_1/Mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
     }
   }
 }
@@ -1835,7 +3157,7 @@ node {
 node {
   name: "pvg_model/conv3/Conv2D"
   op: "Conv2D"
-  input: "pvg_model/pool2/MaxPool"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm"
   input: "pvg_model/conv3/weights/read"
   attr {
     key: "T"
@@ -1948,9 +3270,670 @@ node {
   }
 }
 node {
+  name: "pvg_model/BatchNorm_2/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 100
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 100
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 100
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_2/beta"
+  input: "pvg_model/BatchNorm_2/beta/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_2/beta"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_mean/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 100
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_mean"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 100
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_mean/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_2/moving_mean"
+  input: "pvg_model/BatchNorm_2/moving_mean/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_mean/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_2/moving_mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_variance/Initializer/ones"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 100
+          }
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_variance"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 100
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_variance/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_2/moving_variance"
+  input: "pvg_model/BatchNorm_2/moving_variance/Initializer/ones"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_variance/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_2/moving_variance"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/Const_1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/Const_2"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/FusedBatchNorm"
+  op: "FusedBatchNorm"
+  input: "pvg_model/pool3/MaxPool"
+  input: "pvg_model/BatchNorm_2/Const"
+  input: "pvg_model/BatchNorm_2/beta/read"
+  input: "pvg_model/BatchNorm_2/Const_1"
+  input: "pvg_model/BatchNorm_2/Const_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "epsilon"
+    value {
+      f: 0.0010000000474974513
+    }
+  }
+  attr {
+    key: "is_training"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/Const_3"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0010000000474974513
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/AssignMovingAvg/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_2/moving_mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/AssignMovingAvg/Sub"
+  op: "Sub"
+  input: "pvg_model/BatchNorm_2/AssignMovingAvg/read"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/AssignMovingAvg/Mul"
+  op: "Mul"
+  input: "pvg_model/BatchNorm_2/AssignMovingAvg/Sub"
+  input: "pvg_model/BatchNorm_2/Const_3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/AssignMovingAvg"
+  op: "AssignSub"
+  input: "pvg_model/BatchNorm_2/moving_mean"
+  input: "pvg_model/BatchNorm_2/AssignMovingAvg/Mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/AssignMovingAvg_1/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_2/moving_variance"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/AssignMovingAvg_1/Sub"
+  op: "Sub"
+  input: "pvg_model/BatchNorm_2/AssignMovingAvg_1/read"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/AssignMovingAvg_1/Mul"
+  op: "Mul"
+  input: "pvg_model/BatchNorm_2/AssignMovingAvg_1/Sub"
+  input: "pvg_model/BatchNorm_2/Const_3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/AssignMovingAvg_1"
+  op: "AssignSub"
+  input: "pvg_model/BatchNorm_2/moving_variance"
+  input: "pvg_model/BatchNorm_2/AssignMovingAvg_1/Mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+}
+node {
   name: "pvg_model/flatten4/flatten/Shape"
   op: "Shape"
-  input: "pvg_model/pool3/MaxPool"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm"
   attr {
     key: "T"
     value {
@@ -2134,7 +4117,7 @@ node {
 node {
   name: "pvg_model/flatten4/flatten/Reshape"
   op: "Reshape"
-  input: "pvg_model/pool3/MaxPool"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm"
   input: "pvg_model/flatten4/flatten/Reshape/shape"
   attr {
     key: "T"
@@ -4823,7 +6806,7 @@ node {
 node {
   name: "train_step/gradients/pvg_model/flatten4/flatten/Reshape_grad/Shape"
   op: "Shape"
-  input: "pvg_model/pool3/MaxPool"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm"
   attr {
     key: "T"
     value {
@@ -4856,11 +6839,193 @@ node {
   }
 }
 node {
+  name: "train_step/gradients/zeros_like_1"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/zeros_like_2"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/zeros_like_3"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm:3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/zeros_like_4"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm:4"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad"
+  op: "FusedBatchNormGrad"
+  input: "train_step/gradients/pvg_model/flatten4/flatten/Reshape_grad/Reshape"
+  input: "pvg_model/pool3/MaxPool"
+  input: "pvg_model/BatchNorm_2/Const"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm:3"
+  input: "pvg_model/BatchNorm_2/FusedBatchNorm:4"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "epsilon"
+    value {
+      f: 0.0010000000474974513
+    }
+  }
+  attr {
+    key: "is_training"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad"
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad"
+  input: "^train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad:1"
+  input: "^train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/control_dependency_2"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad:2"
+  input: "^train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/control_dependency_3"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad:3"
+  input: "^train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/control_dependency_4"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad:4"
+  input: "^train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
   name: "train_step/gradients/pvg_model/pool3/MaxPool_grad/MaxPoolGrad"
   op: "MaxPoolGrad"
   input: "pvg_model/conv3/Relu"
   input: "pvg_model/pool3/MaxPool"
-  input: "train_step/gradients/pvg_model/flatten4/flatten/Reshape_grad/Reshape"
+  input: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -4980,7 +7145,7 @@ node {
 node {
   name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/ShapeN"
   op: "ShapeN"
-  input: "pvg_model/pool2/MaxPool"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm"
   input: "pvg_model/conv3/weights/read"
   attr {
     key: "N"
@@ -5046,7 +7211,7 @@ node {
 node {
   name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
-  input: "pvg_model/pool2/MaxPool"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm"
   input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/ShapeN:1"
   input: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency"
   attr {
@@ -5132,11 +7297,193 @@ node {
   }
 }
 node {
+  name: "train_step/gradients/zeros_like_5"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/zeros_like_6"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/zeros_like_7"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm:3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/zeros_like_8"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm:4"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad"
+  op: "FusedBatchNormGrad"
+  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency"
+  input: "pvg_model/pool2/MaxPool"
+  input: "pvg_model/BatchNorm_1/Const"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm:3"
+  input: "pvg_model/BatchNorm_1/FusedBatchNorm:4"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "epsilon"
+    value {
+      f: 0.0010000000474974513
+    }
+  }
+  attr {
+    key: "is_training"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad"
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad"
+  input: "^train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad:1"
+  input: "^train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/control_dependency_2"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad:2"
+  input: "^train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/control_dependency_3"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad:3"
+  input: "^train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/control_dependency_4"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad:4"
+  input: "^train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
   name: "train_step/gradients/pvg_model/pool2/MaxPool_grad/MaxPoolGrad"
   op: "MaxPoolGrad"
   input: "pvg_model/conv2/Relu"
   input: "pvg_model/pool2/MaxPool"
-  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -5256,7 +7603,7 @@ node {
 node {
   name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/ShapeN"
   op: "ShapeN"
-  input: "pvg_model/pool1/MaxPool"
+  input: "pvg_model/BatchNorm/FusedBatchNorm"
   input: "pvg_model/conv2/weights/read"
   attr {
     key: "N"
@@ -5322,7 +7669,7 @@ node {
 node {
   name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
-  input: "pvg_model/pool1/MaxPool"
+  input: "pvg_model/BatchNorm/FusedBatchNorm"
   input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/ShapeN:1"
   input: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency"
   attr {
@@ -5408,11 +7755,193 @@ node {
   }
 }
 node {
+  name: "train_step/gradients/zeros_like_9"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm/FusedBatchNorm:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/zeros_like_10"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm/FusedBatchNorm:2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/zeros_like_11"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm/FusedBatchNorm:3"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/zeros_like_12"
+  op: "ZerosLike"
+  input: "pvg_model/BatchNorm/FusedBatchNorm:4"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad"
+  op: "FusedBatchNormGrad"
+  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency"
+  input: "pvg_model/pool1/MaxPool"
+  input: "pvg_model/BatchNorm/Const"
+  input: "pvg_model/BatchNorm/FusedBatchNorm:3"
+  input: "pvg_model/BatchNorm/FusedBatchNorm:4"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+  attr {
+    key: "epsilon"
+    value {
+      f: 0.0010000000474974513
+    }
+  }
+  attr {
+    key: "is_training"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/group_deps"
+  op: "NoOp"
+  input: "^train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad"
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad"
+  input: "^train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency_1"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad:1"
+  input: "^train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency_2"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad:2"
+  input: "^train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency_3"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad:3"
+  input: "^train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
+  name: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency_4"
+  op: "Identity"
+  input: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad:4"
+  input: "^train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/group_deps"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/FusedBatchNormGrad"
+      }
+    }
+  }
+}
+node {
   name: "train_step/gradients/pvg_model/pool1/MaxPool_grad/MaxPoolGrad"
   op: "MaxPoolGrad"
   input: "pvg_model/conv1/Relu"
   input: "pvg_model/pool1/MaxPool"
-  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/tuple/control_dependency"
+  input: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency"
   attr {
     key: "T"
     value {
@@ -5690,7 +8219,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -5719,7 +8248,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -5764,7 +8293,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -5795,7 +8324,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -5807,7 +8336,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -5836,7 +8365,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -5881,7 +8410,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -5912,7 +8441,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -6446,6 +8975,252 @@ node {
   }
 }
 node {
+  name: "pvg_model/BatchNorm/beta/Adam/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 20
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 20
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm/beta/Adam"
+  input: "pvg_model/BatchNorm/beta/Adam/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm/beta/Adam"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam_1/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 20
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam_1"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 20
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam_1/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm/beta/Adam_1"
+  input: "pvg_model/BatchNorm/beta/Adam_1/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam_1/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm/beta/Adam_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+}
+node {
   name: "pvg_model/conv2/weights/Adam/Initializer/zeros"
   op: "Const"
   attr {
@@ -6974,6 +9749,252 @@ node {
   }
 }
 node {
+  name: "pvg_model/BatchNorm_1/beta/Adam/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 50
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 50
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_1/beta/Adam"
+  input: "pvg_model/BatchNorm_1/beta/Adam/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_1/beta/Adam"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam_1/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 50
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam_1"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 50
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam_1/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_1/beta/Adam_1"
+  input: "pvg_model/BatchNorm_1/beta/Adam_1/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam_1/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_1/beta/Adam_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+}
+node {
   name: "pvg_model/conv3/weights/Adam/Initializer/zeros"
   op: "Const"
   attr {
@@ -7497,6 +10518,252 @@ node {
     value {
       list {
         s: "loc:@pvg_model/conv3/biases"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 100
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 100
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_2/beta/Adam"
+  input: "pvg_model/BatchNorm_2/beta/Adam/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_2/beta/Adam"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam_1/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 100
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam_1"
+  op: "VariableV2"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 100
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: ""
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam_1/Assign"
+  op: "Assign"
+  input: "pvg_model/BatchNorm_2/beta/Adam_1"
+  input: "pvg_model/BatchNorm_2/beta/Adam_1/Initializer/zeros"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam_1/read"
+  op: "Identity"
+  input: "pvg_model/BatchNorm_2/beta/Adam_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
       }
     }
   }
@@ -8674,6 +11941,46 @@ node {
   }
 }
 node {
+  name: "train_step/Adam/update_pvg_model/BatchNorm/beta/ApplyAdam"
+  op: "ApplyAdam"
+  input: "pvg_model/BatchNorm/beta"
+  input: "pvg_model/BatchNorm/beta/Adam"
+  input: "pvg_model/BatchNorm/beta/Adam_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/BatchNorm/FusedBatchNorm_grad/tuple/control_dependency_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "use_nesterov"
+    value {
+      b: false
+    }
+  }
+}
+node {
   name: "train_step/Adam/update_pvg_model/conv2/weights/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/conv2/weights"
@@ -8754,6 +12061,46 @@ node {
   }
 }
 node {
+  name: "train_step/Adam/update_pvg_model/BatchNorm_1/beta/ApplyAdam"
+  op: "ApplyAdam"
+  input: "pvg_model/BatchNorm_1/beta"
+  input: "pvg_model/BatchNorm_1/beta/Adam"
+  input: "pvg_model/BatchNorm_1/beta/Adam_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/BatchNorm_1/FusedBatchNorm_grad/tuple/control_dependency_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "use_nesterov"
+    value {
+      b: false
+    }
+  }
+}
+node {
   name: "train_step/Adam/update_pvg_model/conv3/weights/ApplyAdam"
   op: "ApplyAdam"
   input: "pvg_model/conv3/weights"
@@ -8817,6 +12164,46 @@ node {
     value {
       list {
         s: "loc:@pvg_model/conv3/biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "use_nesterov"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "train_step/Adam/update_pvg_model/BatchNorm_2/beta/ApplyAdam"
+  op: "ApplyAdam"
+  input: "pvg_model/BatchNorm_2/beta"
+  input: "pvg_model/BatchNorm_2/beta/Adam"
+  input: "pvg_model/BatchNorm_2/beta/Adam_1"
+  input: "train_step/beta1_power/read"
+  input: "train_step/beta2_power/read"
+  input: "train_step/Adam/learning_rate"
+  input: "train_step/Adam/beta1"
+  input: "train_step/Adam/beta2"
+  input: "train_step/Adam/epsilon"
+  input: "train_step/gradients/pvg_model/BatchNorm_2/FusedBatchNorm_grad/tuple/control_dependency_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
       }
     }
   }
@@ -9000,10 +12387,13 @@ node {
   input: "train_step/Adam/beta1"
   input: "^train_step/Adam/update_pvg_model/conv1/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv1/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/BatchNorm/beta/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv2/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv2/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/BatchNorm_1/beta/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv3/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv3/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/BatchNorm_2/beta/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/fc5/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/fc5/biases/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/fc6/weights/ApplyAdam"
@@ -9018,7 +12408,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -9038,7 +12428,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -9062,10 +12452,13 @@ node {
   input: "train_step/Adam/beta2"
   input: "^train_step/Adam/update_pvg_model/conv1/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv1/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/BatchNorm/beta/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv2/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv2/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/BatchNorm_1/beta/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv3/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv3/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/BatchNorm_2/beta/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/fc5/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/fc5/biases/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/fc6/weights/ApplyAdam"
@@ -9080,7 +12473,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -9100,7 +12493,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -9122,10 +12515,13 @@ node {
   op: "NoOp"
   input: "^train_step/Adam/update_pvg_model/conv1/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv1/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/BatchNorm/beta/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv2/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv2/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/BatchNorm_1/beta/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv3/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/conv3/biases/ApplyAdam"
+  input: "^train_step/Adam/update_pvg_model/BatchNorm_2/beta/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/fc5/weights/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/fc5/biases/ApplyAdam"
   input: "^train_step/Adam/update_pvg_model/fc6/weights/ApplyAdam"
@@ -9374,9 +12770,24 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 32
+            size: 47
           }
         }
+        string_val: "pvg_model/BatchNorm/beta"
+        string_val: "pvg_model/BatchNorm/beta/Adam"
+        string_val: "pvg_model/BatchNorm/beta/Adam_1"
+        string_val: "pvg_model/BatchNorm/moving_mean"
+        string_val: "pvg_model/BatchNorm/moving_variance"
+        string_val: "pvg_model/BatchNorm_1/beta"
+        string_val: "pvg_model/BatchNorm_1/beta/Adam"
+        string_val: "pvg_model/BatchNorm_1/beta/Adam_1"
+        string_val: "pvg_model/BatchNorm_1/moving_mean"
+        string_val: "pvg_model/BatchNorm_1/moving_variance"
+        string_val: "pvg_model/BatchNorm_2/beta"
+        string_val: "pvg_model/BatchNorm_2/beta/Adam"
+        string_val: "pvg_model/BatchNorm_2/beta/Adam_1"
+        string_val: "pvg_model/BatchNorm_2/moving_mean"
+        string_val: "pvg_model/BatchNorm_2/moving_variance"
         string_val: "pvg_model/conv1/biases"
         string_val: "pvg_model/conv1/biases/Adam"
         string_val: "pvg_model/conv1/biases/Adam_1"
@@ -9429,9 +12840,24 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 32
+            size: 47
           }
         }
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
         string_val: ""
         string_val: ""
         string_val: ""
@@ -9474,6 +12900,21 @@ node {
   input: "save/Const"
   input: "save/SaveV2/tensor_names"
   input: "save/SaveV2/shape_and_slices"
+  input: "pvg_model/BatchNorm/beta"
+  input: "pvg_model/BatchNorm/beta/Adam"
+  input: "pvg_model/BatchNorm/beta/Adam_1"
+  input: "pvg_model/BatchNorm/moving_mean"
+  input: "pvg_model/BatchNorm/moving_variance"
+  input: "pvg_model/BatchNorm_1/beta"
+  input: "pvg_model/BatchNorm_1/beta/Adam"
+  input: "pvg_model/BatchNorm_1/beta/Adam_1"
+  input: "pvg_model/BatchNorm_1/moving_mean"
+  input: "pvg_model/BatchNorm_1/moving_variance"
+  input: "pvg_model/BatchNorm_2/beta"
+  input: "pvg_model/BatchNorm_2/beta/Adam"
+  input: "pvg_model/BatchNorm_2/beta/Adam_1"
+  input: "pvg_model/BatchNorm_2/moving_mean"
+  input: "pvg_model/BatchNorm_2/moving_variance"
   input: "pvg_model/conv1/biases"
   input: "pvg_model/conv1/biases/Adam"
   input: "pvg_model/conv1/biases/Adam_1"
@@ -9510,6 +12951,21 @@ node {
     key: "dtypes"
     value {
       list {
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
         type: DT_FLOAT
         type: DT_FLOAT
         type: DT_FLOAT
@@ -9585,7 +13041,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/biases"
+        string_val: "pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -9632,7 +13088,7 @@ node {
 node {
   name: "save/Assign"
   op: "Assign"
-  input: "pvg_model/conv1/biases"
+  input: "pvg_model/BatchNorm/beta"
   input: "save/RestoreV2"
   attr {
     key: "T"
@@ -9644,7 +13100,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -9680,7 +13136,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/biases/Adam"
+        string_val: "pvg_model/BatchNorm/beta/Adam"
       }
     }
   }
@@ -9727,7 +13183,7 @@ node {
 node {
   name: "save/Assign_1"
   op: "Assign"
-  input: "pvg_model/conv1/biases/Adam"
+  input: "pvg_model/BatchNorm/beta/Adam"
   input: "save/RestoreV2_1"
   attr {
     key: "T"
@@ -9739,7 +13195,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -9775,7 +13231,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/biases/Adam_1"
+        string_val: "pvg_model/BatchNorm/beta/Adam_1"
       }
     }
   }
@@ -9822,7 +13278,7 @@ node {
 node {
   name: "save/Assign_2"
   op: "Assign"
-  input: "pvg_model/conv1/biases/Adam_1"
+  input: "pvg_model/BatchNorm/beta/Adam_1"
   input: "save/RestoreV2_2"
   attr {
     key: "T"
@@ -9834,7 +13290,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -9870,7 +13326,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/weights"
+        string_val: "pvg_model/BatchNorm/moving_mean"
       }
     }
   }
@@ -9917,7 +13373,7 @@ node {
 node {
   name: "save/Assign_3"
   op: "Assign"
-  input: "pvg_model/conv1/weights"
+  input: "pvg_model/BatchNorm/moving_mean"
   input: "save/RestoreV2_3"
   attr {
     key: "T"
@@ -9929,7 +13385,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/weights"
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
       }
     }
   }
@@ -9965,7 +13421,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/weights/Adam"
+        string_val: "pvg_model/BatchNorm/moving_variance"
       }
     }
   }
@@ -10012,7 +13468,7 @@ node {
 node {
   name: "save/Assign_4"
   op: "Assign"
-  input: "pvg_model/conv1/weights/Adam"
+  input: "pvg_model/BatchNorm/moving_variance"
   input: "save/RestoreV2_4"
   attr {
     key: "T"
@@ -10024,7 +13480,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/weights"
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
       }
     }
   }
@@ -10060,7 +13516,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv1/weights/Adam_1"
+        string_val: "pvg_model/BatchNorm_1/beta"
       }
     }
   }
@@ -10107,7 +13563,7 @@ node {
 node {
   name: "save/Assign_5"
   op: "Assign"
-  input: "pvg_model/conv1/weights/Adam_1"
+  input: "pvg_model/BatchNorm_1/beta"
   input: "save/RestoreV2_5"
   attr {
     key: "T"
@@ -10119,7 +13575,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/weights"
+        s: "loc:@pvg_model/BatchNorm_1/beta"
       }
     }
   }
@@ -10155,7 +13611,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/biases"
+        string_val: "pvg_model/BatchNorm_1/beta/Adam"
       }
     }
   }
@@ -10202,7 +13658,7 @@ node {
 node {
   name: "save/Assign_6"
   op: "Assign"
-  input: "pvg_model/conv2/biases"
+  input: "pvg_model/BatchNorm_1/beta/Adam"
   input: "save/RestoreV2_6"
   attr {
     key: "T"
@@ -10214,7 +13670,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/biases"
+        s: "loc:@pvg_model/BatchNorm_1/beta"
       }
     }
   }
@@ -10250,7 +13706,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/biases/Adam"
+        string_val: "pvg_model/BatchNorm_1/beta/Adam_1"
       }
     }
   }
@@ -10297,7 +13753,7 @@ node {
 node {
   name: "save/Assign_7"
   op: "Assign"
-  input: "pvg_model/conv2/biases/Adam"
+  input: "pvg_model/BatchNorm_1/beta/Adam_1"
   input: "save/RestoreV2_7"
   attr {
     key: "T"
@@ -10309,7 +13765,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/biases"
+        s: "loc:@pvg_model/BatchNorm_1/beta"
       }
     }
   }
@@ -10345,7 +13801,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/biases/Adam_1"
+        string_val: "pvg_model/BatchNorm_1/moving_mean"
       }
     }
   }
@@ -10392,7 +13848,7 @@ node {
 node {
   name: "save/Assign_8"
   op: "Assign"
-  input: "pvg_model/conv2/biases/Adam_1"
+  input: "pvg_model/BatchNorm_1/moving_mean"
   input: "save/RestoreV2_8"
   attr {
     key: "T"
@@ -10404,7 +13860,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/biases"
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
       }
     }
   }
@@ -10440,7 +13896,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/weights"
+        string_val: "pvg_model/BatchNorm_1/moving_variance"
       }
     }
   }
@@ -10487,7 +13943,7 @@ node {
 node {
   name: "save/Assign_9"
   op: "Assign"
-  input: "pvg_model/conv2/weights"
+  input: "pvg_model/BatchNorm_1/moving_variance"
   input: "save/RestoreV2_9"
   attr {
     key: "T"
@@ -10499,7 +13955,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/weights"
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
       }
     }
   }
@@ -10535,7 +13991,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/weights/Adam"
+        string_val: "pvg_model/BatchNorm_2/beta"
       }
     }
   }
@@ -10582,7 +14038,7 @@ node {
 node {
   name: "save/Assign_10"
   op: "Assign"
-  input: "pvg_model/conv2/weights/Adam"
+  input: "pvg_model/BatchNorm_2/beta"
   input: "save/RestoreV2_10"
   attr {
     key: "T"
@@ -10594,7 +14050,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/weights"
+        s: "loc:@pvg_model/BatchNorm_2/beta"
       }
     }
   }
@@ -10630,7 +14086,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv2/weights/Adam_1"
+        string_val: "pvg_model/BatchNorm_2/beta/Adam"
       }
     }
   }
@@ -10677,7 +14133,7 @@ node {
 node {
   name: "save/Assign_11"
   op: "Assign"
-  input: "pvg_model/conv2/weights/Adam_1"
+  input: "pvg_model/BatchNorm_2/beta/Adam"
   input: "save/RestoreV2_11"
   attr {
     key: "T"
@@ -10689,7 +14145,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv2/weights"
+        s: "loc:@pvg_model/BatchNorm_2/beta"
       }
     }
   }
@@ -10725,7 +14181,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/biases"
+        string_val: "pvg_model/BatchNorm_2/beta/Adam_1"
       }
     }
   }
@@ -10772,7 +14228,7 @@ node {
 node {
   name: "save/Assign_12"
   op: "Assign"
-  input: "pvg_model/conv3/biases"
+  input: "pvg_model/BatchNorm_2/beta/Adam_1"
   input: "save/RestoreV2_12"
   attr {
     key: "T"
@@ -10784,7 +14240,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/biases"
+        s: "loc:@pvg_model/BatchNorm_2/beta"
       }
     }
   }
@@ -10820,7 +14276,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/biases/Adam"
+        string_val: "pvg_model/BatchNorm_2/moving_mean"
       }
     }
   }
@@ -10867,7 +14323,7 @@ node {
 node {
   name: "save/Assign_13"
   op: "Assign"
-  input: "pvg_model/conv3/biases/Adam"
+  input: "pvg_model/BatchNorm_2/moving_mean"
   input: "save/RestoreV2_13"
   attr {
     key: "T"
@@ -10879,7 +14335,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/biases"
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
       }
     }
   }
@@ -10915,7 +14371,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/biases/Adam_1"
+        string_val: "pvg_model/BatchNorm_2/moving_variance"
       }
     }
   }
@@ -10962,7 +14418,7 @@ node {
 node {
   name: "save/Assign_14"
   op: "Assign"
-  input: "pvg_model/conv3/biases/Adam_1"
+  input: "pvg_model/BatchNorm_2/moving_variance"
   input: "save/RestoreV2_14"
   attr {
     key: "T"
@@ -10974,7 +14430,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/biases"
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
       }
     }
   }
@@ -11010,7 +14466,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/weights"
+        string_val: "pvg_model/conv1/biases"
       }
     }
   }
@@ -11057,7 +14513,7 @@ node {
 node {
   name: "save/Assign_15"
   op: "Assign"
-  input: "pvg_model/conv3/weights"
+  input: "pvg_model/conv1/biases"
   input: "save/RestoreV2_15"
   attr {
     key: "T"
@@ -11069,7 +14525,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/weights"
+        s: "loc:@pvg_model/conv1/biases"
       }
     }
   }
@@ -11105,7 +14561,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/weights/Adam"
+        string_val: "pvg_model/conv1/biases/Adam"
       }
     }
   }
@@ -11152,7 +14608,7 @@ node {
 node {
   name: "save/Assign_16"
   op: "Assign"
-  input: "pvg_model/conv3/weights/Adam"
+  input: "pvg_model/conv1/biases/Adam"
   input: "save/RestoreV2_16"
   attr {
     key: "T"
@@ -11164,7 +14620,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/weights"
+        s: "loc:@pvg_model/conv1/biases"
       }
     }
   }
@@ -11200,7 +14656,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/conv3/weights/Adam_1"
+        string_val: "pvg_model/conv1/biases/Adam_1"
       }
     }
   }
@@ -11247,7 +14703,7 @@ node {
 node {
   name: "save/Assign_17"
   op: "Assign"
-  input: "pvg_model/conv3/weights/Adam_1"
+  input: "pvg_model/conv1/biases/Adam_1"
   input: "save/RestoreV2_17"
   attr {
     key: "T"
@@ -11259,7 +14715,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv3/weights"
+        s: "loc:@pvg_model/conv1/biases"
       }
     }
   }
@@ -11295,7 +14751,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/biases"
+        string_val: "pvg_model/conv1/weights"
       }
     }
   }
@@ -11342,7 +14798,7 @@ node {
 node {
   name: "save/Assign_18"
   op: "Assign"
-  input: "pvg_model/fc5/biases"
+  input: "pvg_model/conv1/weights"
   input: "save/RestoreV2_18"
   attr {
     key: "T"
@@ -11354,7 +14810,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/biases"
+        s: "loc:@pvg_model/conv1/weights"
       }
     }
   }
@@ -11390,7 +14846,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/biases/Adam"
+        string_val: "pvg_model/conv1/weights/Adam"
       }
     }
   }
@@ -11437,7 +14893,7 @@ node {
 node {
   name: "save/Assign_19"
   op: "Assign"
-  input: "pvg_model/fc5/biases/Adam"
+  input: "pvg_model/conv1/weights/Adam"
   input: "save/RestoreV2_19"
   attr {
     key: "T"
@@ -11449,7 +14905,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/biases"
+        s: "loc:@pvg_model/conv1/weights"
       }
     }
   }
@@ -11485,7 +14941,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/biases/Adam_1"
+        string_val: "pvg_model/conv1/weights/Adam_1"
       }
     }
   }
@@ -11532,7 +14988,7 @@ node {
 node {
   name: "save/Assign_20"
   op: "Assign"
-  input: "pvg_model/fc5/biases/Adam_1"
+  input: "pvg_model/conv1/weights/Adam_1"
   input: "save/RestoreV2_20"
   attr {
     key: "T"
@@ -11544,7 +15000,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/biases"
+        s: "loc:@pvg_model/conv1/weights"
       }
     }
   }
@@ -11580,7 +15036,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/weights"
+        string_val: "pvg_model/conv2/biases"
       }
     }
   }
@@ -11627,7 +15083,7 @@ node {
 node {
   name: "save/Assign_21"
   op: "Assign"
-  input: "pvg_model/fc5/weights"
+  input: "pvg_model/conv2/biases"
   input: "save/RestoreV2_21"
   attr {
     key: "T"
@@ -11639,7 +15095,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/weights"
+        s: "loc:@pvg_model/conv2/biases"
       }
     }
   }
@@ -11675,7 +15131,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/weights/Adam"
+        string_val: "pvg_model/conv2/biases/Adam"
       }
     }
   }
@@ -11722,7 +15178,7 @@ node {
 node {
   name: "save/Assign_22"
   op: "Assign"
-  input: "pvg_model/fc5/weights/Adam"
+  input: "pvg_model/conv2/biases/Adam"
   input: "save/RestoreV2_22"
   attr {
     key: "T"
@@ -11734,7 +15190,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/weights"
+        s: "loc:@pvg_model/conv2/biases"
       }
     }
   }
@@ -11770,7 +15226,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc5/weights/Adam_1"
+        string_val: "pvg_model/conv2/biases/Adam_1"
       }
     }
   }
@@ -11817,7 +15273,7 @@ node {
 node {
   name: "save/Assign_23"
   op: "Assign"
-  input: "pvg_model/fc5/weights/Adam_1"
+  input: "pvg_model/conv2/biases/Adam_1"
   input: "save/RestoreV2_23"
   attr {
     key: "T"
@@ -11829,7 +15285,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc5/weights"
+        s: "loc:@pvg_model/conv2/biases"
       }
     }
   }
@@ -11865,7 +15321,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/biases"
+        string_val: "pvg_model/conv2/weights"
       }
     }
   }
@@ -11912,7 +15368,7 @@ node {
 node {
   name: "save/Assign_24"
   op: "Assign"
-  input: "pvg_model/fc6/biases"
+  input: "pvg_model/conv2/weights"
   input: "save/RestoreV2_24"
   attr {
     key: "T"
@@ -11924,7 +15380,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/biases"
+        s: "loc:@pvg_model/conv2/weights"
       }
     }
   }
@@ -11960,7 +15416,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/biases/Adam"
+        string_val: "pvg_model/conv2/weights/Adam"
       }
     }
   }
@@ -12007,7 +15463,7 @@ node {
 node {
   name: "save/Assign_25"
   op: "Assign"
-  input: "pvg_model/fc6/biases/Adam"
+  input: "pvg_model/conv2/weights/Adam"
   input: "save/RestoreV2_25"
   attr {
     key: "T"
@@ -12019,7 +15475,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/biases"
+        s: "loc:@pvg_model/conv2/weights"
       }
     }
   }
@@ -12055,7 +15511,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/biases/Adam_1"
+        string_val: "pvg_model/conv2/weights/Adam_1"
       }
     }
   }
@@ -12102,7 +15558,7 @@ node {
 node {
   name: "save/Assign_26"
   op: "Assign"
-  input: "pvg_model/fc6/biases/Adam_1"
+  input: "pvg_model/conv2/weights/Adam_1"
   input: "save/RestoreV2_26"
   attr {
     key: "T"
@@ -12114,7 +15570,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/biases"
+        s: "loc:@pvg_model/conv2/weights"
       }
     }
   }
@@ -12150,7 +15606,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/weights"
+        string_val: "pvg_model/conv3/biases"
       }
     }
   }
@@ -12197,7 +15653,7 @@ node {
 node {
   name: "save/Assign_27"
   op: "Assign"
-  input: "pvg_model/fc6/weights"
+  input: "pvg_model/conv3/biases"
   input: "save/RestoreV2_27"
   attr {
     key: "T"
@@ -12209,7 +15665,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/weights"
+        s: "loc:@pvg_model/conv3/biases"
       }
     }
   }
@@ -12245,7 +15701,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/weights/Adam"
+        string_val: "pvg_model/conv3/biases/Adam"
       }
     }
   }
@@ -12292,7 +15748,7 @@ node {
 node {
   name: "save/Assign_28"
   op: "Assign"
-  input: "pvg_model/fc6/weights/Adam"
+  input: "pvg_model/conv3/biases/Adam"
   input: "save/RestoreV2_28"
   attr {
     key: "T"
@@ -12304,7 +15760,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/weights"
+        s: "loc:@pvg_model/conv3/biases"
       }
     }
   }
@@ -12340,7 +15796,7 @@ node {
             size: 1
           }
         }
-        string_val: "pvg_model/fc6/weights/Adam_1"
+        string_val: "pvg_model/conv3/biases/Adam_1"
       }
     }
   }
@@ -12387,7 +15843,7 @@ node {
 node {
   name: "save/Assign_29"
   op: "Assign"
-  input: "pvg_model/fc6/weights/Adam_1"
+  input: "pvg_model/conv3/biases/Adam_1"
   input: "save/RestoreV2_29"
   attr {
     key: "T"
@@ -12399,7 +15855,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/fc6/weights"
+        s: "loc:@pvg_model/conv3/biases"
       }
     }
   }
@@ -12435,7 +15891,7 @@ node {
             size: 1
           }
         }
-        string_val: "train_step/beta1_power"
+        string_val: "pvg_model/conv3/weights"
       }
     }
   }
@@ -12482,7 +15938,7 @@ node {
 node {
   name: "save/Assign_30"
   op: "Assign"
-  input: "train_step/beta1_power"
+  input: "pvg_model/conv3/weights"
   input: "save/RestoreV2_30"
   attr {
     key: "T"
@@ -12494,7 +15950,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/conv3/weights"
       }
     }
   }
@@ -12530,7 +15986,7 @@ node {
             size: 1
           }
         }
-        string_val: "train_step/beta2_power"
+        string_val: "pvg_model/conv3/weights/Adam"
       }
     }
   }
@@ -12577,7 +16033,7 @@ node {
 node {
   name: "save/Assign_31"
   op: "Assign"
-  input: "train_step/beta2_power"
+  input: "pvg_model/conv3/weights/Adam"
   input: "save/RestoreV2_31"
   attr {
     key: "T"
@@ -12589,7 +16045,1432 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@pvg_model/conv1/biases"
+        s: "loc:@pvg_model/conv3/weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_32/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/conv3/weights/Adam_1"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_32/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_32"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_32/tensor_names"
+  input: "save/RestoreV2_32/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_32"
+  op: "Assign"
+  input: "pvg_model/conv3/weights/Adam_1"
+  input: "save/RestoreV2_32"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_33/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc5/biases"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_33/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_33"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_33/tensor_names"
+  input: "save/RestoreV2_33/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_33"
+  op: "Assign"
+  input: "pvg_model/fc5/biases"
+  input: "save/RestoreV2_33"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_34/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc5/biases/Adam"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_34/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_34"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_34/tensor_names"
+  input: "save/RestoreV2_34/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_34"
+  op: "Assign"
+  input: "pvg_model/fc5/biases/Adam"
+  input: "save/RestoreV2_34"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_35/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc5/biases/Adam_1"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_35/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_35"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_35/tensor_names"
+  input: "save/RestoreV2_35/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_35"
+  op: "Assign"
+  input: "pvg_model/fc5/biases/Adam_1"
+  input: "save/RestoreV2_35"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_36/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc5/weights"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_36/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_36"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_36/tensor_names"
+  input: "save/RestoreV2_36/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_36"
+  op: "Assign"
+  input: "pvg_model/fc5/weights"
+  input: "save/RestoreV2_36"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_37/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc5/weights/Adam"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_37/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_37"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_37/tensor_names"
+  input: "save/RestoreV2_37/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_37"
+  op: "Assign"
+  input: "pvg_model/fc5/weights/Adam"
+  input: "save/RestoreV2_37"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_38/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc5/weights/Adam_1"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_38/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_38"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_38/tensor_names"
+  input: "save/RestoreV2_38/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_38"
+  op: "Assign"
+  input: "pvg_model/fc5/weights/Adam_1"
+  input: "save/RestoreV2_38"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_39/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc6/biases"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_39/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_39"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_39/tensor_names"
+  input: "save/RestoreV2_39/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_39"
+  op: "Assign"
+  input: "pvg_model/fc6/biases"
+  input: "save/RestoreV2_39"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_40/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc6/biases/Adam"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_40/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_40"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_40/tensor_names"
+  input: "save/RestoreV2_40/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_40"
+  op: "Assign"
+  input: "pvg_model/fc6/biases/Adam"
+  input: "save/RestoreV2_40"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_41/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc6/biases/Adam_1"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_41/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_41"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_41/tensor_names"
+  input: "save/RestoreV2_41/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_41"
+  op: "Assign"
+  input: "pvg_model/fc6/biases/Adam_1"
+  input: "save/RestoreV2_41"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/biases"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_42/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc6/weights"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_42/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_42"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_42/tensor_names"
+  input: "save/RestoreV2_42/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_42"
+  op: "Assign"
+  input: "pvg_model/fc6/weights"
+  input: "save/RestoreV2_42"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_43/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc6/weights/Adam"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_43/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_43"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_43/tensor_names"
+  input: "save/RestoreV2_43/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_43"
+  op: "Assign"
+  input: "pvg_model/fc6/weights/Adam"
+  input: "save/RestoreV2_43"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_44/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "pvg_model/fc6/weights/Adam_1"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_44/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_44"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_44/tensor_names"
+  input: "save/RestoreV2_44/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_44"
+  op: "Assign"
+  input: "pvg_model/fc6/weights/Adam_1"
+  input: "save/RestoreV2_44"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/weights"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_45/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "train_step/beta1_power"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_45/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_45"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_45/tensor_names"
+  input: "save/RestoreV2_45/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_45"
+  op: "Assign"
+  input: "train_step/beta1_power"
+  input: "save/RestoreV2_45"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "validate_shape"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_46/tensor_names"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: "train_step/beta2_power"
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_46/shape_and_slices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_STRING
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_STRING
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        string_val: ""
+      }
+    }
+  }
+}
+node {
+  name: "save/RestoreV2_46"
+  op: "RestoreV2"
+  input: "save/Const"
+  input: "save/RestoreV2_46/tensor_names"
+  input: "save/RestoreV2_46/shape_and_slices"
+  attr {
+    key: "dtypes"
+    value {
+      list {
+        type: DT_FLOAT
+      }
+    }
+  }
+}
+node {
+  name: "save/Assign_46"
+  op: "Assign"
+  input: "train_step/beta2_power"
+  input: "save/RestoreV2_46"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
       }
     }
   }
@@ -12641,16 +17522,40 @@ node {
   input: "^save/Assign_29"
   input: "^save/Assign_30"
   input: "^save/Assign_31"
+  input: "^save/Assign_32"
+  input: "^save/Assign_33"
+  input: "^save/Assign_34"
+  input: "^save/Assign_35"
+  input: "^save/Assign_36"
+  input: "^save/Assign_37"
+  input: "^save/Assign_38"
+  input: "^save/Assign_39"
+  input: "^save/Assign_40"
+  input: "^save/Assign_41"
+  input: "^save/Assign_42"
+  input: "^save/Assign_43"
+  input: "^save/Assign_44"
+  input: "^save/Assign_45"
+  input: "^save/Assign_46"
 }
 node {
   name: "init"
   op: "NoOp"
   input: "^pvg_model/conv1/weights/Assign"
   input: "^pvg_model/conv1/biases/Assign"
+  input: "^pvg_model/BatchNorm/beta/Assign"
+  input: "^pvg_model/BatchNorm/moving_mean/Assign"
+  input: "^pvg_model/BatchNorm/moving_variance/Assign"
   input: "^pvg_model/conv2/weights/Assign"
   input: "^pvg_model/conv2/biases/Assign"
+  input: "^pvg_model/BatchNorm_1/beta/Assign"
+  input: "^pvg_model/BatchNorm_1/moving_mean/Assign"
+  input: "^pvg_model/BatchNorm_1/moving_variance/Assign"
   input: "^pvg_model/conv3/weights/Assign"
   input: "^pvg_model/conv3/biases/Assign"
+  input: "^pvg_model/BatchNorm_2/beta/Assign"
+  input: "^pvg_model/BatchNorm_2/moving_mean/Assign"
+  input: "^pvg_model/BatchNorm_2/moving_variance/Assign"
   input: "^pvg_model/fc5/weights/Assign"
   input: "^pvg_model/fc5/biases/Assign"
   input: "^pvg_model/fc6/weights/Assign"
@@ -12661,14 +17566,20 @@ node {
   input: "^pvg_model/conv1/weights/Adam_1/Assign"
   input: "^pvg_model/conv1/biases/Adam/Assign"
   input: "^pvg_model/conv1/biases/Adam_1/Assign"
+  input: "^pvg_model/BatchNorm/beta/Adam/Assign"
+  input: "^pvg_model/BatchNorm/beta/Adam_1/Assign"
   input: "^pvg_model/conv2/weights/Adam/Assign"
   input: "^pvg_model/conv2/weights/Adam_1/Assign"
   input: "^pvg_model/conv2/biases/Adam/Assign"
   input: "^pvg_model/conv2/biases/Adam_1/Assign"
+  input: "^pvg_model/BatchNorm_1/beta/Adam/Assign"
+  input: "^pvg_model/BatchNorm_1/beta/Adam_1/Assign"
   input: "^pvg_model/conv3/weights/Adam/Assign"
   input: "^pvg_model/conv3/weights/Adam_1/Assign"
   input: "^pvg_model/conv3/biases/Adam/Assign"
   input: "^pvg_model/conv3/biases/Adam_1/Assign"
+  input: "^pvg_model/BatchNorm_2/beta/Adam/Assign"
+  input: "^pvg_model/BatchNorm_2/beta/Adam_1/Assign"
   input: "^pvg_model/fc5/weights/Adam/Assign"
   input: "^pvg_model/fc5/weights/Adam_1/Assign"
   input: "^pvg_model/fc5/biases/Adam/Assign"

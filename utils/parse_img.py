@@ -125,7 +125,7 @@ def images_to_arrays(image_list):
 
 
 
-def normalize_data(data):
+def normalize_data(data, return_m_and_std = False):
 
 	'''
 	Args:
@@ -139,7 +139,10 @@ def normalize_data(data):
 	data -= m
 	data /= (std + 1e-8)
 
-	return data, m, std
+	if return_m_and_std:
+		return data, m, std
+	else:
+		return data
 
 
 def stretch_img(img, stretch_type, factor):

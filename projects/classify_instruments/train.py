@@ -43,10 +43,13 @@ def model(net, keep_prob):
 			with slim.arg_scope([slim.fully_connected], weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform = False), weights_regularizer=slim.l2_regularizer(0.05)):
 				net = slim.conv2d(net, 20, [5,5], scope='conv1')
 				net = slim.max_pool2d(net, [2,2], scope='pool1')
+				net = slim.batch_norm(net)
 				net = slim.conv2d(net, 50, [5,5], scope='conv2')
 				net = slim.max_pool2d(net, [2,2], scope='pool2')
+				net = slim.batch_norm(net)
 				net = slim.conv2d(net, 100, [5,5], scope='conv3')
 				net = slim.max_pool2d(net, [2,2], scope='pool3')
+				net = slim.batch_norm(net)
 				net = slim.flatten(net, scope='flatten4')
 				net = slim.fully_connected(net, 500, activation_fn = tf.nn.sigmoid, scope='fc5')
 				net = slim.dropout(net, keep_prob = keep_prob, scope='dropout6')
@@ -60,7 +63,6 @@ def model(net, keep_prob):
 					tf.summary.histogram('output', net)
 
 	output = tf.identity(net, name='output')
-	# outputs = tf.nn.softmax(net, name='output')
 	return net
 
 
@@ -192,7 +194,7 @@ def export_model(input_node_names, output_node_name):
 
 
 	images_train = list(pickle.load(open('processed_data/train_data.p', 'rb')))
-	_, mean, std = normalize_data(images_train)
+	_, mean, std = normalize_data(images_train, return_m_and_std = True)
 	mean = mean.flatten()
 	std = std.flatten()
 	with open('popMean.txt', 'w') as f:

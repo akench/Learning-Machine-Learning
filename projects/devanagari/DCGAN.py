@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 import time
 import tensorflow.contrib.slim as slim
 from utils.data_utils import DataUtil
-from utils.parse_img import normalize_data
+import datetime
 
-
+logs_path = 'logs/'
+# tensorboard --logdir=run1:logs/ --port 6006
 BATCH_SIZE = 128
 Z_DIM = 100
 
@@ -21,6 +22,7 @@ Z = tf.placeholder(dtype=tf.float32, shape=[None, Z_DIM])
 
 
 def sample_Z(m, n):
+    # return np.random.uniform((size=m,n))
     return np.random.normal(size=(m, n))
 
 
@@ -119,38 +121,51 @@ def discriminator(X):
 
 def train(continue_training=False):
 
+    t0 = time.time()
+
     generated = generator(Z)
     d_logit_real = discriminator(X)
     d_logit_fake = discriminator(generated)
 
-    D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
-        logits=d_logit_real,
-        labels=tf.ones_like(d_logit_real)
-        # labels=tf.fill([BATCH_SIZE, 1], 0.9)
-    ))
-    D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
-        logits=d_logit_fake,
-        labels=tf.zeros_like(d_logit_fake)
-    ))
+    with tf.name_scope('d_loss_real'):
+        D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+            logits=d_logit_real,
+            labels=tf.ones_like(d_logit_real)
+            # labels=tf.fill([BATCH_SIZE, 1], 0.9)
+        ))
 
-    D_loss = D_loss_fake + D_loss_real
+    with tf.name_scope('d_loss_fake'):
+        D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+            logits=d_logit_fake,
+            labels=tf.zeros_like(d_logit_fake)
+        ))
 
-    G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
-        logits=d_logit_fake,
-        labels=tf.ones_like(d_logit_fake)
-    ))
+    with tf.name_scope('d_loss'):
+        D_loss = D_loss_fake + D_loss_real
+
+    with tf.name_scope('g_loss'):
+        G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+            logits=d_logit_fake,
+            labels=tf.ones_like(d_logit_fake)
+        ))
+
+
+    tf.summary.scalar("g_loss", G_loss)
+    tf.summary.scalar('d_loss', D_loss)
+    tf.summary.scalar('d_loss_fake', D_loss_fake)
+    tf.summary.scalar('d_loss_real', D_loss_real)
+
+    summary_op = tf.summary.merge_all()
 
     tvars = tf.trainable_variables()
     d_vars = [v for v in tvars if 'disc' in v.name]
     g_vars = [v for v in tvars if 'gen' in v.name]
 
 
-    # print(d_vars)
-    # print()
-    # print(g_vars)
 
     D_train_step = tf.train.AdamOptimizer(0.00001).minimize(D_loss, var_list=d_vars)
     G_train_step = tf.train.AdamOptimizer(.001).minimize(G_loss, var_list=g_vars)
+
 
     data_util = DataUtil(data_dir='data', batch_size=BATCH_SIZE,
             num_epochs=200, supervised=False)
@@ -161,6 +176,9 @@ def train(continue_training=False):
         sess.run(tf.global_variables_initializer())
 
         saver = tf.train.Saver()
+
+        writer = tf.summary.FileWriter(logs_path, sess.graph)
+        tf.train.write_graph(sess.graph_def, 'model', 'devanagari.pbtxt', True)
 
         if continue_training:
             saver.restore(sess, tf.train.latest_checkpoint('model/model.ckpt'))
@@ -192,21 +210,24 @@ def train(continue_training=False):
                 return
 
 
-            batch_x, _, _ = normalize_data(batch_x)
-
-
             if it % 1 == 0:
-                _, G_loss_curr = sess.run([G_train_step, G_loss],
-                    feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM)})
-            if it % 2 == 0:
-                _, D_loss_curr = sess.run([D_train_step, D_loss],
+                _, G_loss_curr, G_summary = sess.run([G_train_step, G_loss, summary_op],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
+
+            if it % 2 == 0:
+                _, D_loss_curr, D_summary = sess.run([D_train_step, D_loss, summary_op],
+                    feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
+
+            writer.add_summary(G_summary, global_step=data_util.global_num)
+            writer.add_summary(D_summary, global_step=data_util.global_num)
 
             if it % 10 == 0:
                 print('Iter: {}'.format(it))
                 print('D_loss: {:.4}'.format(D_loss_curr))
                 print('G_loss: {:.4}'.format(G_loss_curr))
                 print()
+
+    print(str(datetime.timedelta(seconds=time.time() - t0)))
 
 
 def gen_images(num):
@@ -227,5 +248,6 @@ def gen_images(num):
             plt.close()
 
 
-#gen_images(50)
+
+# gen_images(50)
 train()

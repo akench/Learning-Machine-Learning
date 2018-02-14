@@ -1,7 +1,8 @@
 import pickle
-from utils.parse_img import normalize_data
 import random
 from sklearn.utils import shuffle as skshuffle
+import numpy as np
+from utils.parse_img import normalize_data
 
 class DataUtil:
 
@@ -19,7 +20,7 @@ class DataUtil:
             images_val = list(pickle.load(open(data_dir + '/val_data.p', 'rb')))
 
             if normalize:
-                images_val, _, _ = normalize_data(images_val)
+                images_val = normalize_data(images_val)
 
             self.images_val = images_val
             self.labels_val = list(pickle.load(open(data_dir + '/val_labels.p', 'rb')))
@@ -36,21 +37,24 @@ class DataUtil:
         self.supervised = supervised
 
 
-    def normalize_data(data):
-
-    	'''
-    	Args:
-    		2D array with arr storing each image, and arr[i] storing pixels of image i
-    	Returns:
-    		normalized data, mean of data, standard deviation of data
-    	'''
-    	m = np.mean(data, axis = 0)
-    	std = np.std(data, axis = 0)
-
-    	data -= m
-    	data /= (std + 1e-8)
-
-    	return data, m, std
+    # def normalize_data(my_data, return_mean_and_std = False):
+    #
+    #     '''
+    #     Args:
+    #         2D array with arr storing each image, and arr[i] storing pixels of image i
+    #     Returns:
+    #         normalized my_data, mean of my_data, standard deviation of my_data
+    #     '''
+    #     m = np.mean(my_data, axis = 0)
+    #     std = np.std(my_data, axis = 0)
+    #
+    #     my_data -= m
+    #     my_data /= (std + 1e-8)
+    #
+    #     if return_mean_and_std:
+    #         return my_data, m, std
+    #     else:
+    #         return my_data
 
 
     def get_next_batch(self):
@@ -99,7 +103,7 @@ class DataUtil:
                 random.shuffle(self.images_train)
 
 
-        # img_batch, _, _ = normalize_data(img_batch)
+        img_batch = normalize_data(img_batch)
 
         return img_batch
 
@@ -131,7 +135,7 @@ class DataUtil:
                 self.images_train, self.labels_train = skshuffle(self.images_train, self.labels_train)
 
 
-        img_batch, _, _ = normalize_data(img_batch)
+        img_batch = normalize_data(img_batch)
 
         return img_batch, labels_batch
 
