@@ -31,8 +31,7 @@ def generator(Z):
     with tf.variable_scope('gen', reuse=tf.AUTO_REUSE):
 
         with slim.arg_scope([slim.fully_connected],
-            weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
-            weights_regularizer=slim.l2_regularizer(.05)):
+            weights_initializer=tf.truncated_normal_initializer(stddev=0.02)):
 
             print('generator shapes')
             net = slim.fully_connected(Z, 2*2*256, activation_fn=None, scope='fc1')
@@ -73,12 +72,10 @@ def discriminator(X):
         net = tf.reshape(X, [-1, 32, 32, 1])
 
         with slim.arg_scope([slim.conv2d], padding='SAME', stride=2,
-            weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
-            weights_regularizer=slim.l2_regularizer(.05)):
+            weights_initializer=tf.truncated_normal_initializer(stddev=0.02)):
 
             with slim.arg_scope([slim.fully_connected],
-                weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
-                weights_regularizer=slim.l2_regularizer(.05)):
+                weights_initializer=tf.truncated_normal_initializer(stddev=0.02)):
 
                 print('discriminator shapes')
 
@@ -86,28 +83,28 @@ def discriminator(X):
                 print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool1')
+                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool1')
                 print(net.shape)
 
                 net = slim.conv2d(net, 128, [5,5], scope='conv2')
                 print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool2')
+                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool2')
                 print(net.shape)
 
                 net = slim.conv2d(net, 256, [4,4], scope='conv3')
                 print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool3')
+                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool3')
                 print(net.shape)
 
                 net = slim.conv2d(net, 512, [3,3], scope='conv4')
                 print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool4')
+                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool4')
                 print(net.shape)
 
                 net = slim.flatten(net, scope='flatten5')
@@ -130,14 +127,16 @@ def train(continue_training=False):
     with tf.name_scope('d_loss_real'):
         D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_real,
-            labels=tf.ones_like(d_logit_real)
+            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
+            # labels=tf.ones_like(d_logit_real)
             # labels=tf.fill([BATCH_SIZE, 1], 0.9)
         ))
 
     with tf.name_scope('d_loss_fake'):
         D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
-            labels=tf.zeros_like(d_logit_fake)
+            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.0, maxval=0.3)
+            # labels=tf.zeros_like(d_logit_fake)
         ))
 
     with tf.name_scope('d_loss'):
@@ -146,7 +145,8 @@ def train(continue_training=False):
     with tf.name_scope('g_loss'):
         G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
-            labels=tf.ones_like(d_logit_fake)
+            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
+            # labels=tf.ones_like(d_logit_fake)
         ))
 
 

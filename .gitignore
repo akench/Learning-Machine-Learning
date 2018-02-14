@@ -5,3 +5,8 @@ projects/music_emotions/example_library/*
 projects/music_emotions/processed_data/*
 projects/classify_instruments/org_data/*
 projects/classify_instruments/processed_data/*
+projects/devanagari/model/*
+projects/devanagari/out/*
+projects/devanagari/data/*
+
+
