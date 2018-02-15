@@ -18,6 +18,7 @@ Z_DIM = 100
 
 X = tf.placeholder(dtype=tf.float32, shape=[None, 32*32])
 Z = tf.placeholder(dtype=tf.float32, shape=[None, Z_DIM])
+keep_prob_placeholder = tf.placeholder(dtype=tf.float32, shape=())
 
 
 
@@ -27,16 +28,23 @@ def sample_Z(m, n):
     return np.random.normal(size=(m, n))
 
 
-def generator(Z):
+def generator(Z, keep_prob):
 
     with tf.variable_scope('gen', reuse=tf.AUTO_REUSE):
 
         with slim.arg_scope([slim.fully_connected],
-            weights_initializer=tf.contrib.layers.xavier_initializer(uniform=False),
+            weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
              weights_regularizer=slim.l2_regularizer(.05)):
 
             print('generator shapes')
-            net = slim.fully_connected(Z, 2*2*256, activation_fn=None, scope='fc1')
+            net = slim.fully_connected(Z, 256, activation_fn=None, scope='fc1')
+            net = slim.dropout(net, keep_prob = keep_prob, scope='dropout1')
+            net = slim.batch_norm(net)
+            net = tf.nn.leaky_relu(net)
+
+            net = slim.fully_connected(Z, 2*2*256, activation_fn=None, scope='fc2')
+            net = slim.dropout(net, keep_prob = keep_prob, scope='dropout2')
+
             net = tf.reshape(net, (-1, 2, 2, 256))
             net = slim.batch_norm(net)
             net = tf.nn.leaky_relu(net)
@@ -62,6 +70,7 @@ def generator(Z):
             print(net.shape)
 
             net = tf.nn.tanh(net)
+            tf.summary.image('output of gen', net, 10)
 
     return net
 
@@ -73,12 +82,14 @@ def discriminator(X):
 
         net = tf.reshape(X, [-1, 32, 32, 1])
 
+        tf.summary.image('input to disc', net, 10)
+
         with slim.arg_scope([slim.conv2d], padding='SAME', stride=2,
-            weights_initializer=tf.contrib.layers.xavier_initializer(uniform = False),
+            weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
              weights_regularizer=slim.l2_regularizer(.05)):
 
             with slim.arg_scope([slim.fully_connected],
-                weights_initializer=tf.contrib.layers.xavier_initializer(uniform=False),
+                weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
                  weights_regularizer=slim.l2_regularizer(.05)):
 
                 print('discriminator shapes')
@@ -142,9 +153,10 @@ def train(continue_training=False):
 
     t0 = time.time()
 
-    generated = generator(Z)
+    generated = generator(Z, 0.5)
     d_logit_real = discriminator(X)
     d_logit_fake = discriminator(generated)
+
 
     with tf.name_scope('d_loss_real'):
         D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
@@ -181,8 +193,8 @@ def train(continue_training=False):
 
 
 
-    D_train_step = tf.train.AdamOptimizer(0.00001).minimize(D_loss, var_list=d_vars)
-    G_train_step = tf.train.AdamOptimizer(0.001).minimize(G_loss, var_list=g_vars)
+    D_train_step = tf.train.RMSPropOptimizer(0.00001).minimize(D_loss, var_list=d_vars)
+    G_train_step = tf.train.RMSPropOptimizer(0.001).minimize(G_loss, var_list=g_vars)
 
 
     data_util = DataUtil(data_dir='data', batch_size=BATCH_SIZE,
@@ -190,7 +202,7 @@ def train(continue_training=False):
 
 
     seeds = sample_Z(9, Z_DIM)
-
+    print(seeds)
 
     with tf.Session() as sess:
 
@@ -207,13 +219,14 @@ def train(continue_training=False):
         G_loss_curr = 1.0
         D_loss_curr = 1.0
 
+
         for it in range(1000000):
 
             if it % 1000 == 0:
                 path = saver.save(sess, 'model/model.ckpt', global_step = it)
                 print('path saved in %s' % (path))
 
-            if it % 10 == 0:
+            if it % 100 == 0:
                 # my_plot = plot_samples(seeds)
 
                 fig = plt.figure()
@@ -240,11 +253,11 @@ def train(continue_training=False):
 
             if it % 1 == 0:
                 _, G_loss_curr, G_summary = sess.run([G_train_step, G_loss, summary_op],
-                    feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
+                    feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x, keep_prob_placeholder: .5})
 
-            if it % 1 == 0:
+            if it % 2 == 0:
                 _, D_loss_curr, D_summary = sess.run([D_train_step, D_loss, summary_op],
-                    feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
+                    feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x, keep_prob_placeholder: .5})
 
             writer.add_summary(G_summary, global_step=data_util.global_num)
             writer.add_summary(D_summary, global_step=data_util.global_num)
@@ -266,7 +279,7 @@ def gen_images(num):
         saver=tf.train.Saver()
         saver.restore(sess, tf.train.latest_checkpoint('model/'))
 
-        images = sess.run(generated, feed_dict={Z: sample_Z(num, 100)})
+        images = sess.run(generated, feed_dict={Z: sample_Z(num, 100), keep_prob_placeholder:1.0})
 
         for i, img in enumerate(images):
 
