@@ -6,8 +6,8 @@ import pickle
 
 
 # char_dirs = glob.glob('/home/super/Documents/devanagari/Test/*')
-char_dirs = glob.glob('/home/super/Documents/devanagari/digits_train/*')
-
+# char_dirs = glob.glob('/home/super/Documents/devanagari/digits_train/*')
+char_dirs = glob.glob('/home/super/Documents/devanagari/Train/*')
 if len(char_dirs) == 0:
 	print('not a dir')
 	quit()

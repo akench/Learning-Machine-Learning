@@ -4,6 +4,7 @@ import matplotlib
 
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 
 import time
 import tensorflow.contrib.slim as slim
@@ -12,7 +13,7 @@ import datetime
 
 logs_path = 'logs/'
 # tensorboard --logdir=run1:logs/ --port 6006
-BATCH_SIZE = 128
+BATCH_SIZE = 64
 Z_DIM = 100
 
 X = tf.placeholder(dtype=tf.float32, shape=[None, 32*32])
@@ -31,7 +32,8 @@ def generator(Z):
     with tf.variable_scope('gen', reuse=tf.AUTO_REUSE):
 
         with slim.arg_scope([slim.fully_connected],
-            weights_initializer=tf.truncated_normal_initializer(stddev=0.02)):
+            weights_initializer=tf.contrib.layers.xavier_initializer(uniform=False),
+             weights_regularizer=slim.l2_regularizer(.05)):
 
             print('generator shapes')
             net = slim.fully_connected(Z, 2*2*256, activation_fn=None, scope='fc1')
@@ -41,19 +43,19 @@ def generator(Z):
             # shape = 2 x 2 x 256
             print(net.shape)
 
-            net = slim.conv2d_transpose(net, 64, [5,5], stride=2, scope='convT1')
+            net = slim.conv2d_transpose(net, 64, [2,2], stride=2, scope='convT1')
             net = slim.batch_norm(net)
             net = tf.nn.leaky_relu(net)
             # shape = 7 x 7 x 64
             print(net.shape)
 
-            net = slim.conv2d_transpose(net, 16, [3,3], stride=2, scope='convT2')
+            net = slim.conv2d_transpose(net, 16, [2,2], stride=2, scope='convT2')
             net = slim.batch_norm(net)
             net = tf.nn.leaky_relu(net)
             # shape = 15 x 15 x 16
             print(net.shape)
 
-            net = slim.conv2d_transpose(net, 1, [4,4], stride=4, scope='convT3')
+            net = slim.conv2d_transpose(net, 1, [2,2], stride=4, scope='convT3')
             net = slim.batch_norm(net)
             net = tf.nn.leaky_relu(net)
             # shape = 32 x 32 x 1
@@ -72,10 +74,12 @@ def discriminator(X):
         net = tf.reshape(X, [-1, 32, 32, 1])
 
         with slim.arg_scope([slim.conv2d], padding='SAME', stride=2,
-            weights_initializer=tf.truncated_normal_initializer(stddev=0.02)):
+            weights_initializer=tf.contrib.layers.xavier_initializer(uniform = False),
+             weights_regularizer=slim.l2_regularizer(.05)):
 
             with slim.arg_scope([slim.fully_connected],
-                weights_initializer=tf.truncated_normal_initializer(stddev=0.02)):
+                weights_initializer=tf.contrib.layers.xavier_initializer(uniform=False),
+                 weights_regularizer=slim.l2_regularizer(.05)):
 
                 print('discriminator shapes')
 
@@ -83,28 +87,28 @@ def discriminator(X):
                 print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool1')
+                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool1')
                 print(net.shape)
 
                 net = slim.conv2d(net, 128, [5,5], scope='conv2')
                 print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool2')
+                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool2')
                 print(net.shape)
 
                 net = slim.conv2d(net, 256, [4,4], scope='conv3')
                 print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool3')
+                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool3')
                 print(net.shape)
 
                 net = slim.conv2d(net, 512, [3,3], scope='conv4')
                 print(net.shape)
                 # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool4')
+                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool4')
                 print(net.shape)
 
                 net = slim.flatten(net, scope='flatten5')
@@ -114,6 +118,24 @@ def discriminator(X):
                 print(net.shape)
 
     return net
+
+
+def plot_samples(seeds):
+
+    fig = plt.figure()
+    gs = gridspec.GridSpec(3,3)
+    seed_i = 0
+
+    for r in range(3):
+        for c in range(3):
+            ax = plt.subplot(gs[r, c])
+            sample = sess.run(generated, feed_dict={Z: seeds[seed_i]})
+            ax.axis('off')
+            ax.imshow(sample.reshape(32, 32), cmap='Greys_r')
+            seed_i += 1
+
+
+    return fig
 
 
 def train(continue_training=False):
@@ -128,15 +150,12 @@ def train(continue_training=False):
         D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_real,
             labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
-            # labels=tf.ones_like(d_logit_real)
-            # labels=tf.fill([BATCH_SIZE, 1], 0.9)
         ))
 
     with tf.name_scope('d_loss_fake'):
         D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
             labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.0, maxval=0.3)
-            # labels=tf.zeros_like(d_logit_fake)
         ))
 
     with tf.name_scope('d_loss'):
@@ -146,7 +165,6 @@ def train(continue_training=False):
         G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
             labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
-            # labels=tf.ones_like(d_logit_fake)
         ))
 
 
@@ -164,11 +182,14 @@ def train(continue_training=False):
 
 
     D_train_step = tf.train.AdamOptimizer(0.00001).minimize(D_loss, var_list=d_vars)
-    G_train_step = tf.train.AdamOptimizer(.001).minimize(G_loss, var_list=g_vars)
+    G_train_step = tf.train.AdamOptimizer(0.001).minimize(G_loss, var_list=g_vars)
 
 
     data_util = DataUtil(data_dir='data', batch_size=BATCH_SIZE,
-            num_epochs=200, supervised=False)
+            num_epochs=100, supervised=False)
+
+
+    seeds = sample_Z(9, Z_DIM)
 
 
     with tf.Session() as sess:
@@ -192,15 +213,22 @@ def train(continue_training=False):
                 path = saver.save(sess, 'model/model.ckpt', global_step = it)
                 print('path saved in %s' % (path))
 
-            if it % 100 == 0:
-                seed = np.full((1, 100), 0.0)
-                sample = sess.run(generated, feed_dict={Z: seed})
-                plt.axis('off')
-                plt.imshow(sample.reshape(32, 32), cmap='Greys_r')
-                plt.savefig('out/{}.png'.format(it), bbox_inches='tight')
-                plt.clf()
-                plt.cla()
-                plt.close()
+            if it % 10 == 0:
+                # my_plot = plot_samples(seeds)
+
+                fig = plt.figure()
+                gs = gridspec.GridSpec(3,3)
+                seed_i = 0
+
+                for r in range(3):
+                    for c in range(3):
+                        ax = plt.subplot(gs[r, c])
+                        sample = sess.run(generated, feed_dict={Z: np.reshape(seeds[seed_i], (1, 100))})
+                        ax.axis('off')
+                        ax.imshow(sample.reshape(32, 32), cmap='Greys_r')
+                        seed_i += 1
+
+                fig.savefig('out/{}.png'.format(it), bbox_inches='tight')
 
             batch_x  = data_util.get_next_batch()
 
@@ -214,7 +242,7 @@ def train(continue_training=False):
                 _, G_loss_curr, G_summary = sess.run([G_train_step, G_loss, summary_op],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
 
-            if it % 2 == 0:
+            if it % 1 == 0:
                 _, D_loss_curr, D_summary = sess.run([D_train_step, D_loss, summary_op],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x})
 
