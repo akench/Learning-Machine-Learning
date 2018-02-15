@@ -8,5 +8,5 @@ projects/classify_instruments/processed_data/*
 projects/devanagari/model/*
 projects/devanagari/out/*
 projects/devanagari/data/*
-
+projects/devanagari/logs/*
 
