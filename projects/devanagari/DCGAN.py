@@ -134,7 +134,7 @@ def discriminator(X):
     return net
 
 
-def plot_samples(seeds):
+def plot_samples(samples):
 
     fig = plt.figure()
     gs = gridspec.GridSpec(3,3)
@@ -143,11 +143,9 @@ def plot_samples(seeds):
     for r in range(3):
         for c in range(3):
             ax = plt.subplot(gs[r, c])
-            sample = sess.run(generated, feed_dict={Z: seeds[seed_i]})
             ax.axis('off')
-            ax.imshow(sample.reshape(32, 32), cmap='Greys_r')
+            ax.imshow(samples[seed_i].reshape(32, 32), cmap='Greys_r')
             seed_i += 1
-
 
     return fig
 
@@ -205,6 +203,7 @@ def train(continue_training=False):
 
 
     seeds = sample_Z(9, Z_DIM)
+
     print(seeds)
 
     with tf.Session() as sess:
@@ -225,26 +224,19 @@ def train(continue_training=False):
 
         for it in range(1000000):
 
+            #save model
             if it % 1000 == 0:
                 path = saver.save(sess, 'model/model.ckpt', global_step = it)
                 print('path saved in %s' % (path))
 
+
+            #plot samples
             if it % 100 == 0:
-                # my_plot = plot_samples(seeds)
-
-                fig = plt.figure()
-                gs = gridspec.GridSpec(3,3)
-                seed_i = 0
-
-                for r in range(3):
-                    for c in range(3):
-                        ax = plt.subplot(gs[r, c])
-                        sample = sess.run(generated, feed_dict={Z: np.reshape(seeds[seed_i], (1, 100))})
-                        ax.axis('off')
-                        ax.imshow(sample.reshape(32, 32), cmap='Greys_r')
-                        seed_i += 1
-
+                samples = sess.run(generated, feed_dict={Z: seeds})
+                fig = plot_samples(samples)
                 fig.savefig('out/{}.png'.format(it), bbox_inches='tight')
+
+
 
             batch_x  = data_util.get_next_batch()
 
@@ -294,4 +286,4 @@ def gen_images(num):
 
 
 # gen_images(50)
-train()
+train(continue_training=True)
