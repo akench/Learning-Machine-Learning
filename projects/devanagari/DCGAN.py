@@ -36,41 +36,57 @@ def generator(Z, keep_prob):
             weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
              weights_regularizer=slim.l2_regularizer(.05)):
 
-            print('generator shapes')
-            net = slim.fully_connected(Z, 256, activation_fn=None, scope='fc1')
-            net = slim.dropout(net, keep_prob = keep_prob, scope='dropout1')
-            net = slim.batch_norm(net)
-            net = tf.nn.leaky_relu(net)
+             net = slim.fully_connected(Z, 7*7*128, activation_fn=None, scope='fc1')
+             net = slim.batch_norm(net)
+             net = tf.nn.leaky_relu(net)
 
-            net = slim.fully_connected(Z, 2*2*256, activation_fn=None, scope='fc2')
-            net = slim.dropout(net, keep_prob = keep_prob, scope='dropout2')
+             print(net.shape)
 
-            net = tf.reshape(net, (-1, 2, 2, 256))
-            net = slim.batch_norm(net)
-            net = tf.nn.leaky_relu(net)
-            # shape = 2 x 2 x 256
-            print(net.shape)
+             net = tf.reshape(net, [-1,7,7,128])
+             net = tf.layers.conv2d_transpose(net, 64, 4, strides=2)
+             net = slim.batch_norm(net)
+             print(net.shape)
 
-            net = slim.conv2d_transpose(net, 64, [2,2], stride=2, scope='convT1')
-            net = slim.batch_norm(net)
-            net = tf.nn.leaky_relu(net)
-            # shape = 7 x 7 x 64
-            print(net.shape)
+             net = tf.layers.conv2d_transpose(net, 1, 2, strides=2)
+             print(net.shape)
 
-            net = slim.conv2d_transpose(net, 16, [2,2], stride=2, scope='convT2')
-            net = slim.batch_norm(net)
-            net = tf.nn.leaky_relu(net)
-            # shape = 15 x 15 x 16
-            print(net.shape)
+             net = tf.nn.tanh(net)
 
-            net = slim.conv2d_transpose(net, 1, [2,2], stride=4, scope='convT3')
-            net = slim.batch_norm(net)
-            net = tf.nn.leaky_relu(net)
-            # shape = 32 x 32 x 1
-            print(net.shape)
+            # print('generator shapes')
+            # net = slim.fully_connected(Z, 256, activation_fn=None, scope='fc1')
+            # net = slim.dropout(net, keep_prob = keep_prob, scope='dropout1')
+            # net = slim.batch_norm(net)
+            # net = tf.nn.leaky_relu(net)
+            #
+            # net = slim.fully_connected(Z, 2*2*256, activation_fn=None, scope='fc2')
+            # net = slim.dropout(net, keep_prob = keep_prob, scope='dropout2')
+            #
+            # net = tf.reshape(net, (-1, 2, 2, 256))
+            # net = slim.batch_norm(net)
+            # net = tf.nn.leaky_relu(net)
+            # # shape = 2 x 2 x 256
+            # print(net.shape)
+            #
+            # net = slim.conv2d_transpose(net, 64, [2,2], stride=2, scope='convT1')
+            # net = slim.batch_norm(net)
+            # net = tf.nn.leaky_relu(net)
+            # # shape = 7 x 7 x 64
+            # print(net.shape)
+            #
+            # net = slim.conv2d_transpose(net, 16, [2,2], stride=2, scope='convT2')
+            # net = slim.batch_norm(net)
+            # net = tf.nn.leaky_relu(net)
+            # # shape = 15 x 15 x 16
+            # print(net.shape)
+            #
+            # net = slim.conv2d_transpose(net, 1, [2,2], stride=4, scope='convT3')
+            # net = slim.batch_norm(net)
+            # net = tf.nn.leaky_relu(net)
+            # # shape = 32 x 32 x 1
+            # print(net.shape)
 
-            net = tf.nn.tanh(net)
-            tf.summary.image('output of gen', net, 10)
+            # net = tf.nn.tanh(net)
+            # tf.summary.image('output of gen', net, 10)
 
     return net
 
@@ -108,23 +124,10 @@ def discriminator(X):
                 net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool2')
                 print(net.shape)
 
-                net = slim.conv2d(net, 256, [4,4], scope='conv3')
-                print(net.shape)
-                # net = slim.batch_norm(net)
-                net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool3')
-                print(net.shape)
-
-                net = slim.conv2d(net, 512, [3,3], scope='conv4')
-                print(net.shape)
-                # net = slim.batch_norm(net)
-                net = tf.nn.leaky_relu(net)
-                net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool4')
-                print(net.shape)
 
                 net = slim.flatten(net, scope='flatten5')
                 print(net.shape)
-                net = slim.fully_connected(net, 128, activation_fn=tf.nn.relu, scope='fc6')
+                net = slim.fully_connected(net, 1024, activation_fn=tf.nn.relu, scope='fc6')
                 net = slim.fully_connected(net, 1, activation_fn=None, scope='fc7')
                 print(net.shape)
 
@@ -193,8 +196,8 @@ def train(continue_training=False):
 
 
 
-    D_train_step = tf.train.RMSPropOptimizer(0.00001).minimize(D_loss, var_list=d_vars)
-    G_train_step = tf.train.RMSPropOptimizer(0.001).minimize(G_loss, var_list=g_vars)
+    D_train_step = tf.train.AdamOptimizer(0.0001).minimize(D_loss, var_list=d_vars)
+    G_train_step = tf.train.AdamOptimizer(0.001).minimize(G_loss, var_list=g_vars)
 
 
     data_util = DataUtil(data_dir='data', batch_size=BATCH_SIZE,
