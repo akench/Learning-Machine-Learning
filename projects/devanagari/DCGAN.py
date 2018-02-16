@@ -37,6 +37,7 @@ def generator(Z, keep_prob):
              weights_regularizer=slim.l2_regularizer(.05)):
 
              net = slim.fully_connected(Z, 7*7*128, activation_fn=None, scope='fc1')
+             net = slim.dropout(keep_prob=keep_prob)
              net = slim.batch_norm(net)
              net = tf.nn.leaky_relu(net)
 
@@ -51,42 +52,6 @@ def generator(Z, keep_prob):
              print(net.shape)
 
              net = tf.nn.tanh(net)
-
-            # print('generator shapes')
-            # net = slim.fully_connected(Z, 256, activation_fn=None, scope='fc1')
-            # net = slim.dropout(net, keep_prob = keep_prob, scope='dropout1')
-            # net = slim.batch_norm(net)
-            # net = tf.nn.leaky_relu(net)
-            #
-            # net = slim.fully_connected(Z, 2*2*256, activation_fn=None, scope='fc2')
-            # net = slim.dropout(net, keep_prob = keep_prob, scope='dropout2')
-            #
-            # net = tf.reshape(net, (-1, 2, 2, 256))
-            # net = slim.batch_norm(net)
-            # net = tf.nn.leaky_relu(net)
-            # # shape = 2 x 2 x 256
-            # print(net.shape)
-            #
-            # net = slim.conv2d_transpose(net, 64, [2,2], stride=2, scope='convT1')
-            # net = slim.batch_norm(net)
-            # net = tf.nn.leaky_relu(net)
-            # # shape = 7 x 7 x 64
-            # print(net.shape)
-            #
-            # net = slim.conv2d_transpose(net, 16, [2,2], stride=2, scope='convT2')
-            # net = slim.batch_norm(net)
-            # net = tf.nn.leaky_relu(net)
-            # # shape = 15 x 15 x 16
-            # print(net.shape)
-            #
-            # net = slim.conv2d_transpose(net, 1, [2,2], stride=4, scope='convT3')
-            # net = slim.batch_norm(net)
-            # net = tf.nn.leaky_relu(net)
-            # # shape = 32 x 32 x 1
-            # print(net.shape)
-
-            # net = tf.nn.tanh(net)
-            # tf.summary.image('output of gen', net, 10)
 
     return net
 
@@ -154,7 +119,7 @@ def train(continue_training=False):
 
     t0 = time.time()
 
-    generated = generator(Z, 0.5)
+    generated = generator(Z, keep_prob_placeholder)
     d_logit_real = discriminator(X)
     d_logit_fake = discriminator(generated)
 
@@ -194,7 +159,7 @@ def train(continue_training=False):
 
 
 
-    D_train_step = tf.train.AdamOptimizer(0.0001).minimize(D_loss, var_list=d_vars)
+    D_train_step = tf.train.AdamOptimizer(0.001).minimize(D_loss, var_list=d_vars)
     G_train_step = tf.train.AdamOptimizer(0.001).minimize(G_loss, var_list=g_vars)
 
 
@@ -268,7 +233,7 @@ def train(continue_training=False):
 
 def gen_images(num):
 
-    generated = generator(Z)
+    generated = generator(Z, keep_prob_placeholder)
 
     with tf.Session() as sess:
         saver=tf.train.Saver()
@@ -286,4 +251,4 @@ def gen_images(num):
 
 
 # gen_images(50)
-train(continue_training=True)
+# train(continue_training=True)
