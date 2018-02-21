@@ -93,7 +93,7 @@ def discriminator(X):
                 net = slim.flatten(net, scope='flatten5')
                 print(net.shape)
                 net = slim.fully_connected(net, 1024, activation_fn=tf.nn.relu, scope='fc6')
-                net = slim.fully_connected(net, 1, activation_fn=None, scope='fc7')
+                net = slim.fully_connected(net, 2, activation_fn=None, scope='fc7')
                 print(net.shape)
 
     return net
@@ -125,24 +125,27 @@ def train(continue_training=False):
 
 
     with tf.name_scope('d_loss_real'):
-        D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+        D_loss_real = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
             logits=d_logit_real,
-            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
+            # labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
+            labels = tf.ones([BATCH_SIZE, 1])
         ))
 
     with tf.name_scope('d_loss_fake'):
-        D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+        D_loss_fake = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
             logits=d_logit_fake,
-            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.0, maxval=0.3)
+            # labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.0, maxval=0.3)
+            labels = tf.zeros([BATCH_SIZE, 1])
         ))
 
     with tf.name_scope('d_loss'):
         D_loss = D_loss_fake + D_loss_real
 
     with tf.name_scope('g_loss'):
-        G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
+        G_loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
             logits=d_logit_fake,
-            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
+            # labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
+            labels = tf.ones([BATCH_SIZE, 1])
         ))
 
 
@@ -164,12 +167,10 @@ def train(continue_training=False):
 
 
     data_util = DataUtil(data_dir='data', batch_size=BATCH_SIZE,
-            num_epochs=100, supervised=False)
+        num_epochs=100, supervised=False)
 
 
     seeds = sample_Z(9, Z_DIM)
-
-    print(seeds)
 
     with tf.Session() as sess:
 
