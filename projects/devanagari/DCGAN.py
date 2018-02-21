@@ -10,6 +10,8 @@ import time
 import tensorflow.contrib.slim as slim
 from utils.data_utils import DataUtil
 import datetime
+import shutil
+import os
 
 logs_path = 'logs/'
 # tensorboard --logdir=run1:logs/ --port 6006
@@ -24,8 +26,8 @@ keep_prob_placeholder = tf.placeholder(dtype=tf.float32, shape=())
 
 
 def sample_Z(m, n):
-    return np.random.uniform(size=(m,n))
-    # return np.random.normal(size=(m, n))
+    # return np.random.uniform((size=m,n))
+    return np.random.normal(size=(m, n))
 
 
 def generator(Z, keep_prob):
@@ -63,7 +65,7 @@ def discriminator(X):
 
         net = tf.reshape(X, [-1, 32, 32, 1])
 
-        tf.summary.image('input to disc', net, 10)
+        tf.summary.image('input to disc', net, 5)
 
         with slim.arg_scope([slim.conv2d], padding='SAME', stride=2,
             weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
@@ -77,14 +79,14 @@ def discriminator(X):
 
                 net = slim.conv2d(net, 64, [5,5], scope='conv1')
                 print(net.shape)
-                net = slim.batch_norm(net)
+                # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
                 net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool1')
                 print(net.shape)
 
                 net = slim.conv2d(net, 128, [5,5], scope='conv2')
                 print(net.shape)
-                net = slim.batch_norm(net)
+                # net = slim.batch_norm(net)
                 net = tf.nn.leaky_relu(net)
                 net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool2')
                 print(net.shape)
@@ -93,7 +95,7 @@ def discriminator(X):
                 net = slim.flatten(net, scope='flatten5')
                 print(net.shape)
                 net = slim.fully_connected(net, 1024, activation_fn=tf.nn.relu, scope='fc6')
-                net = slim.fully_connected(net, 2, activation_fn=None, scope='fc7')
+                net = slim.fully_connected(net, 1, activation_fn=None, scope='fc7')
                 print(net.shape)
 
     return net
@@ -117,6 +119,9 @@ def plot_samples(samples):
 
 def train(continue_training=False):
 
+    shutil.rmtree('logs')
+    os.mkdir('logs')
+
     t0 = time.time()
 
     generated = generator(Z, keep_prob_placeholder)
@@ -125,27 +130,27 @@ def train(continue_training=False):
 
 
     with tf.name_scope('d_loss_real'):
-        D_loss_real = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
+        D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_real,
             # labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
-            labels = tf.ones([BATCH_SIZE, 1])
+            labels=tf.random_normal([BATCH_SIZE, 1], mean=1.0, stddev=0.05)
         ))
 
     with tf.name_scope('d_loss_fake'):
-        D_loss_fake = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
+        D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
+            labels = tf.random_normal([BATCH_SIZE, 1], mean=0.0, stddev=0.05)
             # labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.0, maxval=0.3)
-            labels = tf.zeros([BATCH_SIZE, 1])
         ))
 
     with tf.name_scope('d_loss'):
         D_loss = D_loss_fake + D_loss_real
 
     with tf.name_scope('g_loss'):
-        G_loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
+        G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
+            labels=tf.random_normal([BATCH_SIZE, 1], mean=1.0, stddev=0.05)
             # labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
-            labels = tf.ones([BATCH_SIZE, 1])
         ))
 
 
@@ -167,10 +172,11 @@ def train(continue_training=False):
 
 
     data_util = DataUtil(data_dir='data', batch_size=BATCH_SIZE,
-        num_epochs=100, supervised=False)
+            num_epochs=100, supervised=False)
 
 
     seeds = sample_Z(9, Z_DIM)
+
 
     with tf.Session() as sess:
 
@@ -216,7 +222,7 @@ def train(continue_training=False):
                 _, G_loss_curr, G_summary = sess.run([G_train_step, G_loss, summary_op],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x, keep_prob_placeholder: .5})
 
-            if it % 1 == 0:
+            if it % 2 == 0:
                 _, D_loss_curr, D_summary = sess.run([D_train_step, D_loss, summary_op],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x, keep_prob_placeholder: .5})
 

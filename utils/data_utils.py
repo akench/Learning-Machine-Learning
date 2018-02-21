@@ -11,7 +11,7 @@ class DataUtil:
 
         if not supervised:
             self.images_train = list(pickle.load(open(data_dir + '/train_data.p', 'rb')))
-
+            random.shuffle(self.images_train)
 
         else:
             self.images_train = list(pickle.load(open(data_dir + '/train_data.p', 'rb')))
