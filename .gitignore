@@ -9,4 +9,4 @@ projects/devanagari/model/*
 projects/devanagari/out/*
 projects/devanagari/data/*
 projects/devanagari/logs/*
-
+testing/sentiment_set.pickle
