@@ -35,7 +35,7 @@ def generator(Z, keep_prob):
     with tf.variable_scope('gen', reuse=tf.AUTO_REUSE):
 
         with slim.arg_scope([slim.fully_connected],
-            weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
+            weights_initializer=tf.contrib.layers.xavier_initializer(),
              weights_regularizer=slim.l2_regularizer(.05)):
 
              net = slim.fully_connected(Z, 7*7*128, activation_fn=None, scope='fc1')
@@ -68,11 +68,11 @@ def discriminator(X):
         tf.summary.image('input to disc', net, 5)
 
         with slim.arg_scope([slim.conv2d], padding='SAME', stride=2,
-            weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
+            weights_initializer=tf.contrib.layers.xavier_initializer(),
              weights_regularizer=slim.l2_regularizer(.05)):
 
             with slim.arg_scope([slim.fully_connected],
-                weights_initializer=tf.contrib.layers.variance_scaling_initializer(uniform=False),
+                weights_initializer=tf.contrib.layers.xavier_initializer(),
                  weights_regularizer=slim.l2_regularizer(.05)):
 
                 print('discriminator shapes')
@@ -80,14 +80,14 @@ def discriminator(X):
                 net = slim.conv2d(net, 64, [5,5], scope='conv1')
                 print(net.shape)
                 # net = slim.batch_norm(net)
-                net = tf.nn.leaky_relu(net)
+                net = tf.nn.tanh(net)
                 net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool1')
                 print(net.shape)
 
                 net = slim.conv2d(net, 128, [5,5], scope='conv2')
                 print(net.shape)
                 # net = slim.batch_norm(net)
-                net = tf.nn.leaky_relu(net)
+                net = tf.nn.tanh(net)
                 net = slim.avg_pool2d(net, [2,2], stride=1, scope='pool2')
                 print(net.shape)
 
@@ -132,15 +132,15 @@ def train(continue_training=False):
     with tf.name_scope('d_loss_real'):
         D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_real,
-            # labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
-            labels=tf.random_normal([BATCH_SIZE, 1], mean=1.0, stddev=0.05)
+            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
+            # labels=tf.random_normal([BATCH_SIZE, 1], mean=1.0, stddev=0.05)
         ))
 
     with tf.name_scope('d_loss_fake'):
         D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
-            labels = tf.random_normal([BATCH_SIZE, 1], mean=0.0, stddev=0.05)
-            # labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.0, maxval=0.3)
+            # labels = tf.random_normal([BATCH_SIZE, 1], mean=0.0, stddev=0.05)
+            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.0, maxval=0.3)
         ))
 
     with tf.name_scope('d_loss'):
@@ -149,13 +149,13 @@ def train(continue_training=False):
     with tf.name_scope('g_loss'):
         G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
-            labels=tf.random_normal([BATCH_SIZE, 1], mean=1.0, stddev=0.05)
-            # labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
+            # labels=tf.random_normal([BATCH_SIZE, 1], mean=1.0, stddev=0.05)
+            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.7, maxval=1.3)
         ))
 
 
-    tf.summary.scalar("g_loss", G_loss)
-    tf.summary.scalar('d_loss', D_loss)
+    tf.summary.scalar("1 Generator Loss", G_loss)
+    tf.summary.scalar('2 Discriminator Loss', D_loss)
     tf.summary.scalar('d_loss_fake', D_loss_fake)
     tf.summary.scalar('d_loss_real', D_loss_real)
 
@@ -258,4 +258,4 @@ def gen_images(num):
 
 
 # gen_images(50)
-train(continue_training=False)
+train(continue_training=True)
