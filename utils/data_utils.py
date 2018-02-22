@@ -97,7 +97,7 @@ class DataUtil:
 
             if self.curr_data_num > len(self.images_train) - 1:
 
-                print('FINISHED EPOCH', self.curr_epoch)
+                print('FINISHED EPOCH', self.curr_epoch + 1)
                 self.curr_epoch += 1
                 self.curr_data_num = 0
                 random.shuffle(self.images_train)
@@ -129,7 +129,7 @@ class DataUtil:
 
             if self.curr_data_num > len(self.images_train) - 1:
 
-                print('FINISHED EPOCH', self.curr_epoch)
+                print('FINISHED EPOCH', self.curr_epoch + 1)
                 self.curr_epoch += 1
                 self.curr_data_num = 0
                 self.images_train, self.labels_train = skshuffle(self.images_train, self.labels_train)

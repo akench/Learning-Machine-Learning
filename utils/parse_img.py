@@ -189,7 +189,7 @@ def salt_and_pepper(image, prob):
 	return output
 
 
-def rand_rotate_and_crop(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
+def rand_rotate_and_crop(file_paths_list, rots_per_img = 10, crops_per_rot = 5, rotation_factor=13):
 
 	'''
 	Args:
@@ -205,12 +205,12 @@ def rand_rotate_and_crop(file_paths_list, rots_per_img = 10, crops_per_rot = 5):
 	processed_images = []
 
 	for path in file_paths_list:
-		print(path)
+		# print(path)
 		img = Image.open(path)
 
 		for _ in range(rots_per_img):
 
-			rot = int(gauss(0, 1.4) * 13)
+			rot = int(gauss(0, 1.4) * rotation_factor)
 			rotated = img.rotate(rot)
 
 			f = randint(0,1)
