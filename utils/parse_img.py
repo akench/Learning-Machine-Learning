@@ -207,6 +207,7 @@ def rand_rotate_and_crop(file_paths_list, rots_per_img = 10, crops_per_rot = 5, 
 	for path in file_paths_list:
 		# print(path)
 		img = Image.open(path)
+		# img = img.resize((28,28))
 
 		for _ in range(rots_per_img):
 

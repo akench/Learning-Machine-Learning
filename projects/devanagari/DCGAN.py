@@ -40,16 +40,11 @@ def generator(Z, keep_prob):
 
             x = tf.layers.dense(Z, units=6 * 6 * 128)
             x = tf.nn.leaky_relu(x)
-            # Reshape to a 4-D array of images: (batch, height, width, channels)
-            # New shape: (batch, 6, 6, 128)
             x = tf.reshape(x, shape=[-1, 6, 6, 128])
-            # Deconvolution, image shape: (batch, 14, 14, 64)
             x = tf.layers.conv2d_transpose(x, 64, 4, strides=2)
             x = tf.nn.leaky_relu(x)
-            # Deconvolution, image shape: (batch, 28, 28, 1)
             x = tf.layers.conv2d_transpose(x, 1, 2, strides=2)
             x = tf.nn.leaky_relu(x)
-            # Apply sigmoid to clip values between 0 and 1
             x = tf.nn.tanh(x)
 
              # net = slim.fully_connected(Z, 6*6*128, activation_fn=None, scope='fc1')
@@ -158,7 +153,7 @@ def train(continue_training=False):
     with tf.name_scope('d_loss_real'):
         D_loss_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_real,
-            labels=tf.random_uniform([BATCH_SIZE, 1], minval=1., maxval=1.)
+            labels=tf.random_uniform([BATCH_SIZE, 1], minval=.9, maxval=1.1)
             # labels=tf.random_normal([BATCH_SIZE, 1], mean=1.0, stddev=0.05)
         ))
 
@@ -166,7 +161,7 @@ def train(continue_training=False):
         D_loss_fake = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
             # labels = tf.random_normal([BATCH_SIZE, 1], mean=0.0, stddev=0.05)
-            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.0, maxval=0.0)
+            labels=tf.random_uniform([BATCH_SIZE, 1], minval=0.0, maxval=0.2)
         ))
 
     with tf.name_scope('d_loss'):
@@ -176,7 +171,7 @@ def train(continue_training=False):
         G_loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(
             logits=d_logit_fake,
             # labels=tf.random_normal([BATCH_SIZE, 1], mean=1.0, stddev=0.05)
-            labels=tf.random_uniform([BATCH_SIZE, 1], minval=1., maxval=1)
+            labels=tf.random_uniform([BATCH_SIZE, 1], minval=.9, maxval=1.1)
         ))
 
 
@@ -289,5 +284,5 @@ def gen_images(num):
 
 
 
-# gen_images(50)
-train(continue_training=False)
+gen_images(50)
+# train(continue_training=True)
