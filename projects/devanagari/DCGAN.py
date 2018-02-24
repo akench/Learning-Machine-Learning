@@ -46,7 +46,7 @@ def generator(Z, keep_prob):
             x = tf.layers.conv2d_transpose(x, 1, 2, strides=2)
             x = tf.nn.leaky_relu(x)
             x = tf.nn.tanh(x)
-		return x
+        return x
 '''
              net = slim.fully_connected(Z, 6*6*128, activation_fn=None, scope='fc1')
              net = slim.dropout(net, keep_prob=keep_prob)
