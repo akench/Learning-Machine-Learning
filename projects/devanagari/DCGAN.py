@@ -285,4 +285,4 @@ def gen_images(num):
 
 
 gen_images(50)
-# train(continue_training=True)
+#train(continue_training=False)
