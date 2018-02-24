@@ -38,15 +38,16 @@ def generator(Z, keep_prob):
             weights_initializer=tf.contrib.layers.xavier_initializer()):
              # weights_regularizer=slim.l2_regularizer(.05)):
 
-            # x = tf.layers.dense(Z, units=6 * 6 * 128)
-            # x = tf.nn.leaky_relu(x)
-            # x = tf.reshape(x, shape=[-1, 6, 6, 128])
-            # x = tf.layers.conv2d_transpose(x, 64, 4, strides=2)
-            # x = tf.nn.leaky_relu(x)
-            # x = tf.layers.conv2d_transpose(x, 1, 2, strides=2)
-            # x = tf.nn.leaky_relu(x)
-            # x = tf.nn.tanh(x)
-
+            x = tf.layers.dense(Z, units=6 * 6 * 128)
+            x = tf.nn.leaky_relu(x)
+            x = tf.reshape(x, shape=[-1, 6, 6, 128])
+            x = tf.layers.conv2d_transpose(x, 64, 4, strides=2)
+            x = tf.nn.leaky_relu(x)
+            x = tf.layers.conv2d_transpose(x, 1, 2, strides=2)
+            x = tf.nn.leaky_relu(x)
+            x = tf.nn.tanh(x)
+		return x
+'''
              net = slim.fully_connected(Z, 6*6*128, activation_fn=None, scope='fc1')
              net = slim.dropout(net, keep_prob=keep_prob)
              net = slim.batch_norm(net)
@@ -64,8 +65,8 @@ def generator(Z, keep_prob):
              print(net.shape)
 
              net = tf.nn.tanh(net)
-
-    return x
+'''
+   # return x
 
 
 
@@ -87,37 +88,37 @@ def discriminator(X):
 
                 print('discriminator shapes')
 
-                # x = tf.layers.conv2d(net, 64, 5)
-                # x = tf.nn.tanh(x)
-                # x = tf.layers.average_pooling2d(x, 2, 2)
-                # x = tf.layers.conv2d(x, 128, 5)
-                # x = tf.nn.tanh(x)
-                # x = tf.layers.average_pooling2d(x, 2, 2)
-                # x = tf.contrib.layers.flatten(x)
-                # x = tf.layers.dense(x, 1024)
-                # x = tf.nn.tanh(x)
-                # x = tf.layers.dense(x, 1)
+                x = tf.layers.conv2d(net, 64, 5)
+                x = tf.nn.tanh(x)
+                x = tf.layers.average_pooling2d(x, 2, 2)
+                x = tf.layers.conv2d(x, 128, 5)
+                x = tf.nn.tanh(x)
+                x = tf.layers.average_pooling2d(x, 2, 2)
+                x = tf.contrib.layers.flatten(x)
+                x = tf.layers.dense(x, 1024)
+                x = tf.nn.tanh(x)
+                x = tf.layers.dense(x, 1)
 
-                net = slim.conv2d(net, 64, [5,5], scope='conv1')
-                print(net.shape)
+               # net = slim.conv2d(net, 64, [5,5], scope='conv1')
+                #print(net.shape)
                 # net = slim.batch_norm(net)
-                net = tf.nn.tanh(net)
-                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool1')
-                print(net.shape)
+               # net = tf.nn.tanh(net)
+               # net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool1')
+               # print(net.shape)
 
-                net = slim.conv2d(net, 128, [5,5], scope='conv2')
-                print(net.shape)
-                # net = slim.batch_norm(net)
-                net = tf.nn.tanh(net)
-                net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool2')
-                print(net.shape)
+               # net = slim.conv2d(net, 128, [5,5], scope='conv2')
+               # print(net.shape)
+               # # net = slim.batch_norm(net)
+               # net = tf.nn.tanh(net)
+               # net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool2')
+               # print(net.shape)
 
 
-                net = slim.flatten(net, scope='flatten5')
-                print(net.shape)
-                net = slim.fully_connected(net, 1024, activation_fn=tf.nn.tanh, scope='fc6')
-                net = slim.fully_connected(net, 1, activation_fn=None, scope='fc7')
-                print(net.shape)
+               # net = slim.flatten(net, scope='flatten5')
+               # print(net.shape)
+               # net = slim.fully_connected(net, 1024, activation_fn=tf.nn.tanh, scope='fc6')
+               # net = slim.fully_connected(net, 1, activation_fn=None, scope='fc7')
+               # print(net.shape)
 
     return x
 
@@ -193,7 +194,7 @@ def train(continue_training=False):
 
 
     data_util = DataUtil(data_dir='data', batch_size=BATCH_SIZE,
-            num_epochs=200, supervised=False)
+            num_epochs=300, supervised=False)
 
 
     seeds = sample_Z(9, Z_DIM)
@@ -223,7 +224,7 @@ def train(continue_training=False):
         for it in range(1000000):
 
             #save model
-            if it % 1000 == 0:
+            if it % 1000000000 == 0:
                 path = saver.save(sess, 'model/model.ckpt', global_step = it)
                 print('path saved in %s' % (path))
 
@@ -284,5 +285,5 @@ def gen_images(num):
 
 
 
-gen_images(50)
-#train(continue_training=False)
+#gen_images(50)
+train(continue_training=False)
