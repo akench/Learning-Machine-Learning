@@ -230,7 +230,7 @@ def train(continue_training=False):
 
 
             #plot samples
-            if it % 100 == 0:
+            if it % 500 == 0:
                 samples = sess.run(generated, feed_dict={Z: seeds, keep_prob_placeholder:1.0})
                 fig = plot_samples(samples)
                 fig.savefig('out/{}.png'.format(it), bbox_inches='tight')
