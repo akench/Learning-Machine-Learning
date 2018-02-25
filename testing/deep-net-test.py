@@ -67,24 +67,25 @@ def train_neural_network(x):
 
 	hm_epochs = 10
 
-	with tf.Session() as sess:
-		sess.run(tf.global_variables_initializer())
+	with tf.device('/gpu:0'):
+		with tf.Session() as sess:
+			sess.run(tf.global_variables_initializer())
 
-		for epoch in range(hm_epochs):
-			epoch_loss = 0
+			for epoch in range(hm_epochs):
+				epoch_loss = 0
 
-			for _ in range(int(mnist.train.num_examples / batch_size)):
-				epoch_x, epoch_y = mnist.train.next_batch(batch_size)
+				for _ in range(int(mnist.train.num_examples / batch_size)):
+					epoch_x, epoch_y = mnist.train.next_batch(batch_size)
 
-				_, c = sess.run([optimizer, cost], feed_dict = {x: epoch_x, y: epoch_y})
-				epoch_loss += c
+					_, c = sess.run([optimizer, cost], feed_dict = {x: epoch_x, y: epoch_y})
+					epoch_loss += c
 
-			print('Epoch', epoch + 1, 'completed out of', hm_epochs, 'loss:', epoch_loss)
+				print('Epoch', epoch + 1, 'completed out of', hm_epochs, 'loss:', epoch_loss)
 
-		correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
+			correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
 
-		accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
-		print('Accuracy:', accuracy.eval({x: mnist.test.images, y: mnist.test.labels}))
+			accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
+			print('Accuracy:', accuracy.eval({x: mnist.test.images, y: mnist.test.labels}))
 
 
 
