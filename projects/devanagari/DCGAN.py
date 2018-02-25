@@ -253,10 +253,12 @@ def train(continue_training=False):
                 _, D_loss_curr, D_summary = sess.run([D_train_step, D_loss, summary_op],
                     feed_dict={Z: sample_Z(BATCH_SIZE, Z_DIM), X: batch_x, keep_prob_placeholder: .5})
 
-            writer.add_summary(G_summary, global_step=data_util.global_num)
-            writer.add_summary(D_summary, global_step=data_util.global_num)
+
+
 
             if it % 10 == 0:
+                writer.add_summary(G_summary, global_step=data_util.global_num)
+                writer.add_summary(D_summary, global_step=data_util.global_num)
                 print('Iter: {}'.format(it))
                 print('D_loss: {:.4}'.format(D_loss_curr))
                 print('G_loss: {:.4}'.format(G_loss_curr))
