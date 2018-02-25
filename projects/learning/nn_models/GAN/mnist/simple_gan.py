@@ -1,3 +1,4 @@
+!ls
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -5,10 +6,11 @@ import os
 import tensorflow.contrib.slim as slim
 from tensorflow.examples.tutorials.mnist import input_data
 import time
+from google.colab import files
 
 mnist = input_data.read_data_sets('/tmp/mnist_data', one_hot=True)
 
-
+# tf.reset_default_graph()
 
 X = tf.placeholder(dtype=tf.float32, shape=[None, 784])
 Z = tf.placeholder(dtype=tf.float32, shape=[None, 100])
@@ -22,20 +24,6 @@ def sample_Z(m, n):
 
 
 def generator(z):
-
-    # with tf.variable_scope('gen', reuse=tf.AUTO_REUSE):
-
-    #     with slim.arg_scope([slim.fully_connected]):
-
-    #         net = slim.fully_connected(z, 64, scope='g_1')
-    #         net = tf.nn.relu(net)
-    #         net = slim.fully_connected(net, 128, scope='g_2')
-    #         net = tf.nn.relu(net)
-    #         net = slim.fully_connected(net, 784, scope='g_3')
-    #         net = tf.nn.sigmoid(net)
-
-    # return net
-
 
     with tf.variable_scope('gen', reuse=tf.AUTO_REUSE):
 
@@ -57,18 +45,6 @@ def generator(z):
 
 
 def discriminator(x):
-
-    # with tf.variable_scope('dis', reuse=tf.AUTO_REUSE):
-
-    #     with slim.arg_scope([slim.fully_connected]):
-
-    #         net = slim.fully_connected(x, 128, scope='d_1')
-    #         net = tf.nn.relu(net)
-    #         net = slim.fully_connected(net, 64, scope='d_2')
-    #         net = tf.nn.relu(net)
-    #         net = slim.fully_connected(net, 1, scope='d_3')
-
-    # return net
 
     with tf.variable_scope('dis', reuse=tf.AUTO_REUSE):
 
@@ -123,70 +99,80 @@ def train(restore = False):
     batch_size = 128
     Z_dim = 100
 
+    with tf.device('/gpu:0'):
+        with tf.Session() as sess:
 
-    with tf.Session() as sess:
+            sess.run(tf.global_variables_initializer())
 
-        sess.run(tf.global_variables_initializer())
+            g_saver = tf.train.Saver(var_list=g_vars)
 
-        g_saver = tf.train.Saver(var_list=g_vars)
+            if restore:
+                saver.restore(sess, 'generator_mnist/model.ckpt')
 
-        if restore:
-            saver.restore(sess, 'generator_mnist/model.ckpt')
+            G_loss_curr = 1.0
+            D_loss_curr = 1.0
 
-        G_loss_curr = 1.0
-        D_loss_curr = 1.0
+            for it in range(100000):
 
-        for it in range(100000):
+                if it % 10000 == 0:
+                    path = g_saver.save(sess, 'generator_mnist/model.ckpt')
+                    print('path saved in %s' % path)
 
-            if it % 10000 == 0:
-                path = g_saver.save(sess, 'generator_mnist/model.ckpt')
-                print('path saved in %s' % path)
+                if it % 1000 == 0:
+                    sample = sess.run(generated, feed_dict={Z: np.full((1, 100), 0.01)})
+                    plt.axis('off')
+                    plt.imshow(sample.reshape(28, 28), cmap='Greys_r')
+                    plt.savefig('out/{}.png'.format(it), bbox_inches='tight')
+                    plt.clf()
+                    plt.cla()
+                    plt.close()
 
-            if it % 1000 == 0:
-                sample = sess.run(generated, feed_dict={Z: np.full((1, 100), 0.01)})
-                plt.axis('off')
-                plt.imshow(sample.reshape(28, 28), cmap='Greys_r')
-                plt.savefig('out_2/{}.png'.format(it), bbox_inches='tight')
-                plt.clf()
-                plt.cla()
-                plt.close()
+                batch_x, _ = mnist.train.next_batch(batch_size)
 
-            batch_x, _ = mnist.train.next_batch(batch_size)
-
-            _, G_loss_curr = sess.run([G_train_step, G_loss],
-                feed_dict={Z: sample_Z(batch_size, Z_dim)})
-            _, D_loss_curr = sess.run([D_train_step, D_loss],
-                feed_dict={X: batch_x, Z: sample_Z(batch_size, Z_dim)})
+                _, G_loss_curr = sess.run([G_train_step, G_loss],
+                    feed_dict={Z: sample_Z(batch_size, Z_dim)})
+                _, D_loss_curr = sess.run([D_train_step, D_loss],
+                    feed_dict={X: batch_x, Z: sample_Z(batch_size, Z_dim)})
 
 
-            if it % 100 == 0:
-                print('Iter: {}'.format(it))
-                print('D_loss: {:.4}'.format(D_loss_curr))
-                print('G_loss: {:.4}'.format(G_loss_curr))
-                print()
+                if it % 100 == 0:
+                    print('Iter: {}'.format(it))
+                    print('D_loss: {:.4}'.format(D_loss_curr))
+                    print('G_loss: {:.4}'.format(G_loss_curr))
+                    print()
 
 
 def gen_images(num_img):
 
     generated = generator(Z)
+    !mkdir gen_images
 
-    with tf.Session() as sess:
+    with tf.device('/cpu:0'):
+      config = tf.ConfigProto(allow_soft_placement = True)
+      with tf.Session(config = config) as sess:
 
-        saver = tf.train.Saver()
-        saver.restore(sess, 'generator_mnist/model.ckpt')
+          saver = tf.train.Saver()
+          saver.restore(sess, 'generator_mnist/model.ckpt')
 
-        images = sess.run(generated, feed_dict={Z: sample_Z(num_img, 100)})
+          images = sess.run(generated, feed_dict={Z: sample_Z(num_img, 100)})
 
-        for i, img in enumerate(images):
-            plt.axis('off')
-            plt.imshow(img.reshape(28, 28), cmap='Greys_r')
-            plt.savefig('gen_images/{}.png'.format(i), bbox_inches='tight')
-            plt.close()
+          for i, img in enumerate(images):
+              plt.axis('off')
+              plt.imshow(img.reshape(28, 28), cmap='Greys_r')
+              plt.savefig('gen_images/{}.png'.format(i), bbox_inches='tight')
+              plt.close()
+          
+          !ls gen_images/*.png
+          import glob
+          img_paths = glob.glob('gen_images/*.png')
+          
+          for p in img_paths:
+             files.download(p)
 
 def gen_image_with_seed(seed):
     generated = generator(Z)
 
-
+    !mkdir seed_gen
     with tf.Session() as sess:
 
         saver = tf.train.Saver()
