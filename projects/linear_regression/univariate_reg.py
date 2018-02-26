@@ -55,8 +55,9 @@ def update_vars(theta_0, theta_1, data, learning_rate):
 	return theta_0, theta_1, deriv_0, deriv_1
 
 
-def train(data = make_fake_data(num=50, bias=50, slope=-5, noise_factor=10), learning_rate = 0.001):
+def train(data, learning_rate = 0.001):
 
+	
 	theta_0 = np.random.normal()
 	theta_1 = np.random.normal()
 
@@ -73,17 +74,27 @@ def train(data = make_fake_data(num=50, bias=50, slope=-5, noise_factor=10), lea
 		error = calc_error(theta_0, theta_1, data)
 		# print('ERROR   ', error)
 
-		# plot_state(theta_0, theta_1, data, it)
+		# if it % 100 == 0:
+			# plot_state(theta_0, theta_1, data, it)
+		
+
 		theta_0, theta_1, deriv_0, deriv_1 = update_vars(theta_0, theta_1, data, learning_rate)
-		# print('')
+
 		it += 1
 
 	print('Line of best fit = {:0.4f}x + {:0.4f}'.format(theta_1, theta_0))
 	plot_state(theta_0, theta_1, data, it)
 
 
-train()
+inp = input('num_sample | bias | slope | noise\n')
+inps = inp.split(' | ')
+inps[0] = int(inps[0])
+inps[1] = float(inps[1])
+inps[2] = float(inps[2])
+inps[3] = float(inps[3])
 
+data = make_fake_data(*inps)
+train(data)
 
 
 
