@@ -6,20 +6,20 @@
 typedef struct data_struct { 
 
 	int num_samples;
-	float bias;
-	float slope;
-	float noise;
-	float *x_data;
-	float *y_data;
+	double bias;
+	double slope;
+	double noise;
+	double *x_data;
+	double *y_data;
 
 } DataObj ;
 
-void shuffle(float *arr1, float *arr2, size_t n) {
+void shuffle(double *arr1, double *arr2, size_t n) {
 	if (n > 1) {
   	        size_t i;
 			for (i = 0; i < n - 1; i++) {
 				size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
-				float t = arr1[j];
+				double t = arr1[j];
 				arr1[j] = arr1[i];
 				arr1[i] = t;
 		
@@ -30,17 +30,17 @@ void shuffle(float *arr1, float *arr2, size_t n) {
     }
 }
 
-DataObj *create_fake_data(int num_samples, float bias, float slope, float noise) {
+DataObj *create_fake_data(int num_samples, double bias, double slope, double noise) {
 	
-	float max_x = 50.0;
+	double max_x = 50.0;
 
-	float *x_data = (float *)malloc(num_samples * sizeof(float));
-	float *y_data = (float *)malloc(num_samples * sizeof(float));	
+	double *x_data = (double *)malloc(num_samples * sizeof(double));
+	double *y_data = (double *)malloc(num_samples * sizeof(double));	
 	
 	int i;
 	for(i = 0; i < num_samples; i++) {
-		float x = ((float)rand()/(float)(RAND_MAX)) * max_x;
-		float y = bias + slope*x;
+		double x = ((double)rand()/(double)(RAND_MAX)) * max_x;
+		double y = bias + slope*x;
 
 		x_data[i] = x;
 		y_data[i] = y; 
@@ -59,7 +59,7 @@ DataObj *create_fake_data(int num_samples, float bias, float slope, float noise)
 	return data_ptr;
 }
 
-float abs_val(float x) {
+double abs_val(double x) {
 	if(x < 0) {
 		return -x;
 	}
@@ -69,15 +69,15 @@ float abs_val(float x) {
 }
 
 
-void update_vars(float *theta_0, float *theta_1, DataObj *data_ptr,  float learning_rate) {
+void update_vars(double *theta_0, double *theta_1, DataObj *data_ptr,  double learning_rate) {
 	
-	float deriv_0 = 0.0, deriv_1 = 0.0;
+	double deriv_0 = 0.0, deriv_1 = 0.0;
 
 	int i;
-	for(i = 0; i < data_ptr->num_samples, i++) {
+	for(i = 0; i < data_ptr->num_samples; i++) {
 
-		float x = data_ptr->x_data[i];
-		float y = data_ptr->y_data[i];
+		double x = data_ptr->x_data[i];
+		double y = data_ptr->y_data[i];
 
 		deriv_0 += ((*theta_0 + *theta_1 * x) - y);
 		deriv_1 += ((*theta_0 + *theta_1 * x) - y) * x;
@@ -89,45 +89,55 @@ void update_vars(float *theta_0, float *theta_1, DataObj *data_ptr,  float learn
 	
 	*theta_0 = *theta_0 - learning_rate * deriv_0;
 	*theta_1 = *theta_1 - learning_rate * deriv_1;
+
+	printf("deriv0=%lf   and deriv1=%lf\n", deriv_0, deriv_1);
+
 	
 }
 
 
-void train(DataObj *data_ptr, float learning_rate) {
+void train(DataObj *data_ptr, double learning_rate) {
 	
-	float theta_0 = ((float)rand()/(float)(RAND_MAX)) * 2 - 1;
-	float theta_1 = ((float)rand()/(float)(RAND_MAX)) * 2 - 1;
+	double theta_0 = ((double)rand()/(double)(RAND_MAX)) * 2 - 1;
+	double theta_1 = ((double)rand()/(double)(RAND_MAX)) * 2 - 1;
 	
 	int it = 0;
-	float deriv_0 = 10000.0;
-	float deriv_1 = 10000.0;
+	double deriv_0 = 10000.0;
+	double deriv_1 = 10000.0;
 
-	while( abs_val(deriv_0) + abs_val(deriv_1) > 0.00001) {
-
-
+	while( abs_val(deriv_0) + abs_val(deriv_1) > 0.001) {
+		
+		printf("sum is %lf\n", abs_val(deriv_0) + abs_val(deriv_1));
+		
+		printf("%lf*X + %lf\n", theta_1, theta_0);
 		update_vars(&theta_0, &theta_1, data_ptr,  learning_rate);
+		it++;
+	}	
 
-	}	 	
+
+	printf("Line of best fit:   %lf*X + %lf\n", theta_1, theta_0);
+	printf("Took %d iterations to complete", it);
+ 	
 }
 
 
 int main(int argc, char *argv) {
 
 	int num_samples;
-	float bias, slope, noise;
+	double bias, slope, noise;
 	printf("Enter number of samples\n");
 	scanf("%d", &num_samples);
 
-	printf("Enter bias (float)\n");
-	scanf("%f", &bias);
+	printf("Enter bias (double)\n");
+	scanf("%lf", &bias);
 			
-	printf("Enter slope (float)\n");
-	scanf("%f", &slope);		
+	printf("Enter slope (double)\n");
+	scanf("%lf", &slope);		
 			
-	printf("Enter noise (float)\n");
-	scanf("%f", &noise);		
+	printf("Enter noise (double)\n");
+	scanf("%lf", &noise);		
 			
-	printf("samples %d, bias %f, slope %f, noise %f\n", num_samples, bias, slope, noise);
+	printf("samples %d, bias %lf, slope %lf, noise %lf\n", num_samples, bias, slope, noise);
 	
 	DataObj *data_ptr = create_fake_data(num_samples, bias, slope, noise);
 
