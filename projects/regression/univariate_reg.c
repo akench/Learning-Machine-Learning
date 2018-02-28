@@ -7,9 +7,6 @@
 typedef struct data_struct { 
 
 	int num_samples;
-	long double bias;
-	long double slope;
-	long double noise;
 	long double *x_data;
 	long double *y_data;
 
@@ -40,8 +37,11 @@ DataObj *create_fake_data(int num_samples, long double bias, long double slope, 
 	
 	int i;
 	for(i = 0; i < num_samples; i++) {
+		
+		long double curr_noise = ((long double)rand()/(long double)(RAND_MAX)) * 2 * noise  -  noise;
+	
 		long double x = ((long double)rand()/(long double)(RAND_MAX)) * max_x;
-		long double y = bias + slope*x;
+		long double y = bias + slope*x + curr_noise;
 
 		x_data[i] = x;
 		y_data[i] = y; 
@@ -51,9 +51,6 @@ DataObj *create_fake_data(int num_samples, long double bias, long double slope, 
 
 	DataObj *data_ptr = malloc(sizeof(DataObj));
 	data_ptr->num_samples = num_samples;
-	data_ptr->bias = bias;
-	data_ptr->slope = slope;
-	data_ptr->noise = noise;
 	data_ptr->x_data = x_data;
 	data_ptr->y_data = y_data;
 	
@@ -88,7 +85,7 @@ long double update_vars(long double *theta_0, long double *theta_1, DataObj *dat
 }
 
 
-void train(DataObj *data_ptr, long double learning_rate) {
+void train(DataObj *data_ptr, double learning_rate) {
 	
 	long double theta_0 = ((long double)rand()/(long double)(RAND_MAX)) * 2 - 1;
 	long double theta_1 = ((long double)rand()/(long double)(RAND_MAX)) * 2 - 1;
