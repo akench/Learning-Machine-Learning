@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import time
 
 
 def plot_state(theta_0, theta_1, data, it):
@@ -51,7 +52,7 @@ def update_vars(theta_0, theta_1, data, learning_rate):
 	theta_0 = theta_0 - learning_rate*deriv_0
 	theta_1 = theta_1 - learning_rate*deriv_1
 
-	print('deriv0=  {}      deriv1=  {}'.format(deriv_0, deriv_1))
+	# print('deriv0=  {}      deriv1=  {}'.format(deriv_0, deriv_1))
 	return theta_0, theta_1, deriv_0, deriv_1
 
 
@@ -67,7 +68,7 @@ def train(data, learning_rate = 0.001):
 	deriv_1 = 10000
 	deriv_0 = 10000
 	plot_state(theta_0, theta_1, data, it)
-	while abs(deriv_0) + abs(deriv_1) > 0.0001:
+	while abs(deriv_0) + abs(deriv_1) > 0.000001:
 
 		# print('theta0 = {}  theta1= {}'.format(theta_0, theta_1))
 
@@ -94,7 +95,9 @@ inps[2] = float(inps[2])
 inps[3] = float(inps[3])
 
 data = make_fake_data(*inps)
-train(data, learning_rate = 0.001)
 
+t0 = time.time()
+train(data, learning_rate = 0.001)
+print("took seconds ", time.time() - t0)
 
 
