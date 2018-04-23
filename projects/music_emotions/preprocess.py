@@ -67,7 +67,8 @@ def make_data():
 
 
 
-    from utils.split_data import split_data
+    from utils.data_utils import split_data
     split_data('processed_data', all_data, all_labels)
 
+# make_data()
 preprocess_all()

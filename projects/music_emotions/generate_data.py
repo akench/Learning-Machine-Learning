@@ -3,6 +3,7 @@ import youtube_dl
 from random import *
 import os.path
 from make_spectrogram import all_audio_to_spec
+import gc
 
 def dl_audio(url, emot, save = True):
 
@@ -17,7 +18,7 @@ def dl_audio(url, emot, save = True):
 
 	if os.path.exists(outfile + '.mp3'):
 		print('.', end='', flush=True)
-		return
+		return outfile + '.mp3'
 
 	ydl_opts = {
 	    'format': 'bestaudio/best',
@@ -46,9 +47,8 @@ def read_file():
 				curr_emot = line
 
 
-def main():
+if __name__ == '__main__':
 	read_file()
-	print('')
 
 	import glob
 	dirs = glob.glob('audio/*')

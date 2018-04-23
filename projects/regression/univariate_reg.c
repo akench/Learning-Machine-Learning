@@ -14,16 +14,16 @@ typedef struct data_struct {
 
 void shuffle(long double *arr1, long double *arr2, size_t n) {
 	if (n > 1) {
-  	        size_t i;
-			for (i = 0; i < n - 1; i++) {
-				size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
-				long double t = arr1[j];
-				arr1[j] = arr1[i];
-				arr1[i] = t;
+		 size_t i;
+		 for (i = 0; i < n - 1; i++) {
+		     size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
+			 long double t = arr1[j];
+		     arr1[j] = arr1[i];
+			 arr1[i] = t;
 		
-	  			t = arr2[j];
-				arr2[j] = arr2[i];
-				arr2[i] = t;
+	  		 t = arr2[j];
+			 arr2[j] = arr2[i];
+			 arr2[i] = t;
         }
     }
 }
@@ -59,7 +59,7 @@ DataObj *create_fake_data(int num_samples, long double bias, long double slope, 
 
 
 
-long double update_vars(long double *theta_0, long double *theta_1, DataObj *data_ptr,  long double learning_rate) {
+long double update_vars(long double *theta_0, long double *theta_1, DataObj *data_ptr,  double learning_rate) {
 	
 	long double deriv_0 = 0.0, deriv_1 = 0.0;
 

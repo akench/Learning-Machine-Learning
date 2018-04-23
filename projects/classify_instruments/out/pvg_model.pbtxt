@@ -492,7 +492,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv1/biases/Initializer/zeros"
+  name: "pvg_model/conv1/biases/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 20
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/biases/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -514,12 +546,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 20
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/biases/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv1/biases/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv1/biases/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -656,6 +711,17 @@ node {
     }
   }
   attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
     key: "padding"
     value {
       s: "SAME"
@@ -778,7 +844,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm/beta/Initializer/zeros"
+  name: "pvg_model/BatchNorm/beta/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 20
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -800,12 +898,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 20
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm/beta/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm/beta/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -901,7 +1022,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm/moving_mean/Initializer/zeros"
+  name: "pvg_model/BatchNorm/moving_mean/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 20
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_mean/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -923,12 +1076,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 20
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_mean/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm/moving_mean/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm/moving_mean/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -1024,7 +1200,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm/moving_variance/Initializer/ones"
+  name: "pvg_model/BatchNorm/moving_variance/Initializer/ones/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 20
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_variance/Initializer/ones/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -1046,12 +1254,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 20
-          }
         }
         float_val: 1.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/moving_variance/Initializer/ones"
+  op: "Fill"
+  input: "pvg_model/BatchNorm/moving_variance/Initializer/ones/shape_as_tensor"
+  input: "pvg_model/BatchNorm/moving_variance/Initializer/ones/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -1750,7 +1981,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv2/biases/Initializer/zeros"
+  name: "pvg_model/conv2/biases/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 50
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/biases/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -1772,12 +2035,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 50
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/biases/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv2/biases/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv2/biases/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -1914,6 +2200,17 @@ node {
     }
   }
   attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
     key: "padding"
     value {
       s: "SAME"
@@ -2036,7 +2333,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_1/beta/Initializer/zeros"
+  name: "pvg_model/BatchNorm_1/beta/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 50
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -2058,12 +2387,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 50
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_1/beta/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm_1/beta/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -2159,7 +2511,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_1/moving_mean/Initializer/zeros"
+  name: "pvg_model/BatchNorm_1/moving_mean/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 50
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_mean/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -2181,12 +2565,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 50
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_mean/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_1/moving_mean/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm_1/moving_mean/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -2282,7 +2689,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_1/moving_variance/Initializer/ones"
+  name: "pvg_model/BatchNorm_1/moving_variance/Initializer/ones/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 50
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_variance/Initializer/ones/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -2304,12 +2743,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 50
-          }
         }
         float_val: 1.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/moving_variance/Initializer/ones"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_1/moving_variance/Initializer/ones/shape_as_tensor"
+  input: "pvg_model/BatchNorm_1/moving_variance/Initializer/ones/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -3008,7 +3470,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv3/biases/Initializer/zeros"
+  name: "pvg_model/conv3/biases/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 100
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/biases/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -3030,12 +3524,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 100
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/biases/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv3/biases/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv3/biases/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -3172,6 +3689,17 @@ node {
     }
   }
   attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
+    }
+  }
+  attr {
     key: "padding"
     value {
       s: "SAME"
@@ -3294,7 +3822,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_2/beta/Initializer/zeros"
+  name: "pvg_model/BatchNorm_2/beta/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 100
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -3316,12 +3876,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 100
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_2/beta/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm_2/beta/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -3417,7 +4000,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_2/moving_mean/Initializer/zeros"
+  name: "pvg_model/BatchNorm_2/moving_mean/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 100
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_mean/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -3439,12 +4054,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 100
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_mean/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_2/moving_mean/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm_2/moving_mean/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_mean"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -3540,7 +4178,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_2/moving_variance/Initializer/ones"
+  name: "pvg_model/BatchNorm_2/moving_variance/Initializer/ones/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 100
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_variance/Initializer/ones/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -3562,12 +4232,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 100
-          }
         }
         float_val: 1.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/moving_variance/Initializer/ones"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_2/moving_variance/Initializer/ones/shape_as_tensor"
+  input: "pvg_model/BatchNorm_2/moving_variance/Initializer/ones/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/moving_variance"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -4462,7 +5155,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc5/biases/Initializer/zeros"
+  name: "pvg_model/fc5/biases/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 500
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/biases/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -4484,12 +5209,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 500
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/biases/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc5/biases/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc5/biases/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -5204,7 +5952,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc6/biases/Initializer/zeros"
+  name: "pvg_model/fc6/biases/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 4
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/biases/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -5226,12 +6006,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 4
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/biases/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc6/biases/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc6/biases/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -5584,7 +6387,7 @@ node {
   }
 }
 node {
-  name: "train_step/gradients/Const"
+  name: "train_step/gradients/grad_ys_0"
   op: "Const"
   attr {
     key: "dtype"
@@ -5608,11 +6411,17 @@ node {
   name: "train_step/gradients/Fill"
   op: "Fill"
   input: "train_step/gradients/Shape"
-  input: "train_step/gradients/Const"
+  input: "train_step/gradients/grad_ys_0"
   attr {
     key: "T"
     value {
       type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -5736,14 +6545,6 @@ node {
   name: "train_step/gradients/total_loss/Mean_grad/Const"
   op: "Const"
   attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
-      }
-    }
-  }
-  attr {
     key: "dtype"
     value {
       type: DT_INT32
@@ -5782,14 +6583,6 @@ node {
     }
   }
   attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
-      }
-    }
-  }
-  attr {
     key: "keep_dims"
     value {
       b: false
@@ -5799,14 +6592,6 @@ node {
 node {
   name: "train_step/gradients/total_loss/Mean_grad/Const_1"
   op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
-      }
-    }
-  }
   attr {
     key: "dtype"
     value {
@@ -5846,14 +6631,6 @@ node {
     }
   }
   attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
-      }
-    }
-  }
-  attr {
     key: "keep_dims"
     value {
       b: false
@@ -5863,14 +6640,6 @@ node {
 node {
   name: "train_step/gradients/total_loss/Mean_grad/Maximum/y"
   op: "Const"
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
-      }
-    }
-  }
   attr {
     key: "dtype"
     value {
@@ -5900,14 +6669,6 @@ node {
       type: DT_INT32
     }
   }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
-      }
-    }
-  }
 }
 node {
   name: "train_step/gradients/total_loss/Mean_grad/floordiv"
@@ -5918,14 +6679,6 @@ node {
     key: "T"
     value {
       type: DT_INT32
-    }
-  }
-  attr {
-    key: "_class"
-    value {
-      list {
-        s: "loc:@train_step/gradients/total_loss/Mean_grad/Shape_1"
-      }
     }
   }
 }
@@ -6241,7 +6994,7 @@ node {
   }
 }
 node {
-  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/mul"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Mul"
   op: "Mul"
   input: "train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
   input: "pvg_model/dropout6/dropout/Floor"
@@ -6255,7 +7008,7 @@ node {
 node {
   name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Sum"
   op: "Sum"
-  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/mul"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Mul"
   input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs"
   attr {
     key: "T"
@@ -6295,7 +7048,7 @@ node {
   }
 }
 node {
-  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/mul_1"
+  name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Mul_1"
   op: "Mul"
   input: "pvg_model/dropout6/dropout/div"
   input: "train_step/gradients/pvg_model/fc6/MatMul_grad/tuple/control_dependency"
@@ -6309,7 +7062,7 @@ node {
 node {
   name: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Sum_1"
   op: "Sum"
-  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/mul_1"
+  input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/Mul_1"
   input: "train_step/gradients/pvg_model/dropout6/dropout/mul_grad/BroadcastGradientArgs:1"
   attr {
     key: "T"
@@ -7167,6 +7920,30 @@ node {
   }
 }
 node {
+  name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005\000\000\000\005\000\000\0002\000\000\000d\000\000\000"
+      }
+    }
+  }
+}
+node {
   name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
   input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/ShapeN"
@@ -7182,6 +7959,17 @@ node {
     key: "data_format"
     value {
       s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
     }
   }
   attr {
@@ -7212,7 +8000,7 @@ node {
   name: "train_step/gradients/pvg_model/conv3/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "pvg_model/BatchNorm_1/FusedBatchNorm"
-  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/ShapeN:1"
+  input: "train_step/gradients/pvg_model/conv3/Conv2D_grad/Const"
   input: "train_step/gradients/pvg_model/conv3/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -7224,6 +8012,17 @@ node {
     key: "data_format"
     value {
       s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
     }
   }
   attr {
@@ -7625,6 +8424,30 @@ node {
   }
 }
 node {
+  name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005\000\000\000\005\000\000\000\024\000\000\0002\000\000\000"
+      }
+    }
+  }
+}
+node {
   name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
   input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/ShapeN"
@@ -7640,6 +8463,17 @@ node {
     key: "data_format"
     value {
       s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
     }
   }
   attr {
@@ -7670,7 +8504,7 @@ node {
   name: "train_step/gradients/pvg_model/conv2/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "pvg_model/BatchNorm/FusedBatchNorm"
-  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/ShapeN:1"
+  input: "train_step/gradients/pvg_model/conv2/Conv2D_grad/Const"
   input: "train_step/gradients/pvg_model/conv2/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -7682,6 +8516,17 @@ node {
     key: "data_format"
     value {
       s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
     }
   }
   attr {
@@ -8083,6 +8928,30 @@ node {
   }
 }
 node {
+  name: "train_step/gradients/pvg_model/conv1/Conv2D_grad/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005\000\000\000\005\000\000\000\001\000\000\000\024\000\000\000"
+      }
+    }
+  }
+}
+node {
   name: "train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropInput"
   op: "Conv2DBackpropInput"
   input: "train_step/gradients/pvg_model/conv1/Conv2D_grad/ShapeN"
@@ -8098,6 +8967,17 @@ node {
     key: "data_format"
     value {
       s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
     }
   }
   attr {
@@ -8128,7 +9008,7 @@ node {
   name: "train_step/gradients/pvg_model/conv1/Conv2D_grad/Conv2DBackpropFilter"
   op: "Conv2DBackpropFilter"
   input: "Reshape"
-  input: "train_step/gradients/pvg_model/conv1/Conv2D_grad/ShapeN:1"
+  input: "train_step/gradients/pvg_model/conv1/Conv2D_grad/Const"
   input: "train_step/gradients/pvg_model/conv1/BiasAdd_grad/tuple/control_dependency"
   attr {
     key: "T"
@@ -8140,6 +9020,17 @@ node {
     key: "data_format"
     value {
       s: "NHWC"
+    }
+  }
+  attr {
+    key: "dilations"
+    value {
+      list {
+        i: 1
+        i: 1
+        i: 1
+        i: 1
+      }
     }
   }
   attr {
@@ -8447,7 +9338,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv1/weights/Adam/Initializer/zeros"
+  name: "pvg_model/conv1/weights/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005\000\000\000\005\000\000\000\001\000\000\000\024\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/weights/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -8469,21 +9392,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 5
-          }
-          dim {
-            size: 5
-          }
-          dim {
-            size: 1
-          }
-          dim {
-            size: 20
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/weights/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv1/weights/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv1/weights/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -8588,7 +9525,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv1/weights/Adam_1/Initializer/zeros"
+  name: "pvg_model/conv1/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005\000\000\000\005\000\000\000\001\000\000\000\024\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/weights/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -8610,21 +9579,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 5
-          }
-          dim {
-            size: 5
-          }
-          dim {
-            size: 1
-          }
-          dim {
-            size: 20
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/weights/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv1/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv1/weights/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -8729,7 +9712,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv1/biases/Adam/Initializer/zeros"
+  name: "pvg_model/conv1/biases/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 20
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/biases/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -8751,12 +9766,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 20
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/biases/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv1/biases/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv1/biases/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -8852,7 +9890,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv1/biases/Adam_1/Initializer/zeros"
+  name: "pvg_model/conv1/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 20
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/biases/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -8874,12 +9944,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 20
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv1/biases/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv1/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv1/biases/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv1/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -8975,7 +10068,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm/beta/Adam/Initializer/zeros"
+  name: "pvg_model/BatchNorm/beta/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 20
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -8997,12 +10122,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 20
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm/beta/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm/beta/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -9098,7 +10246,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm/beta/Adam_1/Initializer/zeros"
+  name: "pvg_model/BatchNorm/beta/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 20
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -9120,12 +10300,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 20
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm/beta/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm/beta/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm/beta/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm/beta"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -9221,7 +10424,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv2/weights/Adam/Initializer/zeros"
+  name: "pvg_model/conv2/weights/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005\000\000\000\005\000\000\000\024\000\000\0002\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/weights/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -9243,21 +10478,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 5
-          }
-          dim {
-            size: 5
-          }
-          dim {
-            size: 20
-          }
-          dim {
-            size: 50
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/weights/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv2/weights/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv2/weights/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -9362,7 +10611,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv2/weights/Adam_1/Initializer/zeros"
+  name: "pvg_model/conv2/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005\000\000\000\005\000\000\000\024\000\000\0002\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/weights/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -9384,21 +10665,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 5
-          }
-          dim {
-            size: 5
-          }
-          dim {
-            size: 20
-          }
-          dim {
-            size: 50
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/weights/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv2/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv2/weights/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -9503,7 +10798,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv2/biases/Adam/Initializer/zeros"
+  name: "pvg_model/conv2/biases/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 50
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/biases/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -9525,12 +10852,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 50
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/biases/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv2/biases/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv2/biases/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -9626,7 +10976,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv2/biases/Adam_1/Initializer/zeros"
+  name: "pvg_model/conv2/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 50
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/biases/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -9648,12 +11030,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 50
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv2/biases/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv2/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv2/biases/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv2/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -9749,7 +11154,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_1/beta/Adam/Initializer/zeros"
+  name: "pvg_model/BatchNorm_1/beta/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 50
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -9771,12 +11208,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 50
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_1/beta/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm_1/beta/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -9872,7 +11332,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_1/beta/Adam_1/Initializer/zeros"
+  name: "pvg_model/BatchNorm_1/beta/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 50
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -9894,12 +11386,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 50
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_1/beta/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_1/beta/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm_1/beta/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_1/beta"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -9995,7 +11510,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv3/weights/Adam/Initializer/zeros"
+  name: "pvg_model/conv3/weights/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005\000\000\000\005\000\000\0002\000\000\000d\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/weights/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -10017,21 +11564,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 5
-          }
-          dim {
-            size: 5
-          }
-          dim {
-            size: 50
-          }
-          dim {
-            size: 100
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/weights/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv3/weights/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv3/weights/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -10136,7 +11697,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv3/weights/Adam_1/Initializer/zeros"
+  name: "pvg_model/conv3/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 4
+          }
+        }
+        tensor_content: "\005\000\000\000\005\000\000\0002\000\000\000d\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/weights/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -10158,21 +11751,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 5
-          }
-          dim {
-            size: 5
-          }
-          dim {
-            size: 50
-          }
-          dim {
-            size: 100
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/weights/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv3/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv3/weights/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -10277,7 +11884,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv3/biases/Adam/Initializer/zeros"
+  name: "pvg_model/conv3/biases/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 100
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/biases/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -10299,12 +11938,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 100
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/biases/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv3/biases/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv3/biases/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -10400,7 +12062,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/conv3/biases/Adam_1/Initializer/zeros"
+  name: "pvg_model/conv3/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 100
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/biases/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -10422,12 +12116,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 100
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/conv3/biases/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/conv3/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/conv3/biases/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/conv3/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -10523,7 +12240,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_2/beta/Adam/Initializer/zeros"
+  name: "pvg_model/BatchNorm_2/beta/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 100
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -10545,12 +12294,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 100
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_2/beta/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm_2/beta/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -10646,7 +12418,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/BatchNorm_2/beta/Adam_1/Initializer/zeros"
+  name: "pvg_model/BatchNorm_2/beta/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 100
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -10668,12 +12472,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 100
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/BatchNorm_2/beta/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/BatchNorm_2/beta/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/BatchNorm_2/beta/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/BatchNorm_2/beta"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -10769,7 +12596,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc5/weights/Adam/Initializer/zeros"
+  name: "pvg_model/fc5/weights/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\204\003\000\000\364\001\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/weights/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -10791,15 +12650,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 900
-          }
-          dim {
-            size: 500
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/weights/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc5/weights/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc5/weights/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -10898,7 +12777,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc5/weights/Adam_1/Initializer/zeros"
+  name: "pvg_model/fc5/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\204\003\000\000\364\001\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/weights/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -10920,15 +12831,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 900
-          }
-          dim {
-            size: 500
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/weights/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc5/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc5/weights/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -11027,7 +12958,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc5/biases/Adam/Initializer/zeros"
+  name: "pvg_model/fc5/biases/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 500
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/biases/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -11049,12 +13012,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 500
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/biases/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc5/biases/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc5/biases/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -11150,7 +13136,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc5/biases/Adam_1/Initializer/zeros"
+  name: "pvg_model/fc5/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 500
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/biases/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -11172,12 +13190,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 500
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc5/biases/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc5/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc5/biases/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc5/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -11273,7 +13314,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc6/weights/Adam/Initializer/zeros"
+  name: "pvg_model/fc6/weights/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\364\001\000\000\004\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/weights/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -11295,15 +13368,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 500
-          }
-          dim {
-            size: 4
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/weights/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc6/weights/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc6/weights/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -11402,7 +13495,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc6/weights/Adam_1/Initializer/zeros"
+  name: "pvg_model/fc6/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/weights"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\364\001\000\000\004\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/weights/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -11424,15 +13549,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 500
-          }
-          dim {
-            size: 4
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/weights/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc6/weights/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc6/weights/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/weights"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -11531,7 +13676,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc6/biases/Adam/Initializer/zeros"
+  name: "pvg_model/fc6/biases/Adam/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 4
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/biases/Adam/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -11553,12 +13730,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 4
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/biases/Adam/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc6/biases/Adam/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc6/biases/Adam/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -11654,7 +13854,39 @@ node {
   }
 }
 node {
-  name: "pvg_model/fc6/biases/Adam_1/Initializer/zeros"
+  name: "pvg_model/fc6/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/biases"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 4
+      }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/biases/Adam_1/Initializer/zeros/Const"
   op: "Const"
   attr {
     key: "_class"
@@ -11676,12 +13908,35 @@ node {
       tensor {
         dtype: DT_FLOAT
         tensor_shape {
-          dim {
-            size: 4
-          }
         }
         float_val: 0.0
       }
+    }
+  }
+}
+node {
+  name: "pvg_model/fc6/biases/Adam_1/Initializer/zeros"
+  op: "Fill"
+  input: "pvg_model/fc6/biases/Adam_1/Initializer/zeros/shape_as_tensor"
+  input: "pvg_model/fc6/biases/Adam_1/Initializer/zeros/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@pvg_model/fc6/biases"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
     }
   }
 }
@@ -13025,6 +15280,7 @@ node {
 node {
   name: "save/RestoreV2/tensor_names"
   op: "Const"
+  device: "/device:CPU:0"
   attr {
     key: "dtype"
     value {
@@ -13038,10 +15294,56 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 1
+            size: 47
           }
         }
         string_val: "pvg_model/BatchNorm/beta"
+        string_val: "pvg_model/BatchNorm/beta/Adam"
+        string_val: "pvg_model/BatchNorm/beta/Adam_1"
+        string_val: "pvg_model/BatchNorm/moving_mean"
+        string_val: "pvg_model/BatchNorm/moving_variance"
+        string_val: "pvg_model/BatchNorm_1/beta"
+        string_val: "pvg_model/BatchNorm_1/beta/Adam"
+        string_val: "pvg_model/BatchNorm_1/beta/Adam_1"
+        string_val: "pvg_model/BatchNorm_1/moving_mean"
+        string_val: "pvg_model/BatchNorm_1/moving_variance"
+        string_val: "pvg_model/BatchNorm_2/beta"
+        string_val: "pvg_model/BatchNorm_2/beta/Adam"
+        string_val: "pvg_model/BatchNorm_2/beta/Adam_1"
+        string_val: "pvg_model/BatchNorm_2/moving_mean"
+        string_val: "pvg_model/BatchNorm_2/moving_variance"
+        string_val: "pvg_model/conv1/biases"
+        string_val: "pvg_model/conv1/biases/Adam"
+        string_val: "pvg_model/conv1/biases/Adam_1"
+        string_val: "pvg_model/conv1/weights"
+        string_val: "pvg_model/conv1/weights/Adam"
+        string_val: "pvg_model/conv1/weights/Adam_1"
+        string_val: "pvg_model/conv2/biases"
+        string_val: "pvg_model/conv2/biases/Adam"
+        string_val: "pvg_model/conv2/biases/Adam_1"
+        string_val: "pvg_model/conv2/weights"
+        string_val: "pvg_model/conv2/weights/Adam"
+        string_val: "pvg_model/conv2/weights/Adam_1"
+        string_val: "pvg_model/conv3/biases"
+        string_val: "pvg_model/conv3/biases/Adam"
+        string_val: "pvg_model/conv3/biases/Adam_1"
+        string_val: "pvg_model/conv3/weights"
+        string_val: "pvg_model/conv3/weights/Adam"
+        string_val: "pvg_model/conv3/weights/Adam_1"
+        string_val: "pvg_model/fc5/biases"
+        string_val: "pvg_model/fc5/biases/Adam"
+        string_val: "pvg_model/fc5/biases/Adam_1"
+        string_val: "pvg_model/fc5/weights"
+        string_val: "pvg_model/fc5/weights/Adam"
+        string_val: "pvg_model/fc5/weights/Adam_1"
+        string_val: "pvg_model/fc6/biases"
+        string_val: "pvg_model/fc6/biases/Adam"
+        string_val: "pvg_model/fc6/biases/Adam_1"
+        string_val: "pvg_model/fc6/weights"
+        string_val: "pvg_model/fc6/weights/Adam"
+        string_val: "pvg_model/fc6/weights/Adam_1"
+        string_val: "train_step/beta1_power"
+        string_val: "train_step/beta2_power"
       }
     }
   }
@@ -13049,6 +15351,7 @@ node {
 node {
   name: "save/RestoreV2/shape_and_slices"
   op: "Const"
+  device: "/device:CPU:0"
   attr {
     key: "dtype"
     value {
@@ -13062,9 +15365,55 @@ node {
         dtype: DT_STRING
         tensor_shape {
           dim {
-            size: 1
+            size: 47
           }
         }
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
+        string_val: ""
         string_val: ""
       }
     }
@@ -13076,10 +15425,57 @@ node {
   input: "save/Const"
   input: "save/RestoreV2/tensor_names"
   input: "save/RestoreV2/shape_and_slices"
+  device: "/device:CPU:0"
   attr {
     key: "dtypes"
     value {
       list {
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
+        type: DT_FLOAT
         type: DT_FLOAT
       }
     }
@@ -13118,73 +15514,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_1/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm/beta/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_1/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_1"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_1/tensor_names"
-  input: "save/RestoreV2_1/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_1"
   op: "Assign"
   input: "pvg_model/BatchNorm/beta/Adam"
-  input: "save/RestoreV2_1"
+  input: "save/RestoreV2:1"
   attr {
     key: "T"
     value {
@@ -13209,69 +15542,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_2/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm/beta/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_2/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_2"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_2/tensor_names"
-  input: "save/RestoreV2_2/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -13279,7 +15549,7 @@ node {
   name: "save/Assign_2"
   op: "Assign"
   input: "pvg_model/BatchNorm/beta/Adam_1"
-  input: "save/RestoreV2_2"
+  input: "save/RestoreV2:2"
   attr {
     key: "T"
     value {
@@ -13308,73 +15578,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_3/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm/moving_mean"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_3/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_3"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_3/tensor_names"
-  input: "save/RestoreV2_3/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_3"
   op: "Assign"
   input: "pvg_model/BatchNorm/moving_mean"
-  input: "save/RestoreV2_3"
+  input: "save/RestoreV2:3"
   attr {
     key: "T"
     value {
@@ -13403,73 +15610,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_4/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm/moving_variance"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_4/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_4"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_4/tensor_names"
-  input: "save/RestoreV2_4/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_4"
   op: "Assign"
   input: "pvg_model/BatchNorm/moving_variance"
-  input: "save/RestoreV2_4"
+  input: "save/RestoreV2:4"
   attr {
     key: "T"
     value {
@@ -13498,73 +15642,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_5/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_1/beta"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_5/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_5"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_5/tensor_names"
-  input: "save/RestoreV2_5/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_5"
   op: "Assign"
   input: "pvg_model/BatchNorm_1/beta"
-  input: "save/RestoreV2_5"
+  input: "save/RestoreV2:5"
   attr {
     key: "T"
     value {
@@ -13589,69 +15670,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_6/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_1/beta/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_6/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_6"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_6/tensor_names"
-  input: "save/RestoreV2_6/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -13659,7 +15677,7 @@ node {
   name: "save/Assign_6"
   op: "Assign"
   input: "pvg_model/BatchNorm_1/beta/Adam"
-  input: "save/RestoreV2_6"
+  input: "save/RestoreV2:6"
   attr {
     key: "T"
     value {
@@ -13684,69 +15702,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_7/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_1/beta/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_7/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_7"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_7/tensor_names"
-  input: "save/RestoreV2_7/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -13754,7 +15709,7 @@ node {
   name: "save/Assign_7"
   op: "Assign"
   input: "pvg_model/BatchNorm_1/beta/Adam_1"
-  input: "save/RestoreV2_7"
+  input: "save/RestoreV2:7"
   attr {
     key: "T"
     value {
@@ -13783,73 +15738,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_8/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_1/moving_mean"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_8/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_8"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_8/tensor_names"
-  input: "save/RestoreV2_8/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_8"
   op: "Assign"
   input: "pvg_model/BatchNorm_1/moving_mean"
-  input: "save/RestoreV2_8"
+  input: "save/RestoreV2:8"
   attr {
     key: "T"
     value {
@@ -13878,73 +15770,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_9/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_1/moving_variance"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_9/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_9"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_9/tensor_names"
-  input: "save/RestoreV2_9/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_9"
   op: "Assign"
   input: "pvg_model/BatchNorm_1/moving_variance"
-  input: "save/RestoreV2_9"
+  input: "save/RestoreV2:9"
   attr {
     key: "T"
     value {
@@ -13973,73 +15802,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_10/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_2/beta"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_10/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_10"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_10/tensor_names"
-  input: "save/RestoreV2_10/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_10"
   op: "Assign"
   input: "pvg_model/BatchNorm_2/beta"
-  input: "save/RestoreV2_10"
+  input: "save/RestoreV2:10"
   attr {
     key: "T"
     value {
@@ -14064,69 +15830,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_11/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_2/beta/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_11/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_11"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_11/tensor_names"
-  input: "save/RestoreV2_11/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -14134,7 +15837,7 @@ node {
   name: "save/Assign_11"
   op: "Assign"
   input: "pvg_model/BatchNorm_2/beta/Adam"
-  input: "save/RestoreV2_11"
+  input: "save/RestoreV2:11"
   attr {
     key: "T"
     value {
@@ -14159,69 +15862,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_12/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_2/beta/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_12/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_12"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_12/tensor_names"
-  input: "save/RestoreV2_12/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -14229,7 +15869,7 @@ node {
   name: "save/Assign_12"
   op: "Assign"
   input: "pvg_model/BatchNorm_2/beta/Adam_1"
-  input: "save/RestoreV2_12"
+  input: "save/RestoreV2:12"
   attr {
     key: "T"
     value {
@@ -14258,73 +15898,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_13/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_2/moving_mean"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_13/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_13"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_13/tensor_names"
-  input: "save/RestoreV2_13/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_13"
   op: "Assign"
   input: "pvg_model/BatchNorm_2/moving_mean"
-  input: "save/RestoreV2_13"
+  input: "save/RestoreV2:13"
   attr {
     key: "T"
     value {
@@ -14353,73 +15930,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_14/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/BatchNorm_2/moving_variance"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_14/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_14"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_14/tensor_names"
-  input: "save/RestoreV2_14/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_14"
   op: "Assign"
   input: "pvg_model/BatchNorm_2/moving_variance"
-  input: "save/RestoreV2_14"
+  input: "save/RestoreV2:14"
   attr {
     key: "T"
     value {
@@ -14448,73 +15962,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_15/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv1/biases"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_15/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_15"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_15/tensor_names"
-  input: "save/RestoreV2_15/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_15"
   op: "Assign"
   input: "pvg_model/conv1/biases"
-  input: "save/RestoreV2_15"
+  input: "save/RestoreV2:15"
   attr {
     key: "T"
     value {
@@ -14539,69 +15990,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_16/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv1/biases/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_16/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_16"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_16/tensor_names"
-  input: "save/RestoreV2_16/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -14609,7 +15997,7 @@ node {
   name: "save/Assign_16"
   op: "Assign"
   input: "pvg_model/conv1/biases/Adam"
-  input: "save/RestoreV2_16"
+  input: "save/RestoreV2:16"
   attr {
     key: "T"
     value {
@@ -14634,69 +16022,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_17/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv1/biases/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_17/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_17"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_17/tensor_names"
-  input: "save/RestoreV2_17/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -14704,7 +16029,7 @@ node {
   name: "save/Assign_17"
   op: "Assign"
   input: "pvg_model/conv1/biases/Adam_1"
-  input: "save/RestoreV2_17"
+  input: "save/RestoreV2:17"
   attr {
     key: "T"
     value {
@@ -14733,73 +16058,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_18/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv1/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_18/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_18"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_18/tensor_names"
-  input: "save/RestoreV2_18/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_18"
   op: "Assign"
   input: "pvg_model/conv1/weights"
-  input: "save/RestoreV2_18"
+  input: "save/RestoreV2:18"
   attr {
     key: "T"
     value {
@@ -14824,69 +16086,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_19/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv1/weights/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_19/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_19"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_19/tensor_names"
-  input: "save/RestoreV2_19/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -14894,7 +16093,7 @@ node {
   name: "save/Assign_19"
   op: "Assign"
   input: "pvg_model/conv1/weights/Adam"
-  input: "save/RestoreV2_19"
+  input: "save/RestoreV2:19"
   attr {
     key: "T"
     value {
@@ -14919,69 +16118,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_20/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv1/weights/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_20/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_20"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_20/tensor_names"
-  input: "save/RestoreV2_20/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -14989,7 +16125,7 @@ node {
   name: "save/Assign_20"
   op: "Assign"
   input: "pvg_model/conv1/weights/Adam_1"
-  input: "save/RestoreV2_20"
+  input: "save/RestoreV2:20"
   attr {
     key: "T"
     value {
@@ -15018,73 +16154,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_21/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv2/biases"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_21/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_21"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_21/tensor_names"
-  input: "save/RestoreV2_21/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_21"
   op: "Assign"
   input: "pvg_model/conv2/biases"
-  input: "save/RestoreV2_21"
+  input: "save/RestoreV2:21"
   attr {
     key: "T"
     value {
@@ -15109,69 +16182,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_22/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv2/biases/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_22/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_22"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_22/tensor_names"
-  input: "save/RestoreV2_22/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -15179,7 +16189,7 @@ node {
   name: "save/Assign_22"
   op: "Assign"
   input: "pvg_model/conv2/biases/Adam"
-  input: "save/RestoreV2_22"
+  input: "save/RestoreV2:22"
   attr {
     key: "T"
     value {
@@ -15204,69 +16214,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_23/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv2/biases/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_23/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_23"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_23/tensor_names"
-  input: "save/RestoreV2_23/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -15274,7 +16221,7 @@ node {
   name: "save/Assign_23"
   op: "Assign"
   input: "pvg_model/conv2/biases/Adam_1"
-  input: "save/RestoreV2_23"
+  input: "save/RestoreV2:23"
   attr {
     key: "T"
     value {
@@ -15303,73 +16250,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_24/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv2/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_24/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_24"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_24/tensor_names"
-  input: "save/RestoreV2_24/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_24"
   op: "Assign"
   input: "pvg_model/conv2/weights"
-  input: "save/RestoreV2_24"
+  input: "save/RestoreV2:24"
   attr {
     key: "T"
     value {
@@ -15394,69 +16278,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_25/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv2/weights/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_25/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_25"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_25/tensor_names"
-  input: "save/RestoreV2_25/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -15464,7 +16285,7 @@ node {
   name: "save/Assign_25"
   op: "Assign"
   input: "pvg_model/conv2/weights/Adam"
-  input: "save/RestoreV2_25"
+  input: "save/RestoreV2:25"
   attr {
     key: "T"
     value {
@@ -15489,69 +16310,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_26/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv2/weights/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_26/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_26"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_26/tensor_names"
-  input: "save/RestoreV2_26/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -15559,7 +16317,7 @@ node {
   name: "save/Assign_26"
   op: "Assign"
   input: "pvg_model/conv2/weights/Adam_1"
-  input: "save/RestoreV2_26"
+  input: "save/RestoreV2:26"
   attr {
     key: "T"
     value {
@@ -15588,73 +16346,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_27/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv3/biases"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_27/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_27"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_27/tensor_names"
-  input: "save/RestoreV2_27/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_27"
   op: "Assign"
   input: "pvg_model/conv3/biases"
-  input: "save/RestoreV2_27"
+  input: "save/RestoreV2:27"
   attr {
     key: "T"
     value {
@@ -15679,69 +16374,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_28/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv3/biases/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_28/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_28"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_28/tensor_names"
-  input: "save/RestoreV2_28/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -15749,7 +16381,7 @@ node {
   name: "save/Assign_28"
   op: "Assign"
   input: "pvg_model/conv3/biases/Adam"
-  input: "save/RestoreV2_28"
+  input: "save/RestoreV2:28"
   attr {
     key: "T"
     value {
@@ -15774,69 +16406,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_29/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv3/biases/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_29/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_29"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_29/tensor_names"
-  input: "save/RestoreV2_29/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -15844,7 +16413,7 @@ node {
   name: "save/Assign_29"
   op: "Assign"
   input: "pvg_model/conv3/biases/Adam_1"
-  input: "save/RestoreV2_29"
+  input: "save/RestoreV2:29"
   attr {
     key: "T"
     value {
@@ -15873,73 +16442,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_30/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv3/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_30/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_30"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_30/tensor_names"
-  input: "save/RestoreV2_30/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_30"
   op: "Assign"
   input: "pvg_model/conv3/weights"
-  input: "save/RestoreV2_30"
+  input: "save/RestoreV2:30"
   attr {
     key: "T"
     value {
@@ -15964,69 +16470,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_31/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv3/weights/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_31/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_31"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_31/tensor_names"
-  input: "save/RestoreV2_31/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -16034,7 +16477,7 @@ node {
   name: "save/Assign_31"
   op: "Assign"
   input: "pvg_model/conv3/weights/Adam"
-  input: "save/RestoreV2_31"
+  input: "save/RestoreV2:31"
   attr {
     key: "T"
     value {
@@ -16059,69 +16502,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_32/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/conv3/weights/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_32/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_32"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_32/tensor_names"
-  input: "save/RestoreV2_32/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -16129,7 +16509,7 @@ node {
   name: "save/Assign_32"
   op: "Assign"
   input: "pvg_model/conv3/weights/Adam_1"
-  input: "save/RestoreV2_32"
+  input: "save/RestoreV2:32"
   attr {
     key: "T"
     value {
@@ -16158,73 +16538,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_33/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc5/biases"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_33/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_33"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_33/tensor_names"
-  input: "save/RestoreV2_33/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_33"
   op: "Assign"
   input: "pvg_model/fc5/biases"
-  input: "save/RestoreV2_33"
+  input: "save/RestoreV2:33"
   attr {
     key: "T"
     value {
@@ -16249,69 +16566,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_34/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc5/biases/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_34/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_34"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_34/tensor_names"
-  input: "save/RestoreV2_34/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -16319,7 +16573,7 @@ node {
   name: "save/Assign_34"
   op: "Assign"
   input: "pvg_model/fc5/biases/Adam"
-  input: "save/RestoreV2_34"
+  input: "save/RestoreV2:34"
   attr {
     key: "T"
     value {
@@ -16344,69 +16598,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_35/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc5/biases/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_35/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_35"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_35/tensor_names"
-  input: "save/RestoreV2_35/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -16414,7 +16605,7 @@ node {
   name: "save/Assign_35"
   op: "Assign"
   input: "pvg_model/fc5/biases/Adam_1"
-  input: "save/RestoreV2_35"
+  input: "save/RestoreV2:35"
   attr {
     key: "T"
     value {
@@ -16443,73 +16634,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_36/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc5/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_36/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_36"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_36/tensor_names"
-  input: "save/RestoreV2_36/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_36"
   op: "Assign"
   input: "pvg_model/fc5/weights"
-  input: "save/RestoreV2_36"
+  input: "save/RestoreV2:36"
   attr {
     key: "T"
     value {
@@ -16534,69 +16662,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_37/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc5/weights/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_37/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_37"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_37/tensor_names"
-  input: "save/RestoreV2_37/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -16604,7 +16669,7 @@ node {
   name: "save/Assign_37"
   op: "Assign"
   input: "pvg_model/fc5/weights/Adam"
-  input: "save/RestoreV2_37"
+  input: "save/RestoreV2:37"
   attr {
     key: "T"
     value {
@@ -16629,69 +16694,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_38/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc5/weights/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_38/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_38"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_38/tensor_names"
-  input: "save/RestoreV2_38/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -16699,7 +16701,7 @@ node {
   name: "save/Assign_38"
   op: "Assign"
   input: "pvg_model/fc5/weights/Adam_1"
-  input: "save/RestoreV2_38"
+  input: "save/RestoreV2:38"
   attr {
     key: "T"
     value {
@@ -16728,73 +16730,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_39/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc6/biases"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_39/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_39"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_39/tensor_names"
-  input: "save/RestoreV2_39/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_39"
   op: "Assign"
   input: "pvg_model/fc6/biases"
-  input: "save/RestoreV2_39"
+  input: "save/RestoreV2:39"
   attr {
     key: "T"
     value {
@@ -16819,69 +16758,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_40/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc6/biases/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_40/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_40"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_40/tensor_names"
-  input: "save/RestoreV2_40/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -16889,7 +16765,7 @@ node {
   name: "save/Assign_40"
   op: "Assign"
   input: "pvg_model/fc6/biases/Adam"
-  input: "save/RestoreV2_40"
+  input: "save/RestoreV2:40"
   attr {
     key: "T"
     value {
@@ -16914,69 +16790,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_41/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc6/biases/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_41/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_41"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_41/tensor_names"
-  input: "save/RestoreV2_41/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -16984,7 +16797,7 @@ node {
   name: "save/Assign_41"
   op: "Assign"
   input: "pvg_model/fc6/biases/Adam_1"
-  input: "save/RestoreV2_41"
+  input: "save/RestoreV2:41"
   attr {
     key: "T"
     value {
@@ -17013,73 +16826,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_42/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc6/weights"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_42/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_42"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_42/tensor_names"
-  input: "save/RestoreV2_42/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_42"
   op: "Assign"
   input: "pvg_model/fc6/weights"
-  input: "save/RestoreV2_42"
+  input: "save/RestoreV2:42"
   attr {
     key: "T"
     value {
@@ -17104,69 +16854,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_43/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc6/weights/Adam"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_43/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_43"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_43/tensor_names"
-  input: "save/RestoreV2_43/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -17174,7 +16861,7 @@ node {
   name: "save/Assign_43"
   op: "Assign"
   input: "pvg_model/fc6/weights/Adam"
-  input: "save/RestoreV2_43"
+  input: "save/RestoreV2:43"
   attr {
     key: "T"
     value {
@@ -17199,69 +16886,6 @@ node {
     key: "validate_shape"
     value {
       b: true
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_44/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "pvg_model/fc6/weights/Adam_1"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_44/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_44"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_44/tensor_names"
-  input: "save/RestoreV2_44/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
     }
   }
 }
@@ -17269,7 +16893,7 @@ node {
   name: "save/Assign_44"
   op: "Assign"
   input: "pvg_model/fc6/weights/Adam_1"
-  input: "save/RestoreV2_44"
+  input: "save/RestoreV2:44"
   attr {
     key: "T"
     value {
@@ -17298,73 +16922,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_45/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "train_step/beta1_power"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_45/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_45"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_45/tensor_names"
-  input: "save/RestoreV2_45/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_45"
   op: "Assign"
   input: "train_step/beta1_power"
-  input: "save/RestoreV2_45"
+  input: "save/RestoreV2:45"
   attr {
     key: "T"
     value {
@@ -17393,73 +16954,10 @@ node {
   }
 }
 node {
-  name: "save/RestoreV2_46/tensor_names"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: "train_step/beta2_power"
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_46/shape_and_slices"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_STRING
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_STRING
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        string_val: ""
-      }
-    }
-  }
-}
-node {
-  name: "save/RestoreV2_46"
-  op: "RestoreV2"
-  input: "save/Const"
-  input: "save/RestoreV2_46/tensor_names"
-  input: "save/RestoreV2_46/shape_and_slices"
-  attr {
-    key: "dtypes"
-    value {
-      list {
-        type: DT_FLOAT
-      }
-    }
-  }
-}
-node {
   name: "save/Assign_46"
   op: "Assign"
   input: "train_step/beta2_power"
-  input: "save/RestoreV2_46"
+  input: "save/RestoreV2:46"
   attr {
     key: "T"
     value {
@@ -17590,5 +17088,5 @@ node {
   input: "^pvg_model/fc6/biases/Adam_1/Assign"
 }
 versions {
-  producer: 24
+  producer: 26
 }

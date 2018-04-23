@@ -6,23 +6,10 @@ import time
 username = input('Enter username: ')
 pswd = getpass.getpass('Password: ')
 
-# os.system('sftp {}@lisp.cs.rutgers.edu'.format(username))
-# time.sleep(1)
-# os.system(pswd)
-# time.sleep(1)
-# os.system('lcd ~/repos/Learning-Machine-Learning/projects/devanagari/out/')
-# time.sleep(.5)
-# os.system('cd repos/Learning-Machine-Learning/projects/devanagari/out/')
-# time.sleep(.5)
-# print('getting files..')
-# os.system('get *')
-# time.sleep(.5)
-# os.system('exit')
-
 def decode(bytes):
 	return bytes.decode('utf-8')
 
-child = pexpect.spawn('sftp {}@lisp.cs.rutgers.edu'.format(username))
+child = pexpect.spawn('ssh {}@lisp.cs.rutgers.edu'.format(username))
 child.expect('Password')
 child.sendline(pswd)
 print(decode(child.after))

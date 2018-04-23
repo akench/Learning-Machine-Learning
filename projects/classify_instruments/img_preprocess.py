@@ -6,7 +6,6 @@ import glob
 from random import *
 import pickle
 import time
-from utils.split_data import split_data
 
 
 def split_data(all_data, all_labels, perc_train = 0.72, perc_val = 0.18, perc_test = 0.1):
@@ -23,7 +22,7 @@ def split_data(all_data, all_labels, perc_train = 0.72, perc_val = 0.18, perc_te
 
 	curr += num_train
 	val_data = all_data[curr : curr + num_val]
-	val_labels = labels[curr : curr + num_val]
+	val_labels = all_labels[curr : curr + num_val]
 	pickle.dump(val_data, open('processed_data/val_data.p', 'wb'))
 	pickle.dump(val_labels, open('processed_data/val_labels.p', 'wb'))
 

@@ -10,8 +10,6 @@ import numpy as np
 import time
 
 
-label_to_emot = {0:'happy', 1:'motivational', 2:'relaxing', 3:'angry', 4:'sad', 5:'tense'}
-
 
 def load_graph(graph_file_path):
 
@@ -29,13 +27,16 @@ def load_graph(graph_file_path):
 
 def inference(data):
 
-	graph = load_graph('/home/super/Desktop/output_graph.pb')
 
-	x = graph.get_tensor_by_name('inceptionv3/DecodeJpeg:0')
+	graph = load_graph('/home/atharva/Desktop/output_graph.pb')
+	list_of_tuples = [op.values()[0] for op in graph.get_operations()]
+	# print(list_of_tuples)
+
+	x = graph.get_tensor_by_name('inceptionv3/Placeholder:0')
 	y = graph.get_tensor_by_name('inceptionv3/final_result:0')
 
 	with tf.Session(graph = graph) as sess:
-		out = sess.run(y, feed_dict={x: data})
+		out = sess.run(y, feed_dict={x: [data]})
 		label = sess.run(tf.argmax(tf.squeeze(out)))
 		return label
 
@@ -43,16 +44,17 @@ def inference(data):
 def percent(x):
 
 	perc = (x / np.sum(x))
-	print(perc)
 	return perc
 
 def predict_song(spec_list):
 
-	label_list = [0, 0, 0, 0, 0, 0]
+	label_list = [0, 0, 0, 0, 0]
 
 	for img in spec_list:
 
 		img = parse_img.resize_crop(img, size=299, grey = False)
+
+		img = np.array(img)
 
 		lbl = inference(img)
 		label_list[lbl] += 1
@@ -67,8 +69,7 @@ def print_results(output):
 	print('The song is:')
 
 	for i in range(len(output)):
-		if output[i] > 0.001:
-			print('%f percent %s' % (output[i] * 100, label_to_emot[i]))
+		print('%f percent %s' % (output[i] * 100, i))
 
 
 def emot_to_new_path(old_path, emot):
@@ -89,11 +90,12 @@ if __name__ == '__main__':
 
 	if choice == 'i':
 		audio = input('Enter a youtube link or filepath to an mp3\n')
-
+	
 		t0 = time.time()
 
-		if 'https' in audio:
+		if 'youtube' in audio:
 			dl_audio_path = dl_audio(audio, None)
+			print(dl_audio_path)
 			specs = graph_spectrogram(dl_audio_path, 10, save = False)
 			os.remove(dl_audio_path)
 		else:

@@ -100,8 +100,8 @@ def discriminator(X):
                 x = tf.layers.dense(x, 1)
 
                # net = slim.conv2d(net, 64, [5,5], scope='conv1')
-                #print(net.shape)
-                # net = slim.batch_norm(net)
+               # print(net.shape)
+               # net = slim.batch_norm(net)
                # net = tf.nn.tanh(net)
                # net = slim.avg_pool2d(net, [2,2], stride=2, scope='pool1')
                # print(net.shape)

@@ -6,6 +6,8 @@ from PIL import Image
 import librosa
 import librosa.display
 import numpy as np
+import time
+import io
 
 almost_zero = 0.001
 
@@ -46,6 +48,7 @@ def graph_spectrogram(audio_file, secs_per_spec = 10, save=True):
 
     split_data = split_list_by_num_samples(data, rate * secs_per_spec)
 
+    del data
 
     name_index = 0
     specs = []
@@ -53,18 +56,18 @@ def graph_spectrogram(audio_file, secs_per_spec = 10, save=True):
     for mini_data in split_data:
 
         S = librosa.feature.melspectrogram(mini_data, sr=rate, n_mels=128)
-        log_S = librosa.logamplitude(S, ref_power=np.max)
+        log_S = librosa.amplitude_to_db(S)
 
         plt.figure(figsize=(secs_per_spec, 7))
 
         librosa.display.specshow(log_S, sr=rate, x_axis='time', y_axis='mel')
 
-
         plt.tight_layout()
         plt.axis('off')
+        plt.gray()
         plt.draw()
 
-        import io
+        
         buf = io.BytesIO()
         plt.savefig(buf, bbox_inches='tight', pad_inches = 0, dpi=50, format='jpg')
 
@@ -83,6 +86,7 @@ def graph_spectrogram(audio_file, secs_per_spec = 10, save=True):
         plt.close()
 
         name_index += 1
+
 
     if not save:
         return specs

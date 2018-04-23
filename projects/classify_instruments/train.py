@@ -70,7 +70,7 @@ def model(net, keep_prob):
 
 def train():
 
-	data_util = DataUtil('processed_data', batch_size = 128, num_epochs = 3)
+	data_util = DataUtil('processed_data', batch_size = 128, num_epochs = 1)
 
 
 
@@ -219,7 +219,7 @@ def main():
 
 	train()
 
-	# export_model([input_node_name, keep_prob_name], output_node_name)
+	export_model([input_node_name, keep_prob_name], output_node_name)
 
 if __name__ == '__main__':
 	main()
